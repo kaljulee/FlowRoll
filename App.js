@@ -26,6 +26,7 @@ import {
 import {PersistGate} from 'redux-persist/integration/react';
 import configureStore from './src/store/configureStore';
 import { Provider } from 'react-redux';
+import TimerSetup from './src/components/TimerSetup';
 
 
 const {store, persistor} = configureStore();
@@ -40,13 +41,12 @@ const App: () => React$Node = () => {
             <ScrollView
               contentInsetAdjustmentBehavior="automatic"
               style={styles.scrollView}>
-              <Header />
               {global.HermesInternal == null ? null : (
                 <View style={styles.engine}>
                   <Text style={styles.footer}>Engine: Hermes</Text>
                 </View>
               )}
-              {true && (
+              {false && (
                 <View style={styles.body}>
                   <View style={styles.sectionContainer}>
                     <Text style={styles.sectionTitle}>Step One</Text>
@@ -76,6 +76,7 @@ const App: () => React$Node = () => {
                   <LearnMoreLinks />
                 </View>
               )}
+              <TimerSetup/>
             </ScrollView>
           </SafeAreaView>
         </PersistGate>

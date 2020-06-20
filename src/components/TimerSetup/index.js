@@ -17,9 +17,10 @@ import {
 import Modal from 'react-native-modal';
 import NumberInput from '../NumberInput';
 import { resetDB } from '../../actions';
+import SetTimeModal from '../modals/SetTimeModal';
 
 function TimerSetup(props) {
-  const { roundTime, resetDB } = props;
+  const { roundTime, breakTime, resetDB } = props;
   console.group('in timersetup, roundtime from props');
   console.log(roundTime);
   console.groupEnd();
@@ -56,14 +57,18 @@ function TimerSetup(props) {
         <Button>
           <Text>Start</Text>
         </Button>
-        <Modal isVisible={showRoundTimeInput}>
-          <TimeInput value={roundTime} label={'round length'} />
-          <Button
-            style={{ width: 'auto', marginLeft: 'auto' }}
-            onPress={() => setShowRoundTimeInput(false)}>
-            <Text>close</Text>
-          </Button>
-        </Modal>
+        <SetTimeModal
+          label={'round length'}
+          isVisible={showRoundTimeInput}
+          value={roundTime}
+          onClosePress={() => setShowRoundTimeInput(false)}
+        />
+        <SetTimeModal
+          label={'break length'}
+          isVisible={showBreakTimeInput}
+          value={breakTime}
+          onClosePress={() => setShowBreakTimeInput(false)}
+        />
       </Content>
       <Footer>
         <Button

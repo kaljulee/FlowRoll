@@ -20,7 +20,18 @@ import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './src/store/configureStore';
 import { Provider } from 'react-redux';
 import TimerSetup from './src/components/TimerSetup';
-import { Header, Body, Button, Container, Icon, Left, Right, Title } from 'native-base';
+import {
+  Header,
+  Body,
+  Button,
+  Container,
+  Icon,
+  Left,
+  Right,
+  Title,
+  Tab,
+  Tabs,
+} from 'native-base';
 
 const { store, persistor } = configureStore();
 
@@ -35,7 +46,7 @@ const App: () => React$Node = () => {
               contentInsetAdjustmentBehavior="automatic"
               style={styles.scrollView}>
               <Container>
-                <Header>
+                <Header hasTabs>
                   <Left>
                     <Button transparent>
                       <Icon name="menu" />
@@ -46,7 +57,14 @@ const App: () => React$Node = () => {
                   </Body>
                   <Right />
                 </Header>
-                <TimerSetup />
+                <Tabs>
+                  <Tab heading={'setup'}>
+                    <TimerSetup />
+                  </Tab>
+                  <Tab heading={'timer'}>
+                    <Text>timer goes here</Text>
+                  </Tab>
+                </Tabs>
               </Container>
             </ScrollView>
           </SafeAreaView>

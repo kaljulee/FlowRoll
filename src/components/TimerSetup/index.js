@@ -29,17 +29,6 @@ function TimerSetup(props) {
   const [showRoundCountInput, setShowRoundCountInput] = useState(false);
   return (
     <Container>
-      <Header>
-        <Left>
-          <Button transparent>
-            <Icon name="menu" />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Header</Title>
-        </Body>
-        <Right />
-      </Header>
       <Content>
         <SettingsButton
           label={'Set Players'}

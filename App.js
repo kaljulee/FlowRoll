@@ -15,21 +15,14 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 ///////////////////
-import {PersistGate} from 'redux-persist/integration/react';
+import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './src/store/configureStore';
 import { Provider } from 'react-redux';
 import TimerSetup from './src/components/TimerSetup';
+import { Header, Body, Button, Container, Icon, Left, Right, Title } from 'native-base';
 
-
-const {store, persistor} = configureStore();
+const { store, persistor } = configureStore();
 
 const App: () => React$Node = () => {
   return (
@@ -41,42 +34,20 @@ const App: () => React$Node = () => {
             <ScrollView
               contentInsetAdjustmentBehavior="automatic"
               style={styles.scrollView}>
-              {global.HermesInternal == null ? null : (
-                <View style={styles.engine}>
-                  <Text style={styles.footer}>Engine: Hermes</Text>
-                </View>
-              )}
-              {false && (
-                <View style={styles.body}>
-                  <View style={styles.sectionContainer}>
-                    <Text style={styles.sectionTitle}>Step One</Text>
-                    <Text style={styles.sectionDescription}>
-                      Edit <Text style={styles.highlight}>App.js</Text> to
-                      change this screen and then come back to see your edits.
-                    </Text>
-                  </View>
-                  <View style={styles.sectionContainer}>
-                    <Text style={styles.sectionTitle}>See Your Changes</Text>
-                    <Text style={styles.sectionDescription}>
-                      <ReloadInstructions />
-                    </Text>
-                  </View>
-                  <View style={styles.sectionContainer}>
-                    <Text style={styles.sectionTitle}>Debug</Text>
-                    <Text style={styles.sectionDescription}>
-                      <DebugInstructions />
-                    </Text>
-                  </View>
-                  <View style={styles.sectionContainer}>
-                    <Text style={styles.sectionTitle}>Learn More</Text>
-                    <Text style={styles.sectionDescription}>
-                      Read the docs to discover what to do next:
-                    </Text>
-                  </View>
-                  <LearnMoreLinks />
-                </View>
-              )}
-              <TimerSetup/>
+              <Container>
+                <Header>
+                  <Left>
+                    <Button transparent>
+                      <Icon name="menu" />
+                    </Button>
+                  </Left>
+                  <Body>
+                    <Title>Header</Title>
+                  </Body>
+                  <Right />
+                </Header>
+                <TimerSetup />
+              </Container>
             </ScrollView>
           </SafeAreaView>
         </PersistGate>
@@ -86,42 +57,42 @@ const App: () => React$Node = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  // scrollView: {
+  //   backgroundColor: Colors.lighter,
+  // },
+  // engine: {
+  //   position: 'absolute',
+  //   right: 0,
+  // },
+  // body: {
+  //   backgroundColor: Colors.white,
+  // },
+  // sectionContainer: {
+  //   marginTop: 32,
+  //   paddingHorizontal: 24,
+  // },
+  // sectionTitle: {
+  //   fontSize: 24,
+  //   fontWeight: '600',
+  //   color: Colors.black,
+  // },
+  // sectionDescription: {
+  //   marginTop: 8,
+  //   fontSize: 18,
+  //   fontWeight: '400',
+  //   color: Colors.dark,
+  // },
+  // highlight: {
+  //   fontWeight: '700',
+  // },
+  // footer: {
+  //   color: Colors.dark,
+  //   fontSize: 12,
+  //   fontWeight: '600',
+  //   padding: 4,
+  //   paddingRight: 12,
+  //   textAlign: 'right',
+  // },
 });
 
 export default App;

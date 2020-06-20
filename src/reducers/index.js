@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import moment from 'moment';
+import { types } from '../actions';
 import { createParticipant } from '../models/Participant';
 
 const getInitialState = () => {
@@ -9,6 +10,7 @@ const getInitialState = () => {
     createParticipant('Scott'),
     createParticipant('Nikos'),
   ];
+
   return {
     participants,
     roundTime: moment.duration(6, 'minutes'),
@@ -24,6 +26,9 @@ const basicReducer = (state = getInitialState(), action) => {
   const { type, payload } = action;
   console.log('an action was recd ' + type);
   switch (action.type) {
+    case types.RESET:
+      console.log('reseting DB');
+      return getInitialState();
     default:
       return state;
   }

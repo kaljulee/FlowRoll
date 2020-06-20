@@ -14,13 +14,13 @@ import {
   Text,
 } from 'native-base';
 import Modal from 'react-native-modal';
+import NumberInput from '../NumberInput';
 
 function TimerSetup(props) {
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
   const [showRoundCountInput, setShowRoundCountInput] = useState(false);
-  console.log('showRoundTImeINput ' + showRoundTimeInput);
   return (
     <Container>
       <Header>
@@ -51,9 +51,9 @@ function TimerSetup(props) {
           <Text>Start</Text>
         </Button>
         <Modal isVisible={showRoundTimeInput}>
-          <TimeInput />
-          <Button onPress={() => setShowRoundTimeInput(false)}>
-            <Text>close modal</Text>
+          <TimeInput label={'round length'} />
+          <Button style={{width: 'auto', marginLeft: 'auto'}} onPress={() => setShowRoundTimeInput(false)}>
+            <Text>close</Text>
           </Button>
         </Modal>
       </Content>

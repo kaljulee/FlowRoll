@@ -14,10 +14,9 @@ import {
   Icon,
   Text,
 } from 'native-base';
-import Modal from 'react-native-modal';
-import NumberInput from '../NumberInput';
 import { resetDB } from '../../actions';
 import SetTimeModal from '../modals/SetTimeModal';
+import SettingsButton from '../SettingsButton';
 
 function TimerSetup(props) {
   const { roundTime, breakTime, resetDB } = props;
@@ -42,18 +41,22 @@ function TimerSetup(props) {
         <Right />
       </Header>
       <Content>
-        <Button onPress={() => setShowParticipantInput(true)}>
-          <Text>Set Players</Text>
-        </Button>
-        <Button onPress={() => setShowRoundTimeInput(true)}>
-          <Text>Set Round Time</Text>
-        </Button>
-        <Button onPress={() => setShowBreakTimeInput(true)}>
-          <Text>Set Break Time</Text>
-        </Button>
-        <Button onPress={() => setShowRoundCountInput(true)}>
-          <Text>Set Round Count</Text>
-        </Button>
+        <SettingsButton
+          label={'Set Players'}
+          onPress={() => setShowParticipantInput(true)}
+        />
+        <SettingsButton
+          onPress={() => setShowRoundTimeInput(true)}
+          label={'Set Round Time'}
+        />
+        <SettingsButton
+          onPress={() => setShowBreakTimeInput(true)}
+          label={'Set Break Time'}
+        />
+        <SettingsButton
+          onPress={() => setShowRoundCountInput(true)}
+          label={'Set Round Count'}
+        />
         <Button>
           <Text>Start</Text>
         </Button>

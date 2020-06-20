@@ -2,7 +2,7 @@ import {combineReducers} from 'redux';
 
 const getInitialState = () => {
   return {
-    players: [],
+    participants: [],
     roundTime: 'no round time',
     breakTime: 'no breakTime',
     roundCount: 0,

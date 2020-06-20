@@ -13,14 +13,13 @@ const getInitialState = () => {
 
   return {
     participants,
-    roundTime: moment.duration(6, 'minutes'),
-    breakTime: moment.duration(30, 'seconds'),
+    roundTime: { h: 0, m: 6, s: 0 },
+    breakTime: { h: 0, m: 0, s: 30 },
     roundCount: 24,
     currentRound: 0,
     estimatedTime: undefined,
   };
 };
-
 
 const basicReducer = (state = getInitialState(), action) => {
   const { type, payload } = action;

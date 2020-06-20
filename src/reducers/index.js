@@ -1,21 +1,27 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
+import moment from 'moment';
+import { createParticipant } from '../models/Participant';
 
 const getInitialState = () => {
+  const participants = [
+    createParticipant('Kalju'),
+    createParticipant('Rachael'),
+    createParticipant('Scott'),
+    createParticipant('Nikos'),
+  ];
   return {
-    participants: [],
-    roundTime: 'no round time',
-    breakTime: 'no breakTime',
-    roundCount: 0,
-    currentRound: 'no current round',
-    estimatedTime: 'no est time',
+    participants,
+    roundTime: moment.duration(6, 'minutes'),
+    breakTime: moment.duration(30, 'seconds'),
+    roundCount: 24,
+    currentRound: 0,
+    estimatedTime: undefined,
   };
 };
 
-// const resetState = () => {
-// }
 
 const basicReducer = (state = getInitialState(), action) => {
-  const {type, payload} = action;
+  const { type, payload } = action;
   console.log('an action was recd ' + type);
   switch (action.type) {
     default:
@@ -23,6 +29,6 @@ const basicReducer = (state = getInitialState(), action) => {
   }
 };
 
-const reducers = {basicReducer};
+const reducers = { basicReducer };
 
 export default combineReducers(reducers);

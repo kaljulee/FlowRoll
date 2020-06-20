@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import moment from 'moment';
 import { types } from '../actions';
 import { createParticipant } from '../models/Participant';
 

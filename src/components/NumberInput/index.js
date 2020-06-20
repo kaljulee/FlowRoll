@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { StyleSheet } from 'react-native';
-import { Input } from 'native-base';
+import { Input, Label } from 'native-base';
 import { numberInputFontSize } from '../../constants/styleValues';
+
+function formatValueForInput(value) {
+  const stringValue = value.toString();
+  if (stringValue.length > 1) {
+    return stringValue;
+  }
+  return `0${stringValue}`;
+}
 
 function NumberInput(props) {
   const { placeholder, value } = props;
-  const [currentValue, setCurrentValue] = useState(value.toString());
+  const [currentValue, setCurrentValue] = useState(formatValueForInput(value));
   // console.group('number input');
   // console.log('recd ' + value);
   // console.log('current: ' + currentValue);
@@ -25,12 +33,18 @@ function NumberInput(props) {
       placeholder={placeholder}
       value={currentValue}
       style={{
-        width: 50,
-        height: 100,
         fontSize: numberInputFontSize,
       }}
       textAlign={'center'}
     />
+  );
+}
+
+export function NumberInputLabel(props) {
+  return (
+    <Label style={{ fontSize: 10, textAlign: 'right', marginRight: 'auto' }}>
+      {props.children}
+    </Label>
   );
 }
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { StyleSheet } from 'react-native';
-import { Card, CardItem, Text, Item, Input } from 'native-base';
-import NumberInput from '../NumberInput';
-import {numberInputFontSize} from '../../constants/styleValues';
+import { Card, CardItem, Text, Item, Label } from 'native-base';
+import NumberInput, { NumberInputLabel } from '../NumberInput';
+import { numberInputFontSize } from '../../constants/styleValues';
 
 function TimeInput(props) {
   const { label, value } = props;
@@ -11,6 +11,7 @@ function TimeInput(props) {
     container: { width: '100%', height: 'auto' },
     input: {
       flex: 2,
+      height: 100,
     },
     divider: {
       flex: 1,
@@ -28,15 +29,21 @@ function TimeInput(props) {
         <Text>{label}</Text>
       </CardItem>
       <CardItem style={{ flexDirection: 'row', margin: 5 }} cardBody>
-        <Item style={styles.input} underline>
+        <Item style={styles.input} underline stackedLabel>
+          <NumberInputLabel>hours</NumberInputLabel>
           <NumberInput value={value.h} placeholder={'HH'} />
         </Item>
         <Text style={styles.dividerText}>:</Text>
-        <Item style={styles.input} underline>
+        <Item style={styles.input} underline stackedLabel>
+          <NumberInputLabel>minutes</NumberInputLabel>
           <NumberInput value={value.m} placeholder={'MM'} />
         </Item>
         <Text style={styles.dividerText}>:</Text>
-        <Item style={styles.input} underline>
+        <Item
+          style={ styles.input }
+          underline
+          stackedLabel>
+          <NumberInputLabel>seconds</NumberInputLabel>
           <NumberInput value={value.s} placeholder={'SS'} />
         </Item>
       </CardItem>

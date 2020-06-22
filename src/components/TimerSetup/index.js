@@ -20,9 +20,6 @@ import SettingsButton from '../SettingsButton';
 
 function TimerSetup(props) {
   const { roundTime, breakTime, resetDB } = props;
-  console.group('in timersetup, roundtime from props');
-  console.log(roundTime);
-  console.groupEnd();
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);

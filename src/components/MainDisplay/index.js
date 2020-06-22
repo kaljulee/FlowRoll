@@ -3,23 +3,33 @@ import { View, StyleSheet } from 'react-native';
 import { Container, Content, Text, Card, CardItem, Body } from 'native-base';
 import { hourMinuteSecond } from '../../helpers/time';
 
+const cardStyle = {
+  width: '80%',
+  alignSelf: 'center',
+};
+
 const styles = StyleSheet.create({
   currentMatchup: {
-    width: '80%',
+    ...cardStyle,
     flex: 2,
-    alignSelf: 'center',
+  },
+  roundTime: {
+    ...cardStyle,
+    flex: 5,
+  },
+  roundCounter: {
+    ...cardStyle,
+  },
+  totalTimeTracker: {
+    ...cardStyle,
   },
   container: {
     height: '100%',
-    // borderColor: 'blue',
-    // borderWidth: 5,
   },
   content: {
     flexDirection: 'column',
     alignContent: 'center',
     justifyContent: 'space-between',
-    // borderColor: 'red',
-    // borderWidth: 5,
     height: '100%',
   },
 });
@@ -39,19 +49,39 @@ function CurrentMatchup(props) {
 function RoundTime(props) {
   const { time } = props;
   const timeString = time ? `${time.m}:${time.s}` : 'no time in round time';
-  return <Text>{timeString}</Text>;
+  return (
+    <Card style={styles.roundTime}>
+      <CardItem>
+        <Body>
+          <Text>{timeString}</Text>
+        </Body>
+      </CardItem>
+    </Card>
+  );
 }
 
 function RoundCounter(props) {
   const { current, total } = props;
-  return <Text>{`${current} / ${total}`}</Text>;
+  return (
+    <Card style={styles.roundCounter}>
+      <CardItem>
+        <Body>
+          <Text>{`${current} / ${total}`}</Text>
+        </Body>
+      </CardItem>
+    </Card>
+  );
 }
 
 function TotalTimeTracker(props) {
   return (
-    <View>
-      <Text>total time tracker, not sure how to break this up yet</Text>
-    </View>
+    <Card style={styles.totalTimeTracker}>
+      <CardItem>
+        <Body>
+          <Text>total time tracker, not sure how to break this up yet</Text>
+        </Body>
+      </CardItem>
+    </Card>
   );
 }
 

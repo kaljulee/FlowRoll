@@ -20,7 +20,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './src/store/configureStore';
 import { Provider } from 'react-redux';
 import TimerSetup from './src/components/TimerSetup';
-import Timer from './src/components/Timer';
+import MainDisplay from './src/components/Timer';
 import {
   Header,
   Body,
@@ -63,7 +63,7 @@ const App: () => React$Node = () => {
                     <TimerSetup />
                   </Tab>
                   <Tab heading={'timer'}>
-                    <Timer />
+                    <MainDisplay />
                   </Tab>
                 </Tabs>
               </Container>

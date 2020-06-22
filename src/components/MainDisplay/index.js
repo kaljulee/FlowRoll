@@ -59,7 +59,7 @@ function NextMatchup(props) {
   return <CurrentMatchup text={'this is NextMatchup'} />;
 }
 
-function Timer(props) {
+function MainDisplay(props) {
   return (
     <Content contentContainerStyle={styles.content}>
       <CurrentMatchup />
@@ -71,4 +71,4 @@ function Timer(props) {
   );
 }
 
-export default Timer;
+export default MainDisplay;

@@ -4,24 +4,30 @@ import { Container, Content, Text, Card, CardItem, Body } from 'native-base';
 import { hourMinuteSecond } from '../../helpers/time';
 
 const cardStyle = {
-  width: '80%',
+  width: '90%',
   alignSelf: 'center',
 };
 
 const styles = StyleSheet.create({
   currentMatchup: {
     ...cardStyle,
-    flex: 2,
+    flex: 3,
   },
   roundTime: {
     ...cardStyle,
-    flex: 5,
+    flex: 6,
   },
   roundCounter: {
     ...cardStyle,
+    flex: 2,
   },
   totalTimeTracker: {
     ...cardStyle,
+    flex: 2,
+  },
+  nextMatchup: {
+    ...cardStyle,
+    flex: 2,
   },
   container: {
     height: '100%',
@@ -66,7 +72,7 @@ function RoundCounter(props) {
     <Card style={styles.roundCounter}>
       <CardItem>
         <Body>
-          <Text>{`${current} / ${total}`}</Text>
+          <Text>{`${'current'} / ${'total'}`}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -86,7 +92,15 @@ function TotalTimeTracker(props) {
 }
 
 function NextMatchup(props) {
-  return <CurrentMatchup text={'this is NextMatchup'} />;
+  return (
+    <Card style={styles.nextMatchup}>
+      <CardItem>
+        <Body>
+          <Text>{props.text || 'no matchup'}</Text>
+        </Body>
+      </CardItem>
+    </Card>
+  );
 }
 
 function MainDisplay(props) {

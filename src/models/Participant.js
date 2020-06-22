@@ -1,4 +1,3 @@
-
-export function createParticipant(name) {
-    return { name }
-};
+export function createParticipant(name, id) {
+  return { name, id: parseInt(id, 10) };
+}

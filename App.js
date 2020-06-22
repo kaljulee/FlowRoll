@@ -19,8 +19,8 @@ import {
 import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './src/store/configureStore';
 import { Provider } from 'react-redux';
-import TimerSetup from './src/components/TimerSetup';
-import MainDisplay from './src/components/MainDisplay';
+import TimerSetup from './src/pages/TimerSetup';
+import MainDisplay from './src/pages/MainDisplay';
 import {
   Header,
   Body,

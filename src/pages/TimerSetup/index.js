@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import TimeInput from '../TimeInput';
+import TimeInput from '../../components/TimeInput';
 import {
   Container,
   Header,
@@ -15,8 +15,8 @@ import {
   Text,
 } from 'native-base';
 import { resetDB } from '../../actions';
-import SetTimeModal from '../modals/SetTimeModal';
-import SettingsButton from '../SettingsButton';
+import SetTimeModal from '../../components/modals/SetTimeModal';
+import SettingsButton from '../../components/SettingsButton';
 
 function TimerSetup(props) {
   const { roundTime, breakTime, resetDB } = props;

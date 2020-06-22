@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Container, Content, Text, Card, CardItem, Body } from 'native-base';
-import { hourMinuteSecond } from '../../helpers/time';
+import { StyleSheet } from 'react-native';
+import { Content, Text, Card, CardItem, Body } from 'native-base';
+import { connect } from 'react-redux';
+import {createDefaultOrdering} from '../../helpers/ordering';
 
 const cardStyle = {
   width: '90%',
@@ -104,6 +105,9 @@ function NextMatchup(props) {
 }
 
 function MainDisplay(props) {
+  console.group('mainDisplay');
+  console.log(createDefaultOrdering(props.participants));
+  console.groupEnd();
   return (
     <Content contentContainerStyle={styles.content}>
       <CurrentMatchup />
@@ -115,4 +119,16 @@ function MainDisplay(props) {
   );
 }
 
-export default MainDisplay;
+const mapStateToProps = (state) => {
+  const {
+    basicReducer: { participants },
+  } = state;
+  return {
+    participants,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null,
+)(MainDisplay);

@@ -15,10 +15,6 @@ function formatValueForInput(value) {
 function NumberInput(props) {
   const { placeholder, value } = props;
   const [currentValue, setCurrentValue] = useState(formatValueForInput(value));
-  // console.group('number input');
-  // console.log('recd ' + value);
-  // console.log('current: ' + currentValue);
-  // console.groupEnd();
   return (
     <Input
       onChangeText={(newValue) => {

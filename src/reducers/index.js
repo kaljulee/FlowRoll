@@ -4,10 +4,10 @@ import { createParticipant } from '../models/Participant';
 
 const getInitialState = () => {
   const participants = [
-    createParticipant('Kalju'),
-    createParticipant('Rachael'),
-    createParticipant('Scott'),
-    createParticipant('Nikos'),
+    createParticipant('Kalju', 1),
+    createParticipant('Rachael', 2),
+    createParticipant('Scott', 3),
+    createParticipant('Nikos', 4),
   ];
 
   return {

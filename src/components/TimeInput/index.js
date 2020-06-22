@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import { StyleSheet } from 'react-native';
 import { Card, CardItem, Text, Item, Label } from 'native-base';
 import NumberInput, { NumberInputLabel } from '../NumberInput';
@@ -20,9 +19,6 @@ function TimeInput(props) {
       fontSize: numberInputFontSize,
     },
   });
-  // console.group('timeINput value');
-  // console.log(value);
-  // console.groupEnd();
   return (
     <Card style={styles.container}>
       <CardItem header>

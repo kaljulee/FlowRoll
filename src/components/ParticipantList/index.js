@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardItem } from 'native-base';
-import { Text, FlatList, StyleSheet } from 'react-native';
+import { Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
   card: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 });
 
 function ParticipantList(props) {
-  const { participants } = props;
+  const { participants, onParticipantPress } = props;
 
   const EmptyList = () => (
     <Card>
@@ -38,11 +38,13 @@ function ParticipantList(props) {
       ListEmptyComponent={() => EmptyList()}
       renderItem={({ item }) => {
         return (
+            <TouchableOpacity onPress={() => onParticipantPress(item.id)}>
           <Card style={styles.card}>
             <CardItem style={styles.item}>
               <Text>{item.name}</Text>
             </CardItem>
           </Card>
+            </TouchableOpacity>
         );
       }}
     />

@@ -1,9 +1,13 @@
+function toString(p1, p2) {
+  return `${p1.name} and ${p2.name}`;
+}
+
 export function createMatchUp(p1, p2) {
   return {
     id: createMatchUpID(p1, p2),
     p1,
     p2,
-    toString: () => `${p1.name} and ${p2.name}`,
+    string: toString(p1, p2),
   };
 }
 

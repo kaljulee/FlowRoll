@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
   },
 });
 
-function CurrentMatchup(props) {
+function CurrentMatchUp(props) {
   const { matchUp } = props;
-  const text = matchUp ? matchUp.toString() : 'no matchup';
+  const text = matchUp ? matchUp.string : 'no matchup';
   return (
     <Card style={styles.currentMatchup}>
       <CardItem>
@@ -94,9 +94,9 @@ function TotalTimeTracker(props) {
   );
 }
 
-function NextMatchup(props) {
+function NextMatchUp(props) {
   const { matchUp } = props;
-  const text = matchUp ? matchUp.toString() : 'last round';
+  const text = matchUp ? matchUp.string : 'last round';
   return (
     <Card style={styles.nextMatchup}>
       <CardItem>
@@ -117,11 +117,11 @@ function MainDisplay(props) {
       : findMatchUpByID(matchUps, schedule[currentRound + 1]);
   return (
     <Content contentContainerStyle={styles.content}>
-      <CurrentMatchup matchUp={currentMatchUp} />
+      <CurrentMatchUp matchUp={currentMatchUp} />
       <RoundTime />
       <RoundCounter current={currentRound} total={roundCount} />
       <TotalTimeTracker />
-      <NextMatchup matchUp={nextMatchUp} />
+      <NextMatchUp matchUp={nextMatchUp} />
     </Content>
   );
 }

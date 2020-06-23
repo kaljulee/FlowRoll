@@ -19,9 +19,10 @@ import SetTimeModal from '../../components/modals/SetTimeModal';
 import SettingsButton from '../../components/SettingsButton';
 import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
 import ManageParticipantsModal from '../../components/modals/ManageParticipantsModal';
+import ParticipantManager from '../../components/ParticipantManager';
 
 function TimerSetup(props) {
-  const { roundTime, breakTime, resetDB, roundCount } = props;
+  const { roundTime, breakTime, resetDB, roundCount, participants } = props;
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
@@ -69,6 +70,7 @@ function TimerSetup(props) {
           isVisible={showParticipantInput}
           onClosePress={() => setShowParticipantInput(false)}
         />
+        <ParticipantManager participants={participants}/>
       </Content>
       <Footer>
         <Button

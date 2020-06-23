@@ -1,6 +1,6 @@
-import _ from 'lodash';
 import { createMatchUp } from '../models/MatchUp';
 import { findMatchUpByID } from './utils';
+import _ from 'lodash';
 
 export function createMatchUps(participants) {
   return participants.reduce(
@@ -98,9 +98,7 @@ export function createCompleteCycle(matchUps, participants) {
   let lastMatchUp;
 
   // while there are still unused matchups, continue to iterate
-  while (
-    Object.values(remainingMatchUps).length > 0
-  ) {
+  while (Object.values(remainingMatchUps).length > 0) {
     // find valid next-matchups
     let availableMatchUps = filterOnRecentParticipants(
       remainingMatchUps,
@@ -140,4 +138,18 @@ export function createDefaultOrdering(participants) {
   // });
   // console.groupEnd();
   return completeCycle;
+}
+
+export function participantsByActive(participants, activeParticipants) {
+  return participants.reduce(
+    (acc, p) => {
+      if (_.includes(activeParticipants, p.id)) {
+        acc.active.push(p);
+      } else {
+        acc.available.push(p);
+      }
+      return acc;
+    },
+    { available: [], active: [] },
+  );
 }

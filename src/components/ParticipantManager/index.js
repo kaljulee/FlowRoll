@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Col } from 'react-native-easy-grid';
 import { StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import { participantsByActive } from '../../helpers/ordering';
 import ParticipantList from '../ParticipantList';
 import {
   activateParticipants,
@@ -28,16 +28,9 @@ function ParticipantManager(props) {
     deactivateParticipants,
   } = props;
 
-  const { available, active } = participants.reduce(
-    (acc, p) => {
-      if (_.includes(activeParticipants, p.id)) {
-        acc.active.push(p);
-      } else {
-        acc.available.push(p);
-      }
-      return acc;
-    },
-    { available: [], active: [] },
+  const { available, active } = participantsByActive(
+    participants,
+    activeParticipants,
   );
 
   return (

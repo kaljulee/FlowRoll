@@ -25,7 +25,6 @@ import {
   Header,
   Body,
   Button,
-  Container,
   Icon,
   Left,
   Right,
@@ -33,6 +32,7 @@ import {
   Tab,
   Tabs,
 } from 'native-base';
+import FlowRollContainer from './src/components/FlowRollContainer';
 
 const { store, persistor } = configureStore();
 
@@ -46,7 +46,7 @@ const App: () => React$Node = () => {
             <ScrollView
               contentInsetAdjustmentBehavior="automatic"
               style={styles.scrollView}>
-              <Container>
+              <FlowRollContainer>
                 <Header hasTabs>
                   <Left>
                     <Button transparent>
@@ -66,7 +66,7 @@ const App: () => React$Node = () => {
                     <MainDisplay />
                   </Tab>
                 </Tabs>
-              </Container>
+              </FlowRollContainer>
             </ScrollView>
           </SafeAreaView>
         </PersistGate>

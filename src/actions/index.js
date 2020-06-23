@@ -13,35 +13,35 @@ export const resetDB = () => ({ type: types.RESET });
 
 export const addParticipants = (participants) => ({
   type: types.ADD_PARTICIPANTS,
-  data: participants,
+  payload: participants,
 });
 
 export const activateParticipants = (participants) => ({
   type: types.ACTIVATE_PARTICIPANTS,
-  data: participants,
+  payload: participants,
 });
 
 export const deactivateParticipants = (participants) => ({
   type: types.DEACTIVATE_PARTICIPANTS,
-  data: participants,
+  payload: participants,
 });
 
 export const setBreakTime = (time) => ({
   type: types.SET_BREAK_TIME,
-  data: time,
+  payload: time,
 });
 
 export const setRoundTime = (time) => ({
   type: types.SET_ROUND_TIME,
-  data: time,
+  payload: time,
 });
 
 export const setRoundCount = (count) => ({
   type: types.SET_ROUND_COUNT,
-  data: count,
+  payload: count,
 });
 
 export const setEstimatedTime = (time) => ({
   type: types.SET_EST_TIME,
-  data: time,
+  payload: time,
 });

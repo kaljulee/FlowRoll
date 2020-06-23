@@ -28,6 +28,20 @@ const basicReducer = (state = getInitialState(), action) => {
     case types.RESET:
       console.log('reseting DB');
       return getInitialState();
+    case types.ADD_PARTICIPANTS:
+      return state;
+    case types.ACTIVATE_PARTICIPANTS:
+      return state;
+    case types.DEACTIVATE_PARTICIPANTS:
+      return state;
+    case types.SET_BREAK_TIME:
+      return state;
+    case types.SET_ROUND_TIME:
+      return state;
+    case types.SET_ROUND_COUNT:
+      return state;
+    case types.SET_EST_TIME:
+      return state;
     default:
       return state;
   }

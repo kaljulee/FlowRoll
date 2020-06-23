@@ -71,7 +71,6 @@ function TimerSetup(props) {
           isVisible={showParticipantInput}
           onClosePress={() => setShowParticipantInput(false)}
         />
-        <ParticipantManager participants={participants}/>
       </Content>
       <Footer>
         <Button

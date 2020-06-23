@@ -18,6 +18,7 @@ const getInitialState = () => {
     breakTime: { h: 0, m: 0, s: 30 },
     roundCount: 24,
     currentRound: 0,
+    schedule: [],
     estimatedTime: undefined,
   };
 };
@@ -41,6 +42,10 @@ const basicReducer = (state = getInitialState(), action) => {
         ...state,
         activeParticipants: _.without(state.activeParticipants, ...payload),
       };
+    case types.SET_CURRENT_ROUND:
+      return { ...state, currentRound: payload };
+    case types.SET_SCHEDULE:
+      return { ...state, schedule: payload };
     case types.SET_BREAK_TIME:
       return state;
     case types.SET_ROUND_TIME:

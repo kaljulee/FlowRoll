@@ -7,9 +7,21 @@ export const types = {
   SET_ROUND_TIME: 'SET_ROUND_TIME',
   SET_ROUND_COUNT: 'SET_ROUND_COUNT',
   SET_EST_TIME: 'SET_EST_TIME',
+  SET_SCHEDULE: 'SET_SCHEDULE',
+  SET_CURRENT_ROUND: 'SET_CURRENT_ROUND',
 };
 
 export const resetDB = () => ({ type: types.RESET });
+
+export const setSchedule = (schedule) => ({
+  type: types.SET_SCHEDULE,
+  payload: schedule,
+});
+
+export const setCurrentRound = (round) => ({
+  type: types.SET_CURRENT_ROUND,
+  payload: round,
+});
 
 export const addParticipants = (participants) => ({
   type: types.ADD_PARTICIPANTS,

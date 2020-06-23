@@ -9,10 +9,9 @@ import ParticipantManager from '../../../components/ParticipantManager';
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'column',
-    justifyContent: 'space-around',
     marginLeft: 'auto',
     marginRight: 'auto',
-    height: 'auto',
+    height: '60%',
     width: '100%',
   },
 });

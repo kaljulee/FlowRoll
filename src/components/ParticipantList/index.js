@@ -34,7 +34,7 @@ function ParticipantList(props) {
     <FlatList
       style={styles.list}
       data={participants}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.id.toString()}
       ListEmptyComponent={() => EmptyList()}
       renderItem={({ item }) => {
         return (

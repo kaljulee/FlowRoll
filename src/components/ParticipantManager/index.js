@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Col } from 'react-native-easy-grid';
 import { StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import ParticipantList from '../ParticipantList';
 import {
   activateParticipants,
@@ -21,10 +22,24 @@ const styles = StyleSheet.create({
 function ParticipantManager(props) {
   const {
     participants,
+    activeParticipants,
     addParticipants,
     activateParticipants,
     deactivateParticipants,
   } = props;
+
+  const { available, active } = participants.reduce(
+    (acc, p) => {
+      if (_.includes(activeParticipants, p.id)) {
+        acc.active.push(p);
+      } else {
+        acc.available.push(p);
+      }
+      return acc;
+    },
+    { available: [], active: [] },
+  );
+
   return (
     <Grid style={styles.container}>
       <Col style={styles.item}>
@@ -32,7 +47,7 @@ function ParticipantManager(props) {
         <ParticipantList
           onParticipantPress={(id) => activateParticipants([id])}
           header={'out'}
-          participants={participants}
+          participants={available}
         />
       </Col>
       <Col style={styles.item}>
@@ -40,7 +55,7 @@ function ParticipantManager(props) {
         <ParticipantList
           onParticipantPress={(id) => deactivateParticipants([id])}
           header={'in'}
-          participants={undefined}
+          participants={active}
         />
       </Col>
     </Grid>

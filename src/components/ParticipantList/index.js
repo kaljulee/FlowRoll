@@ -20,8 +20,7 @@ const styles = StyleSheet.create({
 });
 
 function ParticipantList(props) {
-  const { participants, headerText } = props;
-  console.log(participants);
+  const { participants } = props;
 
   const EmptyList = () => (
     <Card>

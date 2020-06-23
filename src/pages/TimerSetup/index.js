@@ -67,6 +67,7 @@ function TimerSetup(props) {
           onClosePress={() => setShowRoundCountInput(false)}
         />
         <ManageParticipantsModal
+          participants={participants}
           isVisible={showParticipantInput}
           onClosePress={() => setShowParticipantInput(false)}
         />

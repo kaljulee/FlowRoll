@@ -8,7 +8,12 @@ import ParticipantManager from '../../../components/ParticipantManager';
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    height: 'auto',
+    width: '100%',
   },
 });
 
@@ -18,7 +23,7 @@ function ManageParticipantsModal(props) {
     <Modal isVisible={isVisible}>
       <Card style={styles.card}>
         <CardItem>
-          <ParticipantManager participants={participants}/>
+          <ParticipantManager participants={participants} />
         </CardItem>
       </Card>
       <CloseModalButton onPress={onClosePress} />
@@ -31,7 +36,7 @@ const mapStateToProps = (state) => {
     basicReducer: { participants },
   } = state;
   return {
-    participants,
+    // participants,
   };
 };
 

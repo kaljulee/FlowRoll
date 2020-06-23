@@ -105,9 +105,9 @@ function NextMatchup(props) {
 }
 
 function MainDisplay(props) {
-  console.group('mainDisplay');
-  console.log(createDefaultOrdering(props.participants));
-  console.groupEnd();
+  // console.group('mainDisplay');
+  // console.log(createDefaultOrdering(props.participants));
+  // console.groupEnd();
   return (
     <Content contentContainerStyle={styles.content}>
       <CurrentMatchup />

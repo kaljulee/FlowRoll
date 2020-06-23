@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { types } from '../actions';
 import { createParticipant } from '../models/Participant';
+import _ from 'lodash';
 
 const getInitialState = () => {
   const participants = [
@@ -31,9 +32,15 @@ const basicReducer = (state = getInitialState(), action) => {
     case types.ADD_PARTICIPANTS:
       return state;
     case types.ACTIVATE_PARTICIPANTS:
-      return state;
+      return {
+        ...state,
+        activeParticipants: _.uniq([...state.activeParticipants, ...payload]),
+      };
     case types.DEACTIVATE_PARTICIPANTS:
-      return state;
+      return {
+        ...state,
+        activeParticipants: _.without(state.activeParticipants, ...payload),
+      };
     case types.SET_BREAK_TIME:
       return state;
     case types.SET_ROUND_TIME:

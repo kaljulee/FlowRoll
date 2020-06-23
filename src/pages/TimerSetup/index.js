@@ -17,9 +17,10 @@ import {
 import { resetDB } from '../../actions';
 import SetTimeModal from '../../components/modals/SetTimeModal';
 import SettingsButton from '../../components/SettingsButton';
+import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
 
 function TimerSetup(props) {
-  const { roundTime, breakTime, resetDB } = props;
+  const { roundTime, breakTime, resetDB, roundCount } = props;
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
@@ -57,6 +58,11 @@ function TimerSetup(props) {
           isVisible={showBreakTimeInput}
           value={breakTime}
           onClosePress={() => setShowBreakTimeInput(false)}
+        />
+        <SetRoundCountModal
+          isVisible={showRoundCountInput}
+          value={roundCount}
+          onClosePress={() => setShowRoundCountInput(false)}
         />
       </Content>
       <Footer>

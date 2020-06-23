@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Content, Text, Card, CardItem, Body } from 'native-base';
 import { connect } from 'react-redux';
-import {createDefaultOrdering} from '../../helpers/ordering';
 
 const cardStyle = {
   width: '90%',
@@ -105,26 +104,36 @@ function NextMatchup(props) {
 }
 
 function MainDisplay(props) {
-  // console.group('mainDisplay');
-  // console.log(createDefaultOrdering(props.participants));
-  // console.groupEnd();
+  const { roundCount, schedule, currentRound } = props;
   return (
     <Content contentContainerStyle={styles.content}>
-      <CurrentMatchup />
+      <CurrentMatchup matchUp={schedule[currentRound]} />
       <RoundTime />
-      <RoundCounter />
+      <RoundCounter current={currentRound} total={roundCount} />
       <TotalTimeTracker />
-      <NextMatchup />
+      <NextMatchup matchUp={schedule[currentRound + 1]} />
     </Content>
   );
 }
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { participants },
+    basicReducer: {
+      participants,
+      roundTime,
+      breakTime,
+      currentRound,
+      roundCount,
+      schedule,
+    },
   } = state;
   return {
+    schedule,
     participants,
+    roundTime,
+    breakTime,
+    currentRound,
+    roundCount,
   };
 };
 

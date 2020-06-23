@@ -38,13 +38,13 @@ function ParticipantList(props) {
       ListEmptyComponent={() => EmptyList()}
       renderItem={({ item }) => {
         return (
-            <TouchableOpacity onPress={() => onParticipantPress(item.id)}>
-          <Card style={styles.card}>
-            <CardItem style={styles.item}>
-              <Text>{item.name}</Text>
-            </CardItem>
-          </Card>
-            </TouchableOpacity>
+          <TouchableOpacity onPress={() => onParticipantPress(item.id)}>
+            <Card style={styles.card}>
+              <CardItem style={styles.item}>
+                <Text>{item.name}</Text>
+              </CardItem>
+            </Card>
+          </TouchableOpacity>
         );
       }}
     />

@@ -16,7 +16,7 @@ export function createMatchUps(participants) {
       };
     },
     { matchUps: [], remaining: participants },
-  );
+  ).matchUps;
 }
 
 function somethingSkipped(frequency) {
@@ -129,7 +129,7 @@ export function createCompleteCycle(matchUps, participants) {
 }
 
 export function createDefaultOrdering(participants) {
-  const { matchUps } = createMatchUps(participants);
+  const matchUps = createMatchUps(participants);
   const completeCycle = createCompleteCycle(matchUps, participants);
   // console.group('complete cycle');
   // completeCycle.forEach((c) => {

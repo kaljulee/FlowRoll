@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Content, Text, Card, CardItem, Body } from 'native-base';
 import { connect } from 'react-redux';
+import { findMatchUpByID } from '../../helpers/utils';
 
 const cardStyle = {
   width: '90%',
@@ -41,11 +42,13 @@ const styles = StyleSheet.create({
 });
 
 function CurrentMatchup(props) {
+  const { matchUp } = props;
+  const text = matchUp ? matchUp.toString() : 'no matchup';
   return (
     <Card style={styles.currentMatchup}>
       <CardItem>
         <Body>
-          <Text>{props.text || 'no matchup'}</Text>
+          <Text>{text}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -72,7 +75,7 @@ function RoundCounter(props) {
     <Card style={styles.roundCounter}>
       <CardItem>
         <Body>
-          <Text>{`${'current'} / ${'total'}`}</Text>
+          <Text>{`${current} / ${total}`}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -92,11 +95,13 @@ function TotalTimeTracker(props) {
 }
 
 function NextMatchup(props) {
+  const { matchUp } = props;
+  const text = matchUp ? matchUp.toString() : 'last round';
   return (
     <Card style={styles.nextMatchup}>
       <CardItem>
         <Body>
-          <Text>{props.text || 'no matchup'}</Text>
+          <Text>{text}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -104,14 +109,19 @@ function NextMatchup(props) {
 }
 
 function MainDisplay(props) {
-  const { roundCount, schedule, currentRound } = props;
+  const { roundCount, schedule, currentRound, matchUps } = props;
+  const currentMatchUp = findMatchUpByID(matchUps, schedule[currentRound]);
+  const nextMatchUp =
+    currentRound + 1 === roundCount
+      ? undefined
+      : findMatchUpByID(matchUps, schedule[currentRound + 1]);
   return (
     <Content contentContainerStyle={styles.content}>
-      <CurrentMatchup matchUp={schedule[currentRound]} />
+      <CurrentMatchup matchUp={currentMatchUp} />
       <RoundTime />
       <RoundCounter current={currentRound} total={roundCount} />
       <TotalTimeTracker />
-      <NextMatchup matchUp={schedule[currentRound + 1]} />
+      <NextMatchup matchUp={nextMatchUp} />
     </Content>
   );
 }
@@ -125,6 +135,7 @@ const mapStateToProps = (state) => {
       currentRound,
       roundCount,
       schedule,
+      matchUps,
     },
   } = state;
   return {
@@ -134,6 +145,7 @@ const mapStateToProps = (state) => {
     breakTime,
     currentRound,
     roundCount,
+    matchUps,
   };
 };
 

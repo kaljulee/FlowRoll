@@ -3,7 +3,8 @@ import { types } from '../actions';
 import { createParticipant } from '../models/Participant';
 import _ from 'lodash';
 import {
-  createDefaultOrdering,
+  createCompleteCycle,
+  createMatchUps,
   participantsByActive,
 } from '../helpers/ordering';
 
@@ -16,9 +17,12 @@ const getInitialState = () => {
   ];
 
   const activeParticipants = [1, 2];
-  const schedule = createDefaultOrdering(
-    participantsByActive(participants, activeParticipants).active,
+  const sortedParticipants = participantsByActive(
+    participants,
+    activeParticipants,
   );
+  const matchUps = createMatchUps(sortedParticipants.active);
+  const schedule = createCompleteCycle(matchUps, sortedParticipants.active);
   return {
     participants,
     activeParticipants,
@@ -27,6 +31,8 @@ const getInitialState = () => {
     roundCount: 24,
     currentRound: 0,
     schedule,
+    // matchUps is currently the same as schedule
+    matchUps,
     estimatedTime: undefined,
   };
 };

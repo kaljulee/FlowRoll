@@ -9,6 +9,7 @@ export const types = {
   SET_EST_TIME: 'SET_EST_TIME',
   SET_SCHEDULE: 'SET_SCHEDULE',
   SET_CURRENT_ROUND: 'SET_CURRENT_ROUND',
+  SET_START_TIMESTAMP: 'SET_START_TIMESTAMP',
 };
 
 export const resetDB = () => ({ type: types.RESET });
@@ -56,4 +57,9 @@ export const setRoundCount = (count) => ({
 export const setEstimatedTime = (time) => ({
   type: types.SET_EST_TIME,
   payload: time,
+});
+
+export const setStartTimeStamp = (stamp) => ({
+  type: types.SET_START_TIMESTAMP,
+  payload: stamp,
 });

@@ -34,6 +34,7 @@ const getInitialState = () => {
     // matchUps is currently the same as schedule
     matchUps,
     estimatedTime: undefined,
+    startTimeStamp: undefined,
   };
 };
 
@@ -68,6 +69,8 @@ const basicReducer = (state = getInitialState(), action) => {
       return state;
     case types.SET_EST_TIME:
       return state;
+    case types.SET_START_TIMESTAMP:
+      return { ...state, startTimeStamp: payload };
     default:
       return state;
   }

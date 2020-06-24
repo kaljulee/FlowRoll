@@ -7,6 +7,7 @@ import {
   createMatchUps,
   participantsByActive,
 } from '../helpers/ordering';
+import moment from 'moment';
 
 const getInitialState = () => {
   const participants = [

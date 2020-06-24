@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, } from 'native-base';
+import { Container, Button } from 'native-base';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
+import { setStartTimeStamp } from '../../actions';
+import moment from 'moment';
 
 function TimeKeeperContainer(props) {
-  const { children, roundTime } = props;
-
-  const [displayTime, setDisplayTime] = useState(0);
+  const { children, roundTime, startTimeStamp, setStartTimeStamp } = props;
+  const initialDisplayValue = startTimeStamp
+    ? moment().diff(startTimeStamp, 'seconds')
+    : 0;
+  const [displayTime, setDisplayTime] = useState(initialDisplayValue);
   const [activeTimer, setActiveTimer] = useState(null);
-
   function clearTimer() {
     clearInterval(activeTimer);
     setActiveTimer(null);
@@ -16,22 +19,34 @@ function TimeKeeperContainer(props) {
   }
 
   useEffect(() => {
-    console.log('starting timer');
-    const interval = setInterval(() => setDisplayTime((t) => t + 1), 1000);
-    if (interval !== activeTimer) {
-      setActiveTimer(interval);
+    let intervalID;
+    if (startTimeStamp) {
+      intervalID = setInterval(() => {
+        const timeDiff = moment().diff(startTimeStamp, 'seconds');
+        setDisplayTime(timeDiff);
+      }, 1000);
+      setActiveTimer(intervalID);
     }
     return () => {
       setActiveTimer(null);
-      clearInterval(interval);
+      clearInterval(intervalID);
     };
-  }, []);
-  console.log('displaytime render ' + displayTime);
+  }, [startTimeStamp]);
+
+  function beginTimer() {
+    setDisplayTime(0);
+    setStartTimeStamp(moment());
+  }
 
   return (
     <Container>
       <Text>{displayTime}</Text>
-      <Button onPress={() => clearTimer()}><Text>clear timer</Text></Button>
+      <Button onPress={beginTimer}>
+        <Text>start</Text>
+      </Button>
+      <Button onPress={() => clearTimer()}>
+        <Text>clear timer</Text>
+      </Button>
       {children}
     </Container>
   );
@@ -39,14 +54,17 @@ function TimeKeeperContainer(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { roundTime },
+    basicReducer: { roundTime, startTimeStamp },
   } = state;
   return {
     roundTime,
+    startTimeStamp,
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setStartTimeStamp,
+};
 
 export default connect(
   mapStateToProps,

@@ -3,7 +3,7 @@ import { Container, Button, } from 'native-base';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
 
-function FlowRollContainer(props) {
+function TimeKeeperContainer(props) {
   const { children, roundTime } = props;
 
   const [displayTime, setDisplayTime] = useState(0);
@@ -51,4 +51,4 @@ const mapDispatchToProps = {};
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FlowRollContainer);
+)(TimeKeeperContainer);

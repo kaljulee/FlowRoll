@@ -1,8 +1,17 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Content, Text, Card, CardItem, Body } from 'native-base';
+import {
+  Content,
+  Text,
+  Card,
+  CardItem,
+  Body,
+  Container,
+  Footer,
+} from 'native-base';
 import { connect } from 'react-redux';
 import { findMatchUpByID } from '../../helpers/utils';
+import ControlBar from '../../components/ControlBar';
 
 const cardStyle = {
   width: '90%',
@@ -109,20 +118,25 @@ function NextMatchUp(props) {
 }
 
 function MainDisplay(props) {
-  const { roundCount, schedule, currentRound, matchUps } = props;
+  const { roundCount, schedule, currentRound, matchUps, onPressPlay, onPressPause, onPressRestart } = props;
   const currentMatchUp = findMatchUpByID(matchUps, schedule[currentRound]);
   const nextMatchUp =
     currentRound + 1 === roundCount
       ? undefined
       : findMatchUpByID(matchUps, schedule[currentRound + 1]);
   return (
-    <Content contentContainerStyle={styles.content}>
-      <CurrentMatchUp matchUp={currentMatchUp} />
-      <RoundTime />
-      <RoundCounter current={currentRound} total={roundCount} />
-      <TotalTimeTracker />
-      <NextMatchUp matchUp={nextMatchUp} />
-    </Content>
+    <Container>
+      <Content contentContainerStyle={styles.content}>
+        <CurrentMatchUp matchUp={currentMatchUp} />
+        <RoundTime />
+        <RoundCounter current={currentRound} total={roundCount} />
+        <TotalTimeTracker />
+        <NextMatchUp matchUp={nextMatchUp} />
+      </Content>
+      <Footer>
+        <ControlBar onPressPlay={onPressPlay} onPressPause={onPressPause} onPressRestart={onPressRestart} />
+      </Footer>
+    </Container>
   );
 }
 

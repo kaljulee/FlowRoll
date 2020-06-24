@@ -4,37 +4,17 @@ import { Text } from 'react-native';
 import { connect } from 'react-redux';
 import { setStartTimeStamp } from '../../actions';
 import moment from 'moment';
+import { useTimerDisplay } from '../../helpers/hooks';
 
 function TimeKeeperContainer(props) {
   const { children, roundTime, startTimeStamp, setStartTimeStamp } = props;
-  const initialDisplayValue = startTimeStamp
-    ? moment().diff(startTimeStamp, 'seconds')
-    : 0;
-  const [displayTime, setDisplayTime] = useState(initialDisplayValue);
-  const [activeTimer, setActiveTimer] = useState(null);
-  function clearTimer() {
-    clearInterval(activeTimer);
-    setActiveTimer(null);
-    setDisplayTime(0);
-  }
 
-  useEffect(() => {
-    let intervalID;
-    if (startTimeStamp) {
-      intervalID = setInterval(() => {
-        const timeDiff = moment().diff(startTimeStamp, 'seconds');
-        setDisplayTime(timeDiff);
-      }, 1000);
-      setActiveTimer(intervalID);
-    }
-    return () => {
-      setActiveTimer(null);
-      clearInterval(intervalID);
-    };
-  }, [startTimeStamp]);
+  const { displayTime, clearTimer, activeTimer } = useTimerDisplay(
+    startTimeStamp,
+  );
 
   function beginTimer() {
-    setDisplayTime(0);
+    // setDisplayTime(0);
     setStartTimeStamp(moment());
   }
 

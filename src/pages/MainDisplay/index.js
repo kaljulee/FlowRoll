@@ -12,6 +12,7 @@ import {
 import { connect } from 'react-redux';
 import { findMatchUpByID } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
+import { useTimerDisplay } from '../../helpers/hooks';
 
 const cardStyle = {
   width: '90%',
@@ -65,13 +66,16 @@ function CurrentMatchUp(props) {
 }
 
 function RoundTime(props) {
-  const { time } = props;
+  const { time, startTimeStamp } = props;
   const timeString = time ? `${time.m}:${time.s}` : 'no time in round time';
+  const { displayTime, activeTimer, clearTimer } = useTimerDisplay(
+    startTimeStamp,
+  );
   return (
     <Card style={styles.roundTime}>
       <CardItem>
         <Body>
-          <Text>{timeString}</Text>
+          <Text>{displayTime}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -118,7 +122,16 @@ function NextMatchUp(props) {
 }
 
 function MainDisplay(props) {
-  const { roundCount, schedule, currentRound, matchUps, onPressPlay, onPressPause, onPressRestart } = props;
+  const {
+    startTimeStamp,
+    roundCount,
+    schedule,
+    currentRound,
+    matchUps,
+    onPressPlay,
+    onPressPause,
+    onPressRestart,
+  } = props;
   const currentMatchUp = findMatchUpByID(matchUps, schedule[currentRound]);
   const nextMatchUp =
     currentRound + 1 === roundCount
@@ -128,13 +141,17 @@ function MainDisplay(props) {
     <Container>
       <Content contentContainerStyle={styles.content}>
         <CurrentMatchUp matchUp={currentMatchUp} />
-        <RoundTime />
+        <RoundTime startTimeStamp={startTimeStamp} />
         <RoundCounter current={currentRound} total={roundCount} />
         <TotalTimeTracker />
         <NextMatchUp matchUp={nextMatchUp} />
       </Content>
       <Footer>
-        <ControlBar onPressPlay={onPressPlay} onPressPause={onPressPause} onPressRestart={onPressRestart} />
+        <ControlBar
+          onPressPlay={onPressPlay}
+          onPressPause={onPressPause}
+          onPressRestart={onPressRestart}
+        />
       </Footer>
     </Container>
   );
@@ -150,9 +167,11 @@ const mapStateToProps = (state) => {
       roundCount,
       schedule,
       matchUps,
+      startTimeStamp,
     },
   } = state;
   return {
+    startTimeStamp,
     schedule,
     participants,
     roundTime,

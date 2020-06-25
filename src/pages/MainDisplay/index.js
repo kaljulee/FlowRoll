@@ -12,7 +12,7 @@ import {
 import { connect } from 'react-redux';
 import { findMatchUpByID } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
-import { useTimerDisplay } from '../../helpers/hooks';
+import { useElapsedTime } from '../../helpers/hooks';
 
 const cardStyle = {
   width: '90%',
@@ -68,7 +68,7 @@ function CurrentMatchUp(props) {
 function RoundTime(props) {
   const { time, startTimeStamp } = props;
   const timeString = time ? `${time.m}:${time.s}` : 'no time in round time';
-  const { displayTime, activeTimer, clearTimer } = useTimerDisplay(
+  const { displayTime, activeTimer, clearTimer } = useElapsedTime(
     startTimeStamp,
   );
   return (

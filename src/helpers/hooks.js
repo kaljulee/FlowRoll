@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 
-export function useTimerDisplay(startTimeStamp) {
+export function useElapsedTime(startTimeStamp) {
   const initialDisplayValue = startTimeStamp
     ? moment().diff(startTimeStamp, 'seconds')
     : 0;
@@ -33,3 +33,29 @@ export function useTimerDisplay(startTimeStamp) {
 
   return { displayTime, clearTimer, activeTimer };
 }
+
+// export function useRoundCountdown(startTimeStamp, roundTime) {
+//   const { elapsedTime, clearTimer, activeTimer } = useTimerCount(
+//       startTimeStamp,
+//   );
+//   const [remainingTime, setRemainingTime] = useState(elapsedTime);
+//   useEffect(() => {
+//     let remainder = elapsedTime;
+//     let h,
+//         m,
+//         s = 0;
+//     if (remainder > 3599) {
+//       const overflow = remainder % 3600;
+//       h = (remainder - overflow) / 3600;
+//       remainder = overflow;
+//     }
+//     if (remainder > 60) {
+//       const overflow = remainder % 60;
+//       m = (remainder - overflow) / 60;
+//       remainder = overflow;
+//     }
+//     s = remainder;
+//     setRemainingTime({ h, m, s });
+//   }, [elapsedTime, roundTime]);
+//   return { elapsedTime, clearTimer, activeTimer, remainingTime };
+// }

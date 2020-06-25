@@ -4,12 +4,12 @@ import { Text } from 'react-native';
 import { connect } from 'react-redux';
 import { setStartTimeStamp } from '../../actions';
 import moment from 'moment';
-import { useTimerDisplay } from '../../helpers/hooks';
+import { useElapsedTime } from '../../helpers/hooks';
 
 function TimeKeeperContainer(props) {
   const { children, roundTime, startTimeStamp, setStartTimeStamp } = props;
 
-  const { displayTime, clearTimer, activeTimer } = useTimerDisplay(
+  const { displayTime, clearTimer, activeTimer } = useElapsedTime(
     startTimeStamp,
   );
 

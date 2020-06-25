@@ -9,7 +9,7 @@ import { useElapsedTime } from '../../helpers/hooks';
 function TimeKeeperContainer(props) {
   const { children, roundTime, startTimeStamp, setStartTimeStamp } = props;
 
-  const { displayTime, clearTimer, activeTimer } = useElapsedTime(
+  const { elapsedTime, clearTimer, activeTimer } = useElapsedTime(
     startTimeStamp,
   );
 
@@ -20,7 +20,7 @@ function TimeKeeperContainer(props) {
 
   return (
     <Container>
-      <Text>{displayTime}</Text>
+      <Text>{elapsedTime}</Text>
       <Button onPress={beginTimer}>
         <Text>start</Text>
       </Button>

@@ -5,13 +5,13 @@ export function useElapsedTime(startTimeStamp) {
   const initialDisplayValue = startTimeStamp
     ? moment().diff(startTimeStamp, 'seconds')
     : 0;
-  const [displayTime, setDisplayTime] = useState(initialDisplayValue);
+  const [elapsedTime, setElapsedTime] = useState(initialDisplayValue);
   const [activeTimer, setActiveTimer] = useState(null);
 
   function clearTimer() {
     clearInterval(activeTimer);
     setActiveTimer(null);
-    setDisplayTime(0);
+    setElapsedTime(0);
   }
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export function useElapsedTime(startTimeStamp) {
       clearTimer(activeTimer);
       intervalID = setInterval(() => {
         const timeDiff = moment().diff(startTimeStamp, 'seconds');
-        setDisplayTime(timeDiff);
+        setElapsedTime(timeDiff);
       }, 1000);
       setActiveTimer(intervalID);
     }
@@ -31,7 +31,7 @@ export function useElapsedTime(startTimeStamp) {
     };
   }, [startTimeStamp]);
 
-  return { displayTime, clearTimer, activeTimer };
+  return { elapsedTime, clearTimer, activeTimer };
 }
 
 // export function useRoundCountdown(startTimeStamp, roundTime) {

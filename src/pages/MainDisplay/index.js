@@ -68,14 +68,14 @@ function CurrentMatchUp(props) {
 function RoundTime(props) {
   const { time, startTimeStamp } = props;
   const timeString = time ? `${time.m}:${time.s}` : 'no time in round time';
-  const { displayTime, activeTimer, clearTimer } = useElapsedTime(
+  const { elapsedTime, activeTimer, clearTimer } = useElapsedTime(
     startTimeStamp,
   );
   return (
     <Card style={styles.roundTime}>
       <CardItem>
         <Body>
-          <Text>{displayTime}</Text>
+          <Text>{elapsedTime}</Text>
         </Body>
       </CardItem>
     </Card>

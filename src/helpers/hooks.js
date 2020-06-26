@@ -34,6 +34,10 @@ export function useElapsedTime(startTimeStamp) {
 }
 
 export function useCountDown(elapsedTime, startTimeStamp, timeDuration) {
+    if (!startTimeStamp) {
+        console.log('no start time');
+        return 0;
+    }
   const elapsedHMS = secondsToHMS(elapsedTime);
   const endTime = moment(startTimeStamp).add(moment.duration(timeDuration));
   if (elapsedTime % 5 === 0) {

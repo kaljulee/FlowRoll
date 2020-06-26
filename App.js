@@ -62,7 +62,7 @@ const App: () => React$Node = () => {
                 </Header>
                 <Tabs
                   page={currentTab}
-                  onChangeTab={(page) => setCurrentTab(page)}>
+                  onChangeTab={(page) => setCurrentTab(page.i)}>
                   <Tab heading={'setup'}>
                     <TimerSetup changeTab={(page) => setCurrentTab(page)} />
                   </Tab>

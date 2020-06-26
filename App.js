@@ -38,7 +38,7 @@ const { store, persistor } = configureStore();
 
 const App: () => React$Node = () => {
   const [currentTab, setCurrentTab] = useState(0);
-
+  const hasHeader = false;
   return (
     <>
       <Provider store={store}>
@@ -49,7 +49,7 @@ const App: () => React$Node = () => {
               contentInsetAdjustmentBehavior="automatic"
               style={styles.scrollView}>
               <TimeKeeperContainer>
-                <Header hasTabs>
+                {hasHeader && <Header hasTabs>
                   <Left>
                     <Button transparent>
                       <Icon name="menu" />
@@ -59,7 +59,7 @@ const App: () => React$Node = () => {
                     <Title>Header</Title>
                   </Body>
                   <Right />
-                </Header>
+                </Header>}
                 <Tabs
                   page={currentTab}
                   onChangeTab={(page) => setCurrentTab(page.i)}>

@@ -22,7 +22,7 @@ import ManageParticipantsModal from '../../components/modals/ManageParticipantsM
 import ParticipantManager from '../../components/ParticipantManager';
 
 function TimerSetup(props) {
-  const { roundTime, breakTime, resetDB, roundCount, participants } = props;
+  const { roundDuration, breakDuration, resetDB, roundCount, participants } = props;
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
@@ -52,13 +52,13 @@ function TimerSetup(props) {
         <SetTimeModal
           label={'round length'}
           isVisible={showRoundTimeInput}
-          value={roundTime}
+          value={roundDuration}
           onClosePress={() => setShowRoundTimeInput(false)}
         />
         <SetTimeModal
           label={'break length'}
           isVisible={showBreakTimeInput}
-          value={breakTime}
+          value={breakDuration}
           onClosePress={() => setShowBreakTimeInput(false)}
         />
         <SetRoundCountModal
@@ -87,20 +87,20 @@ function TimerSetup(props) {
 const mapStateToProps = (state) => {
   const {
     basicReducer: {
-      breakTime,
+      breakDuration,
       currentRound,
       estimatedTime,
       participants,
       roundCount,
-      roundTime,
+      roundDuration,
     },
   } = state;
   return {
-    breakTime,
+    breakDuration,
     currentRound,
     estimatedTime,
     participants,
-    roundTime,
+    roundDuration,
     roundCount,
   };
 };

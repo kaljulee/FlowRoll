@@ -7,7 +7,7 @@ import moment from 'moment';
 import { useElapsedTime } from '../../helpers/hooks';
 
 function TimeKeeperContainer(props) {
-  const { children, roundTime, startTimeStamp, setStartTimeStamp } = props;
+  const { children, roundDuration, startTimeStamp, setStartTimeStamp } = props;
 
   const { elapsedTime, clearTimer, activeTimer } = useElapsedTime(
     startTimeStamp,
@@ -34,10 +34,10 @@ function TimeKeeperContainer(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { roundTime, startTimeStamp },
+    basicReducer: { roundDuration, startTimeStamp },
   } = state;
   return {
-    roundTime,
+      roundDuration,
     startTimeStamp,
   };
 };

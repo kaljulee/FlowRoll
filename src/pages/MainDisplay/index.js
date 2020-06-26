@@ -12,7 +12,7 @@ import {
 import { connect } from 'react-redux';
 import { findMatchUpByID } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
-import { useCountDown, useElapsedTime} from '../../helpers/hooks';
+import { useCountDown, useElapsedTime } from '../../helpers/hooks';
 
 const cardStyle = {
   width: '90%',
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     ...cardStyle,
     flex: 3,
   },
-  roundTime: {
+  timerDisplay: {
     ...cardStyle,
     flex: 6,
   },
@@ -75,7 +75,7 @@ function TimerDisplay(props) {
   const displayTime = useCountDown(elapsedTime, startTimeStamp, timeDuration);
 
   return (
-    <Card style={styles.roundTime}>
+    <Card style={styles.timerDisplay}>
       <CardItem>
         <Body>
           <Text>{elapsedTime}</Text>
@@ -134,7 +134,7 @@ function MainDisplay(props) {
     onPressPlay,
     onPressPause,
     onPressRestart,
-    roundTime,
+    roundDuration,
   } = props;
   const currentMatchUp = findMatchUpByID(matchUps, schedule[currentRound]);
   const nextMatchUp =
@@ -147,7 +147,7 @@ function MainDisplay(props) {
         <CurrentMatchUp matchUp={currentMatchUp} />
         <TimerDisplay
           startTimeStamp={startTimeStamp}
-          timeDuration={roundTime}
+          timeDuration={roundDuration}
         />
         <RoundCounter current={currentRound} total={roundCount} />
         <TotalTimeTracker />
@@ -168,8 +168,8 @@ const mapStateToProps = (state) => {
   const {
     basicReducer: {
       participants,
-      roundTime,
-      breakTime,
+      roundDuration,
+      breakDuration,
       currentRound,
       roundCount,
       schedule,
@@ -181,8 +181,8 @@ const mapStateToProps = (state) => {
     startTimeStamp,
     schedule,
     participants,
-    roundTime,
-    breakTime,
+    roundDuration,
+    breakDuration,
     currentRound,
     roundCount,
     matchUps,

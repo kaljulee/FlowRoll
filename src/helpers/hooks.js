@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import moment from 'moment';
+import { secondsToHMS } from './time';
 
 export function useElapsedTime(startTimeStamp) {
   const initialDisplayValue = startTimeStamp
@@ -8,17 +9,15 @@ export function useElapsedTime(startTimeStamp) {
   const [elapsedTime, setElapsedTime] = useState(initialDisplayValue);
   const [activeTimer, setActiveTimer] = useState(null);
 
-  function clearTimer() {
+  const clearTimer = useCallback(() => {
     clearInterval(activeTimer);
     setActiveTimer(null);
     setElapsedTime(0);
-  }
+  }, [activeTimer]);
 
   useEffect(() => {
     let intervalID;
-
     if (startTimeStamp) {
-      clearTimer(activeTimer);
       intervalID = setInterval(() => {
         const timeDiff = moment().diff(startTimeStamp, 'seconds');
         setElapsedTime(timeDiff);
@@ -34,28 +33,15 @@ export function useElapsedTime(startTimeStamp) {
   return { elapsedTime, clearTimer, activeTimer };
 }
 
-// export function useRoundCountdown(startTimeStamp, roundTime) {
-//   const { elapsedTime, clearTimer, activeTimer } = useTimerCount(
-//       startTimeStamp,
-//   );
-//   const [remainingTime, setRemainingTime] = useState(elapsedTime);
-//   useEffect(() => {
-//     let remainder = elapsedTime;
-//     let h,
-//         m,
-//         s = 0;
-//     if (remainder > 3599) {
-//       const overflow = remainder % 3600;
-//       h = (remainder - overflow) / 3600;
-//       remainder = overflow;
-//     }
-//     if (remainder > 60) {
-//       const overflow = remainder % 60;
-//       m = (remainder - overflow) / 60;
-//       remainder = overflow;
-//     }
-//     s = remainder;
-//     setRemainingTime({ h, m, s });
-//   }, [elapsedTime, roundTime]);
-//   return { elapsedTime, clearTimer, activeTimer, remainingTime };
-// }
+export function useCountDown(elapsedTime, startTimeStamp, timeDuration) {
+  const elapsedHMS = secondsToHMS(elapsedTime);
+  const endTime = moment(startTimeStamp).add(moment.duration(timeDuration));
+  if (elapsedTime % 5 === 0) {
+    console.group('useCOuntDown');
+    console.log('startTime: ' + moment(startTimeStamp).format('hh:mm:ss'));
+    console.log('timeDuration');
+    console.log(timeDuration);
+    console.log('endTime: ' + endTime.format('hh:mm:ss'));
+    console.groupEnd();
+  }
+}

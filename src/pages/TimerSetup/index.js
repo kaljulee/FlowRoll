@@ -1,26 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import TimeInput from '../../components/TimeInput';
+import moment from 'moment';
 import { hourMinuteSecond } from '../../helpers/time';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Footer,
-  Button,
-  Left,
-  Right,
-  Body,
-  Icon,
-  Text,
-} from 'native-base';
-import { resetDB } from '../../actions';
+import { Container, Content, Footer, Button, Text } from 'native-base';
+import { resetDB, setStartTimeStamp } from '../../actions';
 import SetTimeModal from '../../components/modals/SetTimeModal';
 import SettingsButton from '../../components/SettingsButton';
 import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
 import ManageParticipantsModal from '../../components/modals/ManageParticipantsModal';
-import ParticipantManager from '../../components/ParticipantManager';
 
 function TimerSetup(props) {
   const {
@@ -31,6 +18,7 @@ function TimerSetup(props) {
     participants,
     changeTab,
     activeParticipants,
+    setStartTimeStamp,
   } = props;
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
@@ -38,6 +26,7 @@ function TimerSetup(props) {
   const [showRoundCountInput, setShowRoundCountInput] = useState(false);
 
   function onStartPress() {
+    setStartTimeStamp(moment());
     changeTab(1);
   }
 
@@ -127,6 +116,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   resetDB,
+  setStartTimeStamp,
 };
 
 export default connect(

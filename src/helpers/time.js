@@ -1,6 +1,9 @@
 export function hourMinuteSecond(time) {
   const { h, m, s } = time;
-  return `${h}:${m}${s}`;
+  const hString = !h ? '' : `${h}:`;
+  const mString = `${m < 10 ? '0' : ''}${m}:`;
+  const sString = `${s < 10 ? '0' : ''}${s}`;
+  return `${hString}${mString}${sString}`;
 }
 
 export const ZERO_TIME = { h: 0, m: 0, s: 0 };

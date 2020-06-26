@@ -29,16 +29,20 @@ function ControlBar(props) {
           <Icon style={styles.icon} name={'controller-play'} />
         </Button>
       </Col>
-      <Col>
-        <Button onPress={onPressPause} style={styles.button}>
-          <Icon style={styles.icon} name={'controller-paus'} />
-        </Button>
-      </Col>
-      <Col>
-        <Button onPress={onPressRestart} style={styles.button} iconRight>
-          <FAIcon style={styles.icon} name={'undo'} />
-        </Button>
-      </Col>
+      {false && (
+        <Col>
+          <Button onPress={onPressPause} style={styles.button}>
+            <Icon style={styles.icon} name={'controller-paus'} />
+          </Button>
+        </Col>
+      )}
+      {false && (
+        <Col>
+          <Button onPress={onPressRestart} style={styles.button} iconRight>
+            <FAIcon style={styles.icon} name={'undo'} />
+          </Button>
+        </Col>
+      )}
     </Grid>
   );
 }

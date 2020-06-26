@@ -22,11 +22,23 @@ import ManageParticipantsModal from '../../components/modals/ManageParticipantsM
 import ParticipantManager from '../../components/ParticipantManager';
 
 function TimerSetup(props) {
-  const { roundDuration, breakDuration, resetDB, roundCount, participants } = props;
+  const {
+    roundDuration,
+    breakDuration,
+    resetDB,
+    roundCount,
+    participants,
+    changeTab,
+  } = props;
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
   const [showRoundCountInput, setShowRoundCountInput] = useState(false);
+
+  function onStartPress() {
+    changeTab(1);
+  }
+
   return (
     <Container>
       <Content>
@@ -46,7 +58,7 @@ function TimerSetup(props) {
           onPress={() => setShowRoundCountInput(true)}
           label={'Set Round Count'}
         />
-        <Button>
+        <Button onPress={onStartPress}>
           <Text>Start</Text>
         </Button>
         <SetTimeModal

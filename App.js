@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -37,6 +37,8 @@ import TimeKeeperContainer from './src/components/TimeKeeperContainer';
 const { store, persistor } = configureStore();
 
 const App: () => React$Node = () => {
+  const [currentTab, setCurrentTab] = useState(0);
+
   return (
     <>
       <Provider store={store}>
@@ -58,9 +60,11 @@ const App: () => React$Node = () => {
                   </Body>
                   <Right />
                 </Header>
-                <Tabs>
+                <Tabs
+                  page={currentTab}
+                  onChangeTab={(page) => setCurrentTab(page)}>
                   <Tab heading={'setup'}>
-                    <TimerSetup />
+                    <TimerSetup changeTab={(page) => setCurrentTab(page)} />
                   </Tab>
                   <Tab heading={'timer'}>
                     <MainDisplay />

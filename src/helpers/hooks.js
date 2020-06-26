@@ -46,7 +46,6 @@ export function useCountDown(elapsedTime, startTimeStamp, timeDuration) {
   const endTime = moment(startTimeStamp).add(moment.duration(timeDuration));
 
   if (moment().isAfter(endTime)) {
-    console.log('moment has passed');
     if (remainingSeconds !== 0) {
       setRemainingSeconds(0);
     }

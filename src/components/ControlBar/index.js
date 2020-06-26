@@ -21,21 +21,21 @@ const styles = StyleSheet.create({
 });
 
 function ControlBar(props) {
-  const { onPlayPress, onPausePress, onRestartPress } = props;
+  const { onPressPlay, onPressPause, onPressRestart } = props;
   return (
     <Grid>
       <Col>
-        <Button onPress={onPlayPress} style={styles.button} iconLeft>
+        <Button onPress={onPressPlay} style={styles.button} iconLeft>
           <Icon style={styles.icon} name={'controller-play'} />
         </Button>
       </Col>
       <Col>
-        <Button onPress={onPausePress} style={styles.button}>
+        <Button onPress={onPressPause} style={styles.button}>
           <Icon style={styles.icon} name={'controller-paus'} />
         </Button>
       </Col>
       <Col>
-        <Button onPress={onRestartPress} style={styles.button} iconRight>
+        <Button onPress={onPressRestart} style={styles.button} iconRight>
           <FAIcon style={styles.icon} name={'undo'} />
         </Button>
       </Col>

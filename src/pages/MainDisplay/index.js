@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { findMatchUpByID } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
 import { useCountDown, useElapsedTime } from '../../helpers/hooks';
+import { setStartTimeStamp } from '../../actions';
 
 const cardStyle = {
   width: '90%',
@@ -130,11 +131,16 @@ function MainDisplay(props) {
     schedule,
     currentRound,
     matchUps,
-    onPressPlay,
     onPressPause,
     onPressRestart,
     roundDuration,
+    setStartTimeStamp,
   } = props;
+
+  function onPressPlay() {
+    setStartTimeStamp();
+  }
+
   const currentMatchUp = findMatchUpByID(matchUps, schedule[currentRound]);
   const nextMatchUp =
     currentRound + 1 === roundCount
@@ -188,7 +194,11 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = {
+  setStartTimeStamp,
+};
+
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(MainDisplay);

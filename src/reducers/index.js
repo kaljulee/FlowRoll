@@ -71,7 +71,7 @@ const basicReducer = (state = getInitialState(), action) => {
     case types.SET_EST_TIME:
       return state;
     case types.SET_START_TIMESTAMP:
-      return { ...state, startTimeStamp: payload };
+      return { ...state, startTimeStamp: payload || moment() };
     default:
       return state;
   }

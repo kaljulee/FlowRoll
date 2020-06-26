@@ -34,18 +34,31 @@ export function useElapsedTime(startTimeStamp) {
 }
 
 export function useCountDown(elapsedTime, startTimeStamp, timeDuration) {
-    if (!startTimeStamp) {
-        console.log('no start time');
-        return 0;
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
+
+  if (!startTimeStamp) {
+    console.log('no start time');
+    if (remainingSeconds !== 0) {
+      setRemainingSeconds(0);
     }
-  const elapsedHMS = secondsToHMS(elapsedTime);
-  const endTime = moment(startTimeStamp).add(moment.duration(timeDuration));
-  if (elapsedTime % 5 === 0) {
-    console.group('useCOuntDown');
-    console.log('startTime: ' + moment(startTimeStamp).format('hh:mm:ss'));
-    console.log('timeDuration');
-    console.log(timeDuration);
-    console.log('endTime: ' + endTime.format('hh:mm:ss'));
-    console.groupEnd();
   }
+  // const elapsedHMS = secondsToHMS(elapsedTime);
+  const endTime = moment(startTimeStamp).add(moment.duration(timeDuration));
+
+  if (moment().isAfter(endTime)) {
+    console.log('moment has passed');
+    if (remainingSeconds !== 0) {
+      setRemainingSeconds(0);
+    }
+  }
+
+  useEffect(() => {
+    const timeDiff =
+      moment(endTime).diff(startTimeStamp, 'seconds') - elapsedTime;
+    if (timeDiff >= 0) {
+      setRemainingSeconds(timeDiff);
+    }
+  }, [elapsedTime, endTime, startTimeStamp]);
+
+  return remainingSeconds;
 }

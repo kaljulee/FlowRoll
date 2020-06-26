@@ -67,7 +67,6 @@ function CurrentMatchUp(props) {
 
 function TimerDisplay(props) {
   const { startTimeStamp, timeDuration } = props;
-  // const timeString = time ? `${time.m}:${time.s}` : 'no time in round time';
   const { elapsedTime, activeTimer, clearTimer } = useElapsedTime(
     startTimeStamp,
   );
@@ -78,7 +77,7 @@ function TimerDisplay(props) {
     <Card style={styles.timerDisplay}>
       <CardItem>
         <Body>
-          <Text>{elapsedTime}</Text>
+          <Text>{displayTime}</Text>
         </Body>
       </CardItem>
     </Card>

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import moment from 'moment';
-import { secondsToHMS } from './time';
+import {hourMinuteSecond, secondsToHMS} from './time';
 
 export function useElapsedTime(startTimeStamp) {
   const initialDisplayValue = startTimeStamp
@@ -58,6 +58,5 @@ export function useCountDown(elapsedTime, startTimeStamp, timeDuration) {
       setRemainingSeconds(timeDiff);
     }
   }, [elapsedTime, endTime, startTimeStamp]);
-
-  return remainingSeconds;
+  return hourMinuteSecond(secondsToHMS(remainingSeconds));
 }

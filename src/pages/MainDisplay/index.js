@@ -29,6 +29,13 @@ const styles = StyleSheet.create({
     ...cardStyle,
     flex: 6,
   },
+  timerDisplayText: {
+    fontSize: 90,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+  },
   roundCounter: {
     ...cardStyle,
     flex: 2,
@@ -78,7 +85,7 @@ function TimerDisplay(props) {
     <Card style={styles.timerDisplay}>
       <CardItem>
         <Body>
-          <Text>{displayTime}</Text>
+          <Text style={styles.timerDisplayText}>{displayTime}</Text>
         </Body>
       </CardItem>
     </Card>

@@ -20,6 +20,20 @@ const cardStyle = {
   alignSelf: 'center',
 };
 
+const cardItemStyle = {
+  marginTop: 'auto',
+  marginBottom: 'auto',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  fontSize: 25,
+};
+
+function MainDisplayText(props) {
+  return (
+    <Text style={{ ...cardItemStyle, ...props.style }}>{props.children}</Text>
+  );
+}
+
 const styles = StyleSheet.create({
   currentMatchup: {
     ...cardStyle,
@@ -66,7 +80,7 @@ function CurrentMatchUp(props) {
     <Card style={styles.currentMatchup}>
       <CardItem>
         <Body>
-          <Text>{text}</Text>
+          <MainDisplayText>{text}</MainDisplayText>
         </Body>
       </CardItem>
     </Card>
@@ -85,7 +99,9 @@ function TimerDisplay(props) {
     <Card style={styles.timerDisplay}>
       <CardItem>
         <Body>
-          <Text style={styles.timerDisplayText}>{displayTime}</Text>
+          <MainDisplayText style={styles.timerDisplayText}>
+            {displayTime}
+          </MainDisplayText>
         </Body>
       </CardItem>
     </Card>
@@ -98,7 +114,7 @@ function RoundCounter(props) {
     <Card style={styles.roundCounter}>
       <CardItem>
         <Body>
-          <Text>{`${current} / ${total}`}</Text>
+          <MainDisplayText>{`${current} / ${total}`}</MainDisplayText>
         </Body>
       </CardItem>
     </Card>
@@ -110,7 +126,9 @@ function TotalTimeTracker(props) {
     <Card style={styles.totalTimeTracker}>
       <CardItem>
         <Body>
-          <Text>total time tracker, not sure how to break this up yet</Text>
+          <MainDisplayText>
+            total time tracker, not sure how to break this up yet
+          </MainDisplayText>
         </Body>
       </CardItem>
     </Card>
@@ -124,7 +142,7 @@ function NextMatchUp(props) {
     <Card style={styles.nextMatchup}>
       <CardItem>
         <Body>
-          <Text>{text}</Text>
+          <MainDisplayText>{text}</MainDisplayText>
         </Body>
       </CardItem>
     </Card>

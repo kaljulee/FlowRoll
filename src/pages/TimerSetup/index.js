@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import TimeInput from '../../components/TimeInput';
+import { hourMinuteSecond } from '../../helpers/time';
 import {
   Container,
   Header,
@@ -29,6 +30,7 @@ function TimerSetup(props) {
     roundCount,
     participants,
     changeTab,
+    activeParticipants,
   } = props;
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
@@ -44,18 +46,22 @@ function TimerSetup(props) {
       <Content>
         <SettingsButton
           label={'Set Players'}
+          info={activeParticipants.length}
           onPress={() => setShowParticipantInput(true)}
         />
         <SettingsButton
           onPress={() => setShowRoundTimeInput(true)}
+          info={hourMinuteSecond(roundDuration)}
           label={'Set Round Time'}
         />
         <SettingsButton
           onPress={() => setShowBreakTimeInput(true)}
           label={'Set Break Time'}
+          info={hourMinuteSecond(breakDuration)}
         />
         <SettingsButton
           onPress={() => setShowRoundCountInput(true)}
+          info={roundCount}
           label={'Set Round Count'}
         />
         <Button onPress={onStartPress}>
@@ -99,6 +105,7 @@ function TimerSetup(props) {
 const mapStateToProps = (state) => {
   const {
     basicReducer: {
+      activeParticipants,
       breakDuration,
       currentRound,
       estimatedTime,
@@ -108,6 +115,7 @@ const mapStateToProps = (state) => {
     },
   } = state;
   return {
+    activeParticipants,
     breakDuration,
     currentRound,
     estimatedTime,

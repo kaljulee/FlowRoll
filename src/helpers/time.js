@@ -1,4 +1,4 @@
-export function HourMinuteSecond(time) {
+export function hourMinuteSecond(time) {
   const { h, m, s } = time;
   return `${h}:${m}${s}`;
 }

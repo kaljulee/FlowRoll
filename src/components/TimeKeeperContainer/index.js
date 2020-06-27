@@ -4,6 +4,7 @@ import { Text } from 'react-native';
 import { connect } from 'react-redux';
 import { setStartTimeStamp } from '../../actions';
 import moment from 'moment';
+import { getEndTime } from '../../helpers/time';
 import { useElapsedTime } from '../../helpers/hooks';
 
 function TimeKeeperContainer(props) {
@@ -17,6 +18,10 @@ function TimeKeeperContainer(props) {
     // setDisplayTime(0);
     setStartTimeStamp(moment());
   }
+
+  useEffect(() => {
+    const endTime = getEndTime(startTimeStamp, roundDuration);
+  });
 
   return (
     <Container>

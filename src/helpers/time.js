@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function hourMinuteSecond(time) {
   const { h, m, s } = time;
   const hString = !h ? '' : `${h}:`;
@@ -28,4 +30,8 @@ export function secondsToHMS(time) {
   const m = pulledMinutes.tracked;
   const s = pulledMinutes.untracked;
   return { h, m, s };
+}
+
+export function getEndTime(startTimeStamp, timeDuration) {
+  return moment(startTimeStamp).add(moment.duration(timeDuration));
 }

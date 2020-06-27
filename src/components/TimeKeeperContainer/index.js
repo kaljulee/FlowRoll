@@ -8,7 +8,7 @@ import { useElapsedTime } from '../../helpers/hooks';
 
 function TimeKeeperContainer(props) {
   const { children, roundDuration, startTimeStamp, setStartTimeStamp } = props;
-
+  const timerDebugControls = false;
   const { elapsedTime, clearTimer, activeTimer } = useElapsedTime(
     startTimeStamp,
   );
@@ -21,12 +21,16 @@ function TimeKeeperContainer(props) {
   return (
     <Container>
       <Text>{elapsedTime}</Text>
-      <Button onPress={beginTimer}>
-        <Text>start</Text>
-      </Button>
-      <Button onPress={() => clearTimer()}>
-        <Text>clear timer</Text>
-      </Button>
+      {timerDebugControls && (
+        <Button onPress={beginTimer}>
+          <Text>start</Text>
+        </Button>
+      )}
+      {timerDebugControls && (
+        <Button onPress={() => clearTimer()}>
+          <Text>clear timer</Text>
+        </Button>
+      )}
       {children}
     </Container>
   );
@@ -37,7 +41,7 @@ const mapStateToProps = (state) => {
     basicReducer: { roundDuration, startTimeStamp },
   } = state;
   return {
-      roundDuration,
+    roundDuration,
     startTimeStamp,
   };
 };

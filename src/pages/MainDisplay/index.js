@@ -109,7 +109,7 @@ function TimerDisplay(props) {
 }
 
 function RoundCounter(props) {
-  const { current, total, currentRound } = props;
+  const { total, currentRound } = props;
   return (
     <Card style={styles.roundCounter}>
       <CardItem>
@@ -179,7 +179,7 @@ function MainDisplay(props) {
           startTimeStamp={startTimeStamp}
           timeDuration={roundDuration}
         />
-        <RoundCounter current={currentRound} total={roundCount} />
+        <RoundCounter currentRound={currentRound} total={roundCount} />
         <TotalTimeTracker />
         <NextMatchUp matchUp={nextMatchUp} />
       </Content>

@@ -35,3 +35,8 @@ export function secondsToHMS(time) {
 export function getEndTime(startTimeStamp, timeDuration) {
   return moment(startTimeStamp).add(moment.duration(timeDuration));
 }
+
+export function checkTimerExpiry(endTime) {
+  const now = moment();
+  return now.isAfter(moment(endTime));
+}

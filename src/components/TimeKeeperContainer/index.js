@@ -2,26 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { Container, Button } from 'native-base';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
-import { setStartTimeStamp } from '../../actions';
+import { startTimerRun } from '../../actions';
 import moment from 'moment';
 import { getEndTime } from '../../helpers/time';
-import { useElapsedTime } from '../../helpers/hooks';
+import {
+  useTimerExpired,
+  useElapsedTime,
+  useEndTime,
+} from '../../helpers/hooks';
 
 function TimeKeeperContainer(props) {
-  const { children, roundDuration, startTimeStamp, setStartTimeStamp } = props;
+  const { children, roundDuration, startTimeStamp, startTimerRun } = props;
   const timerDebugControls = false;
   const { elapsedTime, clearTimer, activeTimer } = useElapsedTime(
     startTimeStamp,
   );
 
   function beginTimer() {
-    // setDisplayTime(0);
-    setStartTimeStamp(moment());
+    startTimerRun();
   }
 
+  const endTime = useEndTime(startTimeStamp, roundDuration);
+
+  const expired = useTimerExpired(endTime, elapsedTime);
+
   useEffect(() => {
-    const endTime = getEndTime(startTimeStamp, roundDuration);
-  });
+    if (expired) {
+      console.log('expired');
+    } else {
+      console.log('not expired');
+    }
+  }, [expired]);
 
   return (
     <Container>
@@ -52,7 +63,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  setStartTimeStamp,
+  startTimerRun,
 };
 
 export default connect(

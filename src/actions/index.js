@@ -66,7 +66,8 @@ export const setEstimatedTime = (time) => ({
   payload: time,
 });
 
-export const setStartTimeStamp = (stamp) => ({
+// new plan suggests this shouldn't be exposed
+const setStartTimeStamp = (stamp) => ({
   type: types.SET_START_TIMESTAMP,
   payload: stamp,
 });

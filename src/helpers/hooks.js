@@ -1,6 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import moment from 'moment';
-import {hourMinuteSecond, secondsToHMS, getEndTime} from './time';
+import {
+  hourMinuteSecond,
+  secondsToHMS,
+  getEndTime,
+  checkTimerExpiry,
+} from './time';
 
 export function useElapsedTime(startTimeStamp) {
   const initialDisplayValue = startTimeStamp
@@ -59,4 +64,23 @@ export function useCountDown(elapsedTime, startTimeStamp, timeDuration) {
     }
   }, [elapsedTime, endTime, startTimeStamp]);
   return hourMinuteSecond(secondsToHMS(remainingSeconds));
+}
+
+export function useEndTime(startTimeStamp, roundDuration) {
+  const [endTime, setEndTime] = useState(
+    getEndTime(startTimeStamp, roundDuration),
+  );
+  useEffect(() => {
+    setEndTime(getEndTime(startTimeStamp, roundDuration));
+  }, [startTimeStamp, roundDuration]);
+
+  return endTime;
+}
+
+export function useTimerExpired(endTime, elapsedTime) {
+  const [expired, setExpired] = useState(checkTimerExpiry(endTime));
+  useEffect(() => {
+    setExpired(checkTimerExpiry(endTime));
+  }, [endTime, elapsedTime]);
+  return expired;
 }

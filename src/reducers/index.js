@@ -51,9 +51,9 @@ const getInitialState = () => {
   return {
     participants,
     activeParticipants,
-    roundDuration: { h: 0, m: 6, s: 0 },
+    roundDuration: { h: 0, m: 0, s: 10 },
     breakDuration: { h: 0, m: 0, s: 30 },
-    roundCount: 24,
+    roundCount: 1,
     currentRound: 0,
     status: STATUS.IDLE,
     schedule,

@@ -10,14 +10,21 @@ export const types = {
   SET_SCHEDULE: 'SET_SCHEDULE',
   SET_CURRENT_ROUND: 'SET_CURRENT_ROUND',
   SET_START_TIMESTAMP: 'SET_START_TIMESTAMP',
+  SET_STATUS: 'SET_STATUS',
+  TIMER_ROLLOVER: 'TIMER_ROLLOVER',
+  START_TIMER_RUN: 'START_TIMER_RUN',
 };
 
 export const resetDB = () => ({ type: types.RESET });
+
+export const startTimerRun = () => ({ type: types.START_TIMER_RUN });
 
 export const setSchedule = (schedule) => ({
   type: types.SET_SCHEDULE,
   payload: schedule,
 });
+
+export const timerRollover = () => ({ type: types.TIMER_ROLLOVER });
 
 export const setCurrentRound = (round) => ({
   type: types.SET_CURRENT_ROUND,

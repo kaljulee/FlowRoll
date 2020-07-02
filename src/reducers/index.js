@@ -8,6 +8,30 @@ import {
   participantsByActive,
 } from '../helpers/ordering';
 import moment from 'moment';
+import { STATUS } from '../helpers/utils';
+
+const clearTimer = () => ({
+  roundCount: 0,
+  startTimeStamp: null,
+  status: STATUS.IDLE,
+});
+
+const startTimer = () => ({
+  roundCount: 1,
+  startTimeStamp: moment(),
+  status: STATUS.ROUND,
+});
+
+const breakToRound = (state) => ({
+  status: STATUS.ROUND,
+  startTimeStamp: moment(),
+  currentRound: state.currentRound + 1,
+});
+
+const roundToBreak = (state) => ({
+  status: STATUS.BREAK,
+  startTimeStamp: moment(),
+});
 
 const getInitialState = () => {
   const participants = [
@@ -31,6 +55,7 @@ const getInitialState = () => {
     breakDuration: { h: 0, m: 0, s: 30 },
     roundCount: 24,
     currentRound: 0,
+    status: STATUS.IDLE,
     schedule,
     // matchUps is currently the same as schedule
     matchUps,
@@ -42,6 +67,7 @@ const getInitialState = () => {
 const basicReducer = (state = getInitialState(), action) => {
   const { type, payload } = action;
   console.log('an action was recd ' + type);
+  let update;
   switch (action.type) {
     case types.RESET:
       console.log('reseting DB');
@@ -72,7 +98,37 @@ const basicReducer = (state = getInitialState(), action) => {
       return state;
     case types.SET_START_TIMESTAMP:
       return { ...state, startTimeStamp: payload || moment() };
-    default:
+    case types.TIMER_ROLLOVER:
+      // actions broken down by status type
+      switch (state.status) {
+        case STATUS.IDLE:
+          update = startTimer();
+          break;
+        case STATUS.BREAK:
+          update = breakToRound(state);
+          break;
+        case STATUS.ROUND:
+          // last round has different behavior
+          if (state.roundCount === state.currentRound) {
+            update = clearTimer();
+          } else {
+            update = roundToBreak();
+          }
+          break;
+        default:
+          break;
+      }
+      return {
+        ...state,
+        ...update,
+      };
+    case types.START_TIMER_RUN:
+      update = startTimer();
+      return {
+        ...state,
+        ...update,
+      };
+      default:
       return state;
   }
 };

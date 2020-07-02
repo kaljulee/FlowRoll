@@ -28,12 +28,6 @@ const cardItemStyle = {
   fontSize: 25,
 };
 
-function MainDisplayText(props) {
-  return (
-    <Text style={{ ...cardItemStyle, ...props.style }}>{props.children}</Text>
-  );
-}
-
 const styles = StyleSheet.create({
   currentMatchup: {
     ...cardStyle,
@@ -73,6 +67,12 @@ const styles = StyleSheet.create({
   },
 });
 
+function MainDisplayText(props) {
+  return (
+    <Text style={{ ...cardItemStyle, ...props.style }}>{props.children}</Text>
+  );
+}
+
 function CurrentMatchUp(props) {
   const { matchUp } = props;
   const text = matchUp ? matchUp.string : 'no matchup';
@@ -109,12 +109,12 @@ function TimerDisplay(props) {
 }
 
 function RoundCounter(props) {
-  const { current, total } = props;
+  const { current, total, currentRound } = props;
   return (
     <Card style={styles.roundCounter}>
       <CardItem>
         <Body>
-          <MainDisplayText>{`${current} / ${total}`}</MainDisplayText>
+          <MainDisplayText>{`${currentRound} / ${total}`}</MainDisplayText>
         </Body>
       </CardItem>
     </Card>

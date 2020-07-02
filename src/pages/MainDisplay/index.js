@@ -109,12 +109,12 @@ function TimerDisplay(props) {
 }
 
 function RoundCounter(props) {
-  const { total, currentRound } = props;
+  const { roundCount, currentRound } = props;
   return (
     <Card style={styles.roundCounter}>
       <CardItem>
         <Body>
-          <MainDisplayText>{`${currentRound} / ${total}`}</MainDisplayText>
+          <MainDisplayText>{`${currentRound} / ${roundCount}`}</MainDisplayText>
         </Body>
       </CardItem>
     </Card>
@@ -179,7 +179,7 @@ function MainDisplay(props) {
           startTimeStamp={startTimeStamp}
           timeDuration={roundDuration}
         />
-        <RoundCounter currentRound={currentRound} total={roundCount} />
+        <RoundCounter currentRound={currentRound} roundCount={roundCount} />
         <TotalTimeTracker />
         <NextMatchUp matchUp={nextMatchUp} />
       </Content>

@@ -11,13 +11,13 @@ import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 
 const clearTimer = () => ({
-  roundCount: 0,
+  currentRound: 0,
   startTimeStamp: null,
   status: STATUS.IDLE,
 });
 
 const startTimer = () => ({
-  roundCount: 1,
+  currentRound: 1,
   startTimeStamp: moment(),
   status: STATUS.ROUND,
 });
@@ -128,7 +128,7 @@ const basicReducer = (state = getInitialState(), action) => {
         ...state,
         ...update,
       };
-      default:
+    default:
       return state;
   }
 };

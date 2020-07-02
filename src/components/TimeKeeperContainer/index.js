@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Button } from 'native-base';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
-import { startTimerRun } from '../../actions';
+import { startTimerRun, timerRollover } from '../../actions';
 import moment from 'moment';
 import { getEndTime } from '../../helpers/time';
 import {
@@ -12,7 +12,13 @@ import {
 } from '../../helpers/hooks';
 
 function TimeKeeperContainer(props) {
-  const { children, roundDuration, startTimeStamp, startTimerRun } = props;
+  const {
+    children,
+    roundDuration,
+    startTimeStamp,
+    startTimerRun,
+    timerRollover,
+  } = props;
   const timerDebugControls = false;
   const { elapsedTime, clearTimer, activeTimer } = useElapsedTime(
     startTimeStamp,
@@ -29,6 +35,7 @@ function TimeKeeperContainer(props) {
   useEffect(() => {
     if (expired) {
       console.log('expired');
+      timerRollover();
     } else {
       console.log('not expired');
     }
@@ -64,6 +71,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   startTimerRun,
+  timerRollover,
 };
 
 export default connect(

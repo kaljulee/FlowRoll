@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Content,
@@ -10,7 +10,7 @@ import {
   Footer,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { findMatchUpByID } from '../../helpers/utils';
+import { findMatchUpByID, STATUS } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
 import { useCountDown, useElapsedTime } from '../../helpers/hooks';
 import { startTimerRun } from '../../actions';
@@ -88,18 +88,38 @@ function CurrentMatchUp(props) {
 }
 
 function TimerDisplay(props) {
-  const { startTimeStamp, timeDuration } = props;
+  const { startTimeStamp, timeDuration, status } = props;
   const { elapsedTime, activeTimer, clearTimer } = useElapsedTime(
     startTimeStamp,
   );
 
   const displayTime = useCountDown(elapsedTime, startTimeStamp, timeDuration);
 
+  const [backgroundColor, setBackgroundColor] = useState('white');
+
+  useEffect(() => {
+    console.log('status used for color change: ' + status);
+    switch (status) {
+      case STATUS.ROUND:
+        setBackgroundColor('green');
+        break;
+      case STATUS.BREAK:
+        setBackgroundColor('red');
+        break;
+      case STATUS.IDLE:
+        setBackgroundColor('white');
+        break;
+      default:
+        setBackgroundColor('white');
+    }
+  }, [status]);
+
   return (
     <Card style={styles.timerDisplay}>
       <CardItem>
         <Body>
-          <MainDisplayText style={styles.timerDisplayText}>
+          <MainDisplayText
+            style={{ ...styles.timerDisplayText, backgroundColor }}>
             {displayTime}
           </MainDisplayText>
         </Body>
@@ -159,7 +179,8 @@ function MainDisplay(props) {
     onPressPause,
     onPressRestart,
     roundDuration,
-      startTimerRun,
+    startTimerRun,
+    status,
   } = props;
 
   function onPressPlay() {
@@ -176,6 +197,7 @@ function MainDisplay(props) {
       <Content contentContainerStyle={styles.content}>
         <CurrentMatchUp matchUp={currentMatchUp} />
         <TimerDisplay
+          status={status}
           startTimeStamp={startTimeStamp}
           timeDuration={roundDuration}
         />
@@ -197,6 +219,7 @@ function MainDisplay(props) {
 const mapStateToProps = (state) => {
   const {
     basicReducer: {
+      status,
       participants,
       roundDuration,
       breakDuration,
@@ -208,6 +231,7 @@ const mapStateToProps = (state) => {
     },
   } = state;
   return {
+    status,
     startTimeStamp,
     schedule,
     participants,

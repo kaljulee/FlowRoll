@@ -88,12 +88,12 @@ function CurrentMatchUp(props) {
 }
 
 function TimerDisplay(props) {
-  const { startTimeStamp, timeDuration, status } = props;
-  const { elapsedTime, activeTimer, clearTimer } = useElapsedTime(
+  const { startTimeStamp, status, endTimeStamp } = props;
+  const { elapsedTime } = useElapsedTime(
     startTimeStamp,
   );
 
-  const displayTime = useCountDown(elapsedTime, startTimeStamp, timeDuration);
+  const displayTime = useCountDown(elapsedTime, startTimeStamp, endTimeStamp);
 
   const [backgroundColor, setBackgroundColor] = useState('white');
 
@@ -181,6 +181,7 @@ function MainDisplay(props) {
     roundDuration,
     startTimerRun,
     status,
+      endTimeStamp,
   } = props;
 
   function onPressPlay() {
@@ -199,7 +200,7 @@ function MainDisplay(props) {
         <TimerDisplay
           status={status}
           startTimeStamp={startTimeStamp}
-          timeDuration={roundDuration}
+          endTimeStamp={endTimeStamp}
         />
         <RoundCounter currentRound={currentRound} roundCount={roundCount} />
         <TotalTimeTracker />
@@ -219,6 +220,7 @@ function MainDisplay(props) {
 const mapStateToProps = (state) => {
   const {
     basicReducer: {
+      endTimeStamp,
       status,
       participants,
       roundDuration,
@@ -231,6 +233,7 @@ const mapStateToProps = (state) => {
     },
   } = state;
   return {
+    endTimeStamp,
     status,
     startTimeStamp,
     schedule,

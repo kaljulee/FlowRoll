@@ -9,29 +9,46 @@ import {
 } from '../helpers/ordering';
 import moment from 'moment';
 import { STATUS } from '../helpers/utils';
+import { getEndTime } from '../helpers/time';
 
 const clearTimer = () => ({
   currentRound: 0,
-  startTimeStamp: null,
+  startTimeStamp: undefined,
+  endTimeStamp: undefined,
   status: STATUS.IDLE,
 });
 
-const startTimer = () => ({
-  currentRound: 1,
-  startTimeStamp: moment(),
-  status: STATUS.ROUND,
-});
+const startTimer = (duration) => {
+  const startTimeStamp = moment();
+  const endTimeStamp = getEndTime(startTimeStamp, duration);
+  return {
+    currentRound: 1,
+    startTimeStamp,
+    status: STATUS.ROUND,
+    endTimeStamp,
+  };
+};
 
-const breakToRound = (state) => ({
-  status: STATUS.ROUND,
-  startTimeStamp: moment(),
-  currentRound: state.currentRound + 1,
-});
+const breakToRound = (duration, oldCurrentRound) => {
+  const startTimeStamp = moment();
+  const endTimeStamp = getEndTime(startTimeStamp, duration);
+  return {
+    status: STATUS.ROUND,
+    startTimeStamp,
+    endTimeStamp,
+    currentRound: oldCurrentRound + 1,
+  };
+};
 
-const roundToBreak = (state) => ({
-  status: STATUS.BREAK,
-  startTimeStamp: moment(),
-});
+const roundToBreak = (duration) => {
+  const startTimeStamp = moment();
+  const endTimeStamp = getEndTime(startTimeStamp, duration);
+  return {
+    status: STATUS.BREAK,
+    endTimeStamp,
+    startTimeStamp,
+  };
+};
 
 const getInitialState = () => {
   const participants = [
@@ -61,6 +78,7 @@ const getInitialState = () => {
     matchUps,
     estimatedTime: undefined,
     startTimeStamp: undefined,
+    endTimeStamp: undefined,
   };
 };
 
@@ -102,17 +120,17 @@ const basicReducer = (state = getInitialState(), action) => {
       // actions broken down by status type
       switch (state.status) {
         case STATUS.IDLE:
-          update = startTimer();
+          update = startTimer(state.roundDuration);
           break;
         case STATUS.BREAK:
-          update = breakToRound(state);
+          update = breakToRound(state.roundDuration, state.currentRound,);
           break;
         case STATUS.ROUND:
           // last round has different behavior
           if (state.roundCount === state.currentRound) {
             update = clearTimer();
           } else {
-            update = roundToBreak();
+            update = roundToBreak(state.breakDuration);
           }
           break;
         default:

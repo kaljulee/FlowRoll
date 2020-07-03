@@ -3,7 +3,6 @@ import moment from 'moment';
 import {
   hourMinuteSecond,
   secondsToHMS,
-  getEndTime,
   checkTimerExpiry,
 } from './time';
 
@@ -38,7 +37,7 @@ export function useElapsedTime(startTimeStamp) {
   return { elapsedTime, clearTimer, activeTimer };
 }
 
-export function useCountDown(elapsedTime, startTimeStamp, timeDuration) {
+export function useCountDown(elapsedTime, startTimeStamp, endTime) {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
 
   useEffect(() => {
@@ -48,7 +47,6 @@ export function useCountDown(elapsedTime, startTimeStamp, timeDuration) {
         setRemainingSeconds(0);
       }
     } else {
-      const endTime = getEndTime(startTimeStamp, timeDuration);
 
       if (moment().isAfter(endTime)) {
         if (remainingSeconds !== 0) {
@@ -62,20 +60,20 @@ export function useCountDown(elapsedTime, startTimeStamp, timeDuration) {
         setRemainingSeconds(timeDiff);
       }
     }
-  }, [elapsedTime, remainingSeconds, startTimeStamp, timeDuration]);
+  }, [elapsedTime, remainingSeconds, startTimeStamp, endTime]);
   return hourMinuteSecond(secondsToHMS(remainingSeconds));
 }
 
-export function useEndTime(startTimeStamp, roundDuration) {
-  const [endTime, setEndTime] = useState(
-    getEndTime(startTimeStamp, roundDuration),
-  );
-  useEffect(() => {
-    setEndTime(getEndTime(startTimeStamp, roundDuration));
-  }, [startTimeStamp, roundDuration]);
-
-  return endTime;
-}
+// export function useEndTime(startTimeStamp, roundDuration) {
+//   const [endTime, setEndTime] = useState(
+//     getEndTime(startTimeStamp, roundDuration),
+//   );
+//   useEffect(() => {
+//     setEndTime(getEndTime(startTimeStamp, roundDuration));
+//   }, [startTimeStamp, roundDuration]);
+//
+//   return endTime;
+// }
 
 export function useTimerExpired(endTime, elapsedTime) {
   const [expired, setExpired] = useState(checkTimerExpiry(endTime));

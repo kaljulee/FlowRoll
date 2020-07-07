@@ -1,10 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import moment from 'moment';
-import {
-  hourMinuteSecond,
-  secondsToHMS,
-  checkTimerExpiry,
-} from './time';
+import { hourMinuteSecond, secondsToHMS, checkTimerExpiry } from './time';
 
 export function useElapsedTime(startTimeStamp) {
   const initialDisplayValue = startTimeStamp
@@ -46,14 +42,11 @@ export function useCountDown(elapsedTime, startTimeStamp, endTime) {
       if (remainingSeconds !== 0) {
         setRemainingSeconds(0);
       }
-    } else {
-
-      if (moment().isAfter(endTime)) {
-        if (remainingSeconds !== 0) {
-          setRemainingSeconds(0);
-        }
+    } else if (moment().isAfter(endTime)) {
+      if (remainingSeconds !== 0) {
+        setRemainingSeconds(0);
       }
-
+    } else {
       const timeDiff =
         moment(endTime).diff(startTimeStamp, 'seconds') - elapsedTime;
       if (timeDiff >= 0) {

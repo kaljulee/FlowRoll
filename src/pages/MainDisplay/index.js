@@ -98,7 +98,6 @@ function TimerDisplay(props) {
   const [backgroundColor, setBackgroundColor] = useState('white');
 
   useEffect(() => {
-    console.log('status used for color change: ' + status);
     switch (status) {
       case STATUS.ROUND:
         setBackgroundColor('green');

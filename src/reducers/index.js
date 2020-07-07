@@ -32,6 +32,7 @@ const startTimer = (duration) => {
 const breakToRound = (duration, oldCurrentRound) => {
   const startTimeStamp = moment();
   const endTimeStamp = getEndTime(startTimeStamp, duration);
+
   return {
     status: STATUS.ROUND,
     startTimeStamp,
@@ -69,8 +70,8 @@ const getInitialState = () => {
     participants,
     activeParticipants,
     roundDuration: { h: 0, m: 0, s: 10 },
-    breakDuration: { h: 0, m: 0, s: 30 },
-    roundCount: 1,
+    breakDuration: { h: 0, m: 0, s: 5 },
+    roundCount: 2,
     currentRound: 0,
     status: STATUS.IDLE,
     schedule,
@@ -123,7 +124,7 @@ const basicReducer = (state = getInitialState(), action) => {
           update = startTimer(state.roundDuration);
           break;
         case STATUS.BREAK:
-          update = breakToRound(state.roundDuration, state.currentRound,);
+          update = breakToRound(state.roundDuration, state.currentRound);
           break;
         case STATUS.ROUND:
           // last round has different behavior
@@ -141,7 +142,7 @@ const basicReducer = (state = getInitialState(), action) => {
         ...update,
       };
     case types.START_TIMER_RUN:
-      update = startTimer();
+      update = startTimer(state.roundDuration);
       return {
         ...state,
         ...update,

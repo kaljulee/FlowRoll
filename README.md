@@ -1,14 +1,12 @@
 # FlowRoll
-round timer and scheduler
-
 
 From the documentation: 
 
 
->The problem
+>##The problem
 >Given a single rolling spot and four rollers, create an optimized rolling matchup schedule.  As an unrelated issue, our timer is a free trial version with reduced features.  
 >
->The Solution
+>##The Solution
 >Creating our own timer is an opportunity to figure out what math describes the problem of mat scheduling.  The timer will organize a schedule based around some TBD default optimization (probably some sort of even distribution of everyone vs everyone), and perform the function of a 1round/1break timer.  There’s a bunch of possible features to add after that.  
 
 

@@ -9,3 +9,13 @@ export const STATUS = {
 export function findMatchUpByID(matchUps, id) {
   return _.find(matchUps, (m) => m.id === id);
 }
+
+export function printSchedule(schedule, matchUps) {
+  const named = schedule.map(s => {
+    const m = findMatchUpByID(matchUps, s);
+    return `${m.p1.name} & ${m.p2.name}`;
+  });
+  console.log(schedule);
+  console.log(matchUps);
+  console.log(JSON.stringify(named, null, 4));
+}

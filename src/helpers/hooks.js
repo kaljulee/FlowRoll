@@ -34,7 +34,9 @@ export function useElapsedTime(startTimeStamp) {
 }
 
 export function useCountDown(elapsedTime, startTimeStamp, endTime) {
-  const [remainingSeconds, setRemainingSeconds] = useState(0);
+  const [remainingSeconds, setRemainingSeconds] = useState(
+    moment(endTime).diff(startTimeStamp, 'seconds'),
+  );
 
   useEffect(() => {
     if (!startTimeStamp) {

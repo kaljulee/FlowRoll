@@ -15,6 +15,7 @@ const clearTimer = () => ({
   currentRound: 0,
   startTimeStamp: undefined,
   endTimeStamp: undefined,
+  timerDuration: undefined,
   status: STATUS.IDLE,
 });
 
@@ -26,6 +27,7 @@ const startTimer = (duration) => {
     startTimeStamp,
     status: STATUS.ROUND,
     endTimeStamp,
+    timerDuration: duration,
   };
 };
 
@@ -80,6 +82,7 @@ const getInitialState = () => {
     estimatedTime: undefined,
     startTimeStamp: undefined,
     endTimeStamp: undefined,
+    timerDuration: undefined,
   };
 };
 

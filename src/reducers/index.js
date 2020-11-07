@@ -40,6 +40,7 @@ const breakToRound = (duration, oldCurrentRound) => {
     startTimeStamp,
     endTimeStamp,
     currentRound: oldCurrentRound + 1,
+    timerDuration: duration,
   };
 };
 
@@ -50,6 +51,7 @@ const roundToBreak = (duration) => {
     status: STATUS.BREAK,
     endTimeStamp,
     startTimeStamp,
+    timerDuration: duration,
   };
 };
 

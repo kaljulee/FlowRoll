@@ -73,7 +73,7 @@ const getInitialState = () => {
   return {
     participants,
     activeParticipants,
-    roundDuration: { h: 0, m: 0, s: 10 },
+    roundDuration: { h: 0, m: 0, s: 8 },
     breakDuration: { h: 0, m: 0, s: 5 },
     roundCount: 2,
     currentRound: 0,

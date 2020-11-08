@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Button } from 'native-base';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
-import { startTimerRun, timerRollover } from '../../actions';
+import { startTimerRun, timerRollover, expireTimer } from '../../actions';
 import {
   useTimerExpired,
   useElapsedTime,
@@ -31,7 +31,8 @@ function TimeKeeperContainer(props) {
   useEffect(() => {
     if (expired) {
       console.log('expired');
-      timerRollover();
+      expireTimer();
+      setTimeout(timerRollover, 500);
     } else {
       console.log('not expired');
     }
@@ -68,6 +69,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   startTimerRun,
+  expireTimer,
   timerRollover,
 };
 

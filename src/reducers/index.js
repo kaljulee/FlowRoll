@@ -15,9 +15,8 @@ const expireTimer = () => ({
   startTimeStamp: undefined,
   endTimeStamp: undefined,
   timerDuration: undefined,
-  // remainingSeconds: undefined,
+  remainingSeconds: undefined,
   elapsedSeconds: undefined,
-  // status: STATUS.IDLE,
 });
 
 const resetTimer = () => ({
@@ -47,27 +46,17 @@ const startTimerRun = (duration) => {
 };
 
 const breakToRound = (duration, oldCurrentRound) => {
-  const startTimeStamp = moment();
-  const endTimeStamp = getEndTime(startTimeStamp, duration);
-
   return {
     status: STATUS.ROUND,
-    startTimeStamp,
-    endTimeStamp,
     currentRound: oldCurrentRound + 1,
-    timerDuration: duration,
-    elapsedSeconds: 0,
+    ...startTimer(duration),
   };
 };
 
 const roundToBreak = (duration) => {
-  const startTimeStamp = moment();
-  const endTimeStamp = getEndTime(startTimeStamp, duration);
   return {
     status: STATUS.BREAK,
-    endTimeStamp,
-    startTimeStamp,
-    timerDuration: duration,
+    ...startTimer(duration),
   };
 };
 
@@ -178,12 +167,8 @@ const basicReducer = (state = getInitialState(), action) => {
       return {
         ...state,
         elapsedSeconds: payload,
+        remainingSeconds: HMSToSeconds(state.timerDuration) - payload,
       };
-    // case types.SET_REMAINING_SECONDS:
-    //   return {
-    //     ...state,
-    //     remainingSeconds: payload,
-    //   };
     default:
       return state;
   }

@@ -9,32 +9,40 @@ import {
 } from '../helpers/ordering';
 import moment from 'moment';
 import { STATUS } from '../helpers/utils';
-import { getEndTime } from '../helpers/time';
-
-const resetTimer = () => ({
-  currentRound: 0,
-  startTimeStamp: undefined,
-  endTimeStamp: undefined,
-  timerDuration: undefined,
-  status: STATUS.IDLE,
-});
+import { getEndTime, HMSToSeconds } from '../helpers/time';
 
 const expireTimer = () => ({
   startTimeStamp: undefined,
   endTimeStamp: undefined,
   timerDuration: undefined,
+  // remainingSeconds: undefined,
+  elapsedSeconds: undefined,
   // status: STATUS.IDLE,
+});
+
+const resetTimer = () => ({
+  currentRound: 0,
+  status: STATUS.IDLE,
+  ...expireTimer(),
 });
 
 const startTimer = (duration) => {
   const startTimeStamp = moment();
   const endTimeStamp = getEndTime(startTimeStamp, duration);
   return {
-    currentRound: 1,
+    elapsedSeconds: 0,
+    remainingSeconds: HMSToSeconds(duration),
     startTimeStamp,
-    status: STATUS.ROUND,
     endTimeStamp,
     timerDuration: duration,
+  };
+};
+
+const startTimerRun = (duration) => {
+  return {
+    currentRound: 1,
+    status: STATUS.ROUND,
+    ...startTimer(duration),
   };
 };
 
@@ -48,6 +56,7 @@ const breakToRound = (duration, oldCurrentRound) => {
     endTimeStamp,
     currentRound: oldCurrentRound + 1,
     timerDuration: duration,
+    elapsedSeconds: 0,
   };
 };
 
@@ -133,7 +142,7 @@ const basicReducer = (state = getInitialState(), action) => {
       // actions broken down by status type
       switch (state.status) {
         case STATUS.IDLE:
-          update = startTimer(state.roundDuration);
+          update = startTimerRun(state.roundDuration);
           break;
         case STATUS.BREAK:
           update = breakToRound(state.roundDuration, state.currentRound);
@@ -160,11 +169,21 @@ const basicReducer = (state = getInitialState(), action) => {
         ...update,
       };
     case types.START_TIMER_RUN:
-      update = startTimer(state.roundDuration);
+      update = startTimerRun(state.roundDuration);
       return {
         ...state,
         ...update,
       };
+    case types.SET_ELAPSED_SECONDS:
+      return {
+        ...state,
+        elapsedSeconds: payload,
+      };
+    // case types.SET_REMAINING_SECONDS:
+    //   return {
+    //     ...state,
+    //     remainingSeconds: payload,
+    //   };
     default:
       return state;
   }

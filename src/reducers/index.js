@@ -19,6 +19,13 @@ const resetTimer = () => ({
   status: STATUS.IDLE,
 });
 
+const expireTimer = () => ({
+  startTimeStamp: undefined,
+  endTimeStamp: undefined,
+  timerDuration: undefined,
+  // status: STATUS.IDLE,
+});
+
 const startTimer = (duration) => {
   const startTimeStamp = moment();
   const endTimeStamp = getEndTime(startTimeStamp, duration);
@@ -142,6 +149,12 @@ const basicReducer = (state = getInitialState(), action) => {
         default:
           break;
       }
+      return {
+        ...state,
+        ...update,
+      };
+    case types.TIMER_EXPIRE:
+      update = expireTimer();
       return {
         ...state,
         ...update,

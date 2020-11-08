@@ -13,6 +13,7 @@ export const types = {
   SET_STATUS: 'SET_STATUS',
   TIMER_ROLLOVER: 'TIMER_ROLLOVER',
   START_TIMER_RUN: 'START_TIMER_RUN',
+  TIMER_EXPIRE: 'TIMER_EXPIRE',
 };
 
 export const resetDB = () => ({ type: types.RESET });
@@ -71,3 +72,5 @@ const setStartTimeStamp = (stamp) => ({
   type: types.SET_START_TIMESTAMP,
   payload: stamp,
 });
+
+export const expireTimer = () => ({ type: types.TIMER_EXPIRE });

@@ -11,7 +11,7 @@ import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime } from '../helpers/time';
 
-const clearTimer = () => ({
+const resetTimer = () => ({
   currentRound: 0,
   startTimeStamp: undefined,
   endTimeStamp: undefined,
@@ -134,7 +134,7 @@ const basicReducer = (state = getInitialState(), action) => {
         case STATUS.ROUND:
           // last round has different behavior
           if (state.roundCount === state.currentRound) {
-            update = clearTimer();
+            update = resetTimer();
           } else {
             update = roundToBreak(state.breakDuration);
           }

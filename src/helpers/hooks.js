@@ -9,7 +9,7 @@ export function useElapsedTime(startTimeStamp) {
   const [elapsedTime, setElapsedTime] = useState(initialDisplayValue);
   const [activeTimer, setActiveTimer] = useState(null);
 
-  const clearTimer = useCallback(() => {
+  const resetTimer = useCallback(() => {
     clearInterval(activeTimer);
     setActiveTimer(null);
     setElapsedTime(0);
@@ -25,11 +25,11 @@ export function useElapsedTime(startTimeStamp) {
       setActiveTimer(intervalID);
     }
     return () => {
-      clearTimer();
+      resetTimer();
     };
   }, [startTimeStamp]);
 
-  return { elapsedTime, clearTimer, activeTimer };
+  return { elapsedTime, resetTimer, activeTimer };
 }
 
 export function useCountDown(elapsedTime, startTimeStamp, endTime) {

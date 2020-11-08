@@ -17,7 +17,7 @@ function TimeKeeperContainer(props) {
       endTimeStamp,
   } = props;
   const timerDebugControls = false;
-  const { elapsedTime, clearTimer, activeTimer } = useElapsedTime(
+  const { elapsedTime, resetTimer, activeTimer } = useElapsedTime(
     startTimeStamp,
   );
 
@@ -46,7 +46,7 @@ function TimeKeeperContainer(props) {
         </Button>
       )}
       {timerDebugControls && (
-        <Button onPress={() => clearTimer()}>
+        <Button onPress={() => resetTimer()}>
           <Text>clear timer</Text>
         </Button>
       )}

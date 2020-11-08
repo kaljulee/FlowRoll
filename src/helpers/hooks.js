@@ -25,8 +25,7 @@ export function useElapsedTime(startTimeStamp) {
       setActiveTimer(intervalID);
     }
     return () => {
-      setActiveTimer(null);
-      clearInterval(intervalID);
+      clearTimer();
     };
   }, [startTimeStamp]);
 

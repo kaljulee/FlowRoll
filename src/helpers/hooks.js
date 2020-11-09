@@ -35,7 +35,7 @@ export function useElapsedTime(startTimeStamp, endTimeStamp) {
     }
   }, [activeTimer, elapsedTime, endTimeStamp, resetTimer]);
 
-  return { elapsedTime, resetTimer, activeTimer };
+  return { elapsedTime, resetTimer };
 }
 
 export function useCountDown(elapsedTime, startTimeStamp, endTime) {

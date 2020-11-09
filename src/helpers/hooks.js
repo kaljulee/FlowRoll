@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import moment from 'moment';
 import { hourMinuteSecond, secondsToHMS, checkTimerExpiry } from './time';
 
-export function useElapsedTime(startTimeStamp, endTimeStamp, source) {
+export function useElapsedTime(startTimeStamp, endTimeStamp) {
   const initialDisplayValue = startTimeStamp
     ? moment().diff(startTimeStamp, 'seconds')
     : 0;

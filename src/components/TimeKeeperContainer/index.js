@@ -31,12 +31,13 @@ function TimeKeeperContainer(props) {
 
   const expired = useTimerExpired(endTimeStamp, elapsedTime);
 
+  // either expire the timer or update elapsed seconds
   useEffect(() => {
-    setElapsedSeconds(elapsedTime);
     if (expired) {
       expireTimer();
-      setTimeout(timerRollover, 500);
+      setTimeout(timerRollover, 1500);
     } else {
+      setElapsedSeconds(elapsedTime, 'TimeKeeperContainer');
     }
   }, [expired, timerRollover, elapsedTime, setElapsedSeconds]);
 

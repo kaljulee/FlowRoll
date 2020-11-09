@@ -88,14 +88,14 @@ function CurrentMatchUp(props) {
 }
 
 function TimerDisplay(props) {
-  const { startTimeStamp, status, endTimeStamp } = props;
-  const { elapsedTime } = useElapsedTime(
-    startTimeStamp,
-  );
-
-  const displayTime = useCountDown(elapsedTime, startTimeStamp, endTimeStamp);
-
+  const { status, elapsedSeconds, remainingSeconds } = props;
+  const displayTime = elapsedSeconds;
   const [backgroundColor, setBackgroundColor] = useState('white');
+
+  // console.group('timerdisplay');
+  // console.log('\te: ' + elapsedSeconds);
+  // console.log('\tr: ' + remainingSeconds);
+  // console.groupEnd();
 
   useEffect(() => {
     switch (status) {
@@ -180,7 +180,9 @@ function MainDisplay(props) {
     roundDuration,
     startTimerRun,
     status,
-      endTimeStamp,
+    endTimeStamp,
+    elapsedSeconds,
+    remainingSeconds,
   } = props;
 
   function onPressPlay() {
@@ -197,6 +199,8 @@ function MainDisplay(props) {
       <Content contentContainerStyle={styles.content}>
         <CurrentMatchUp matchUp={currentMatchUp} />
         <TimerDisplay
+          elapsedSeconds={elapsedSeconds}
+          remainingSeconds={remainingSeconds}
           status={status}
           startTimeStamp={startTimeStamp}
           endTimeStamp={endTimeStamp}
@@ -229,8 +233,12 @@ const mapStateToProps = (state) => {
       schedule,
       matchUps,
       startTimeStamp,
+      timerDuration,
+      elapsedSeconds,
+      remainingSeconds,
     },
   } = state;
+
   return {
     endTimeStamp,
     status,
@@ -242,6 +250,9 @@ const mapStateToProps = (state) => {
     currentRound,
     roundCount,
     matchUps,
+    timerDuration,
+    remainingSeconds,
+    elapsedSeconds,
   };
 };
 

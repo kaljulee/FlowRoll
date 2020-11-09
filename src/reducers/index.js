@@ -15,8 +15,6 @@ const expireTimer = () => ({
   startTimeStamp: undefined,
   endTimeStamp: undefined,
   timerDuration: undefined,
-  remainingSeconds: undefined,
-  elapsedSeconds: undefined,
 });
 
 const resetTimer = () => ({
@@ -95,7 +93,6 @@ const getInitialState = () => {
 
 const basicReducer = (state = getInitialState(), action) => {
   const { type, payload } = action;
-  console.log('an action was recd ' + type);
   let update;
   switch (action.type) {
     case types.RESET:

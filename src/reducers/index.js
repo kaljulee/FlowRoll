@@ -15,6 +15,7 @@ const expireTimer = () => ({
   startTimeStamp: undefined,
   endTimeStamp: undefined,
   timerDuration: undefined,
+  remainingSeconds: 0,
 });
 
 const resetTimer = () => ({
@@ -161,10 +162,11 @@ const basicReducer = (state = getInitialState(), action) => {
         ...update,
       };
     case types.SET_ELAPSED_SECONDS:
+      let newRemaining = HMSToSeconds(state.timerDuration) - payload;
       return {
         ...state,
         elapsedSeconds: payload,
-        remainingSeconds: HMSToSeconds(state.timerDuration) - payload,
+        remainingSeconds: isNaN(newRemaining) ? 0 : newRemaining,
       };
     default:
       return state;

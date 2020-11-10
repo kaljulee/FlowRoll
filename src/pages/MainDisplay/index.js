@@ -12,8 +12,8 @@ import {
 import { connect } from 'react-redux';
 import { findMatchUpByID, STATUS } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
-import { useCountDown, useElapsedTime } from '../../helpers/hooks';
 import { startTimerRun } from '../../actions';
+import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
 
 const cardStyle = {
   width: '90%',
@@ -88,14 +88,9 @@ function CurrentMatchUp(props) {
 }
 
 function TimerDisplay(props) {
-  const { status, elapsedSeconds, remainingSeconds } = props;
-  const displayTime = elapsedSeconds;
+  const { status, remainingSeconds } = props;
+  const displayTime = hourMinuteSecond(secondsToHMS(remainingSeconds));
   const [backgroundColor, setBackgroundColor] = useState('white');
-
-  // console.group('timerdisplay');
-  // console.log('\te: ' + elapsedSeconds);
-  // console.log('\tr: ' + remainingSeconds);
-  // console.groupEnd();
 
   useEffect(() => {
     switch (status) {

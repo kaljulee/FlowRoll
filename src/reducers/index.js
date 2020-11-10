@@ -9,45 +9,53 @@ import {
 } from '../helpers/ordering';
 import moment from 'moment';
 import { STATUS } from '../helpers/utils';
-import { getEndTime } from '../helpers/time';
+import { getEndTime, HMSToSeconds } from '../helpers/time';
 
-const clearTimer = () => ({
-  currentRound: 0,
+const expireTimer = () => ({
   startTimeStamp: undefined,
   endTimeStamp: undefined,
+  timerDuration: undefined,
+  remainingSeconds: 0,
+});
+
+const resetTimer = () => ({
+  currentRound: 0,
   status: STATUS.IDLE,
+  ...expireTimer(),
 });
 
 const startTimer = (duration) => {
   const startTimeStamp = moment();
   const endTimeStamp = getEndTime(startTimeStamp, duration);
   return {
-    currentRound: 1,
+    elapsedSeconds: 0,
+    remainingSeconds: HMSToSeconds(duration),
     startTimeStamp,
-    status: STATUS.ROUND,
     endTimeStamp,
+    timerDuration: duration,
+  };
+};
+
+const startTimerRun = (duration) => {
+  return {
+    currentRound: 1,
+    status: STATUS.ROUND,
+    ...startTimer(duration),
   };
 };
 
 const breakToRound = (duration, oldCurrentRound) => {
-  const startTimeStamp = moment();
-  const endTimeStamp = getEndTime(startTimeStamp, duration);
-
   return {
     status: STATUS.ROUND,
-    startTimeStamp,
-    endTimeStamp,
     currentRound: oldCurrentRound + 1,
+    ...startTimer(duration),
   };
 };
 
 const roundToBreak = (duration) => {
-  const startTimeStamp = moment();
-  const endTimeStamp = getEndTime(startTimeStamp, duration);
   return {
     status: STATUS.BREAK,
-    endTimeStamp,
-    startTimeStamp,
+    ...startTimer(duration),
   };
 };
 
@@ -69,7 +77,7 @@ const getInitialState = () => {
   return {
     participants,
     activeParticipants,
-    roundDuration: { h: 0, m: 0, s: 10 },
+    roundDuration: { h: 0, m: 0, s: 8 },
     breakDuration: { h: 0, m: 0, s: 5 },
     roundCount: 2,
     currentRound: 0,
@@ -80,12 +88,12 @@ const getInitialState = () => {
     estimatedTime: undefined,
     startTimeStamp: undefined,
     endTimeStamp: undefined,
+    timerDuration: undefined,
   };
 };
 
 const basicReducer = (state = getInitialState(), action) => {
   const { type, payload } = action;
-  console.log('an action was recd ' + type);
   let update;
   switch (action.type) {
     case types.RESET:
@@ -121,7 +129,7 @@ const basicReducer = (state = getInitialState(), action) => {
       // actions broken down by status type
       switch (state.status) {
         case STATUS.IDLE:
-          update = startTimer(state.roundDuration);
+          update = startTimerRun(state.roundDuration);
           break;
         case STATUS.BREAK:
           update = breakToRound(state.roundDuration, state.currentRound);
@@ -129,7 +137,7 @@ const basicReducer = (state = getInitialState(), action) => {
         case STATUS.ROUND:
           // last round has different behavior
           if (state.roundCount === state.currentRound) {
-            update = clearTimer();
+            update = resetTimer();
           } else {
             update = roundToBreak(state.breakDuration);
           }
@@ -141,11 +149,24 @@ const basicReducer = (state = getInitialState(), action) => {
         ...state,
         ...update,
       };
-    case types.START_TIMER_RUN:
-      update = startTimer(state.roundDuration);
+    case types.TIMER_EXPIRE:
+      update = expireTimer();
       return {
         ...state,
         ...update,
+      };
+    case types.START_TIMER_RUN:
+      update = startTimerRun(state.roundDuration);
+      return {
+        ...state,
+        ...update,
+      };
+    case types.SET_ELAPSED_SECONDS:
+      let newRemaining = HMSToSeconds(state.timerDuration) - payload;
+      return {
+        ...state,
+        elapsedSeconds: payload,
+        remainingSeconds: isNaN(newRemaining) ? 0 : newRemaining,
       };
     default:
       return state;

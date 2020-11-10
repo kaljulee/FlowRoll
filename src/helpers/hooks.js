@@ -2,35 +2,40 @@ import { useEffect, useState, useCallback } from 'react';
 import moment from 'moment';
 import { hourMinuteSecond, secondsToHMS, checkTimerExpiry } from './time';
 
-export function useElapsedTime(startTimeStamp) {
+export function useElapsedTime(startTimeStamp, endTimeStamp) {
   const initialDisplayValue = startTimeStamp
     ? moment().diff(startTimeStamp, 'seconds')
     : 0;
   const [elapsedTime, setElapsedTime] = useState(initialDisplayValue);
   const [activeTimer, setActiveTimer] = useState(null);
 
-  const clearTimer = useCallback(() => {
-    clearInterval(activeTimer);
-    setActiveTimer(null);
+  // cancel interval and reset elapsedTime
+  const resetTimer = useCallback((intervalID) => {
+    clearInterval(intervalID);
     setElapsedTime(0);
-  }, [activeTimer]);
+    setActiveTimer(null);
+  }, []);
 
+  // start a timer
   useEffect(() => {
     let intervalID;
-    if (startTimeStamp) {
+    if (startTimeStamp && moment().isBefore(endTimeStamp) && !activeTimer) {
       intervalID = setInterval(() => {
         const timeDiff = moment().diff(startTimeStamp, 'seconds');
         setElapsedTime(timeDiff);
       }, 1000);
       setActiveTimer(intervalID);
     }
-    return () => {
-      setActiveTimer(null);
-      clearInterval(intervalID);
-    };
-  }, [startTimeStamp]);
+  }, [activeTimer, resetTimer, startTimeStamp, endTimeStamp]);
 
-  return { elapsedTime, clearTimer, activeTimer };
+  // remove expired timer.  resetTimer logic maybe could be moved into here?
+  useEffect(() => {
+    if (activeTimer && moment().isAfter(endTimeStamp)) {
+      resetTimer(activeTimer);
+    }
+  }, [activeTimer, elapsedTime, endTimeStamp, resetTimer]);
+
+  return { elapsedTime, resetTimer };
 }
 
 export function useCountDown(elapsedTime, startTimeStamp, endTime) {

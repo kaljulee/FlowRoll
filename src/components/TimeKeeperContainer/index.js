@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Container, Button } from 'native-base';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
-import { startTimerRun, timerRollover } from '../../actions';
 import {
-  useTimerExpired,
-  useElapsedTime,
-} from '../../helpers/hooks';
+  startTimerRun,
+  timerRollover,
+  expireTimer,
+  setElapsedSeconds,
+} from '../../actions';
+import { useTimerExpired, useElapsedTime } from '../../helpers/hooks';
 
 function TimeKeeperContainer(props) {
   const {
@@ -14,28 +16,30 @@ function TimeKeeperContainer(props) {
     startTimeStamp,
     startTimerRun,
     timerRollover,
-      endTimeStamp,
+    endTimeStamp,
+    setElapsedSeconds,
   } = props;
   const timerDebugControls = false;
-  const { elapsedTime, clearTimer, activeTimer } = useElapsedTime(
+  const { elapsedTime, resetTimer } = useElapsedTime(
     startTimeStamp,
+    endTimeStamp,
   );
 
   function beginTimer() {
     startTimerRun();
   }
 
-
   const expired = useTimerExpired(endTimeStamp, elapsedTime);
 
+  // either expire the timer or update elapsed seconds
   useEffect(() => {
     if (expired) {
-      console.log('expired');
-      timerRollover();
+      expireTimer();
+      setTimeout(timerRollover, 1500);
     } else {
-      console.log('not expired');
+      setElapsedSeconds(elapsedTime, 'TimeKeeperContainer');
     }
-  }, [expired]);
+  }, [expired, timerRollover, elapsedTime, setElapsedSeconds]);
 
   return (
     <Container>
@@ -46,7 +50,7 @@ function TimeKeeperContainer(props) {
         </Button>
       )}
       {timerDebugControls && (
-        <Button onPress={() => clearTimer()}>
+        <Button onPress={() => resetTimer()}>
           <Text>clear timer</Text>
         </Button>
       )}
@@ -57,7 +61,7 @@ function TimeKeeperContainer(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { roundDuration, startTimeStamp, endTimeStamp, },
+    basicReducer: { roundDuration, startTimeStamp, endTimeStamp },
   } = state;
   return {
     endTimeStamp,
@@ -68,7 +72,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   startTimerRun,
+  expireTimer,
   timerRollover,
+  setElapsedSeconds,
 };
 
 export default connect(

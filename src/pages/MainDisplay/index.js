@@ -12,8 +12,8 @@ import {
 import { connect } from 'react-redux';
 import { findMatchUpByID, STATUS } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
-import { useCountDown, useElapsedTime } from '../../helpers/hooks';
 import { startTimerRun } from '../../actions';
+import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
 
 const cardStyle = {
   width: '90%',
@@ -88,13 +88,8 @@ function CurrentMatchUp(props) {
 }
 
 function TimerDisplay(props) {
-  const { startTimeStamp, status, endTimeStamp } = props;
-  const { elapsedTime } = useElapsedTime(
-    startTimeStamp,
-  );
-
-  const displayTime = useCountDown(elapsedTime, startTimeStamp, endTimeStamp);
-
+  const { status, remainingSeconds } = props;
+  const displayTime = hourMinuteSecond(secondsToHMS(remainingSeconds));
   const [backgroundColor, setBackgroundColor] = useState('white');
 
   useEffect(() => {
@@ -180,7 +175,9 @@ function MainDisplay(props) {
     roundDuration,
     startTimerRun,
     status,
-      endTimeStamp,
+    endTimeStamp,
+    elapsedSeconds,
+    remainingSeconds,
   } = props;
 
   function onPressPlay() {
@@ -197,6 +194,8 @@ function MainDisplay(props) {
       <Content contentContainerStyle={styles.content}>
         <CurrentMatchUp matchUp={currentMatchUp} />
         <TimerDisplay
+          elapsedSeconds={elapsedSeconds}
+          remainingSeconds={remainingSeconds}
           status={status}
           startTimeStamp={startTimeStamp}
           endTimeStamp={endTimeStamp}
@@ -229,8 +228,12 @@ const mapStateToProps = (state) => {
       schedule,
       matchUps,
       startTimeStamp,
+      timerDuration,
+      elapsedSeconds,
+      remainingSeconds,
     },
   } = state;
+
   return {
     endTimeStamp,
     status,
@@ -242,6 +245,9 @@ const mapStateToProps = (state) => {
     currentRound,
     roundCount,
     matchUps,
+    timerDuration,
+    remainingSeconds,
+    elapsedSeconds,
   };
 };
 

@@ -19,6 +19,13 @@ function pullTime(total, unit) {
   return { tracked: 0, untracked: total };
 }
 
+export function HMSToSeconds(hms) {
+  if (!hms || isNaN(hms.h) || isNaN(hms.m) || isNaN(hms.s)) {
+    return;
+  }
+  return hms.h * 3600 + hms.m * 60 + hms.s;
+}
+
 export function secondsToHMS(time) {
   let untrackedTime = time;
 

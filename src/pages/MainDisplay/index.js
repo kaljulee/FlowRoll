@@ -14,6 +14,7 @@ import { findMatchUpByID, STATUS } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
 import { startTimerRun } from '../../actions';
 import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
+import KeepAwake from 'react-native-keep-awake';
 
 const cardStyle = {
   width: '90%',
@@ -203,6 +204,7 @@ function MainDisplay(props) {
         <RoundCounter currentRound={currentRound} roundCount={roundCount} />
         <TotalTimeTracker />
         <NextMatchUp matchUp={nextMatchUp} />
+        <KeepAwake/>
       </Content>
       <Footer>
         <ControlBar

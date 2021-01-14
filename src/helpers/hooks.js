@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import moment from 'moment';
 import { hourMinuteSecond, secondsToHMS, checkTimerExpiry } from './time';
+import { STATUS } from './utils';
 
 export function useElapsedTime(startTimeStamp, endTimeStamp) {
   const initialDisplayValue = startTimeStamp
@@ -81,4 +82,37 @@ export function useTimerExpired(endTime, elapsedTime) {
     setExpired(checkTimerExpiry(endTime));
   }, [endTime, elapsedTime]);
   return expired;
+}
+
+export function useTotalElapsedTime(status) {
+  const initialDisplayValue = 0;
+  const [elapsedTime, setElapsedTime] = useState(initialDisplayValue);
+  const [activeTimer, setActiveTimer] = useState(null);
+
+  // cancel interval, no timer reset
+  const resetTimer = useCallback((intervalID) => {
+    clearInterval(intervalID);
+    setActiveTimer(null);
+  }, []);
+
+  useEffect(() => {
+    let intervalID;
+    if (!activeTimer && status !== STATUS.IDLE) {
+      const now = moment();
+      setElapsedTime(0);
+      intervalID = setInterval(() => {
+        const timeDiff = moment().diff(now, 'seconds');
+        setElapsedTime(timeDiff);
+      }, 1000);
+      setActiveTimer(intervalID);
+    }
+  }, [activeTimer, status, setElapsedTime]);
+
+  useEffect(() => {
+    if (activeTimer && status === STATUS.IDLE) {
+      resetTimer(activeTimer);
+    }
+  }, [activeTimer, resetTimer, status]);
+
+  return { elapsedTime, resetTimer };
 }

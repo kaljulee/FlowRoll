@@ -24,6 +24,7 @@ function TimerSetup(props) {
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
   const [showRoundCountInput, setShowRoundCountInput] = useState(false);
+  const [showAddParticipant, setShowAddParticipant] = useState(false);
 
   function onStartPress() {
     startTimerRun();
@@ -77,6 +78,10 @@ function TimerSetup(props) {
           participants={participants}
           isVisible={showParticipantInput}
           onClosePress={() => setShowParticipantInput(false)}
+          onAddParticipantPress={() => {
+            console.log('partic? ' + !showAddParticipant);
+            setShowAddParticipant(!showAddParticipant);
+          }}
         />
       </Content>
       <Footer>

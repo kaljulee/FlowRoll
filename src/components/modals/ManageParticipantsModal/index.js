@@ -6,41 +6,49 @@ import Modal from 'react-native-modal';
 import CloseModalButton from '../../../components/CloseModalButton';
 import ParticipantManager from '../../../components/ParticipantManager';
 import Icon from 'react-native-vector-icons/Entypo';
+import AddParticipantButton from '../../../components/AddParticipantButton';
+import { Grid, Col } from 'react-native-easy-grid';
 
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'column',
     marginLeft: 'auto',
     marginRight: 'auto',
-    height: '60%',
+    height: '80%',
     width: '100%',
   },
 });
 
 function ManageParticipantsModal(props) {
-  const { participants, isVisible, onClosePress } = props;
+  const {
+    participants,
+    isVisible,
+    onClosePress,
+    onAddParticipantPress,
+  } = props;
   return (
-    <Modal isVisible={isVisible}>
+    <Modal style={{ height: '100%' }} isVisible={isVisible}>
       <Card style={styles.card}>
         <CardItem>
           <ParticipantManager participants={participants} />
         </CardItem>
-        <CardItem>
-          <Button
-            style={{
-              height: 45,
-              width: 45,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Icon
-              style={{ color: 'white', fontSize: 25, padding: 1 }}
-              name={'add-user'}
-            />
-          </Button>
-          <CloseModalButton onPress={onClosePress} />
-        </CardItem>
       </Card>
+      <Grid
+        style={{
+          height: '20%',
+          borderColor: 'black',
+          borderWidth: 2,
+          padding: 5,
+          alignItems: 'center',
+          backgroundColor: 'white',
+        }}>
+        <Col>
+          <AddParticipantButton onPress={onAddParticipantPress} />
+        </Col>
+        <Col>
+          <CloseModalButton onPress={onClosePress} />
+        </Col>
+      </Grid>
     </Modal>
   );
 }

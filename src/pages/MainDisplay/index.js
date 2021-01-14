@@ -16,6 +16,7 @@ import { startTimerRun } from '../../actions';
 import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
 import KeepAwake from 'react-native-keep-awake';
 import moment from 'moment';
+import { useTotalElapsedTime } from '../../helpers/hooks';
 
 const cardStyle = {
   width: '90%',
@@ -139,13 +140,12 @@ function RoundCounter(props) {
 
 function TotalTimeTracker(props) {
   const { status } = props;
-  const now = moment();
-
+  const { elapsedTime } = useTotalElapsedTime(status);
   return (
     <Card style={styles.totalTimeTracker}>
       <CardItem>
         <Body>
-          <MainDisplayText>{status} </MainDisplayText>
+          <MainDisplayText>{elapsedTime} </MainDisplayText>
         </Body>
       </CardItem>
     </Card>

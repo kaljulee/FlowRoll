@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet } from 'react-native';
-import { Card, CardItem } from 'native-base';
+import { Button, Card, CardItem } from 'native-base';
 import Modal from 'react-native-modal';
 import CloseModalButton from '../../../components/CloseModalButton';
 import ParticipantManager from '../../../components/ParticipantManager';
+import Icon from 'react-native-vector-icons/Entypo';
 
 const styles = StyleSheet.create({
   card: {
@@ -24,8 +25,22 @@ function ManageParticipantsModal(props) {
         <CardItem>
           <ParticipantManager participants={participants} />
         </CardItem>
+        <CardItem>
+          <Button
+            style={{
+              height: 45,
+              width: 45,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Icon
+              style={{ color: 'white', fontSize: 25, padding: 1 }}
+              name={'add-user'}
+            />
+          </Button>
+          <CloseModalButton onPress={onClosePress} />
+        </CardItem>
       </Card>
-      <CloseModalButton onPress={onClosePress} />
     </Modal>
   );
 }

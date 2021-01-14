@@ -145,7 +145,9 @@ function TotalTimeTracker(props) {
     <Card style={styles.totalTimeTracker}>
       <CardItem>
         <Body>
-          <MainDisplayText>{elapsedTime} </MainDisplayText>
+          <MainDisplayText>
+            {hourMinuteSecond(secondsToHMS(elapsedTime))}{' '}
+          </MainDisplayText>
         </Body>
       </CardItem>
     </Card>

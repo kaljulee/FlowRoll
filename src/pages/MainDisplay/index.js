@@ -15,6 +15,7 @@ import ControlBar from '../../components/ControlBar';
 import { startTimerRun } from '../../actions';
 import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
 import KeepAwake from 'react-native-keep-awake';
+import moment from 'moment';
 
 const cardStyle = {
   width: '90%',
@@ -137,13 +138,14 @@ function RoundCounter(props) {
 }
 
 function TotalTimeTracker(props) {
+  const { status } = props;
+  const now = moment();
+
   return (
     <Card style={styles.totalTimeTracker}>
       <CardItem>
         <Body>
-          <MainDisplayText>
-            total time tracker, not sure how to break this up yet
-          </MainDisplayText>
+          <MainDisplayText>{status} </MainDisplayText>
         </Body>
       </CardItem>
     </Card>
@@ -202,9 +204,9 @@ function MainDisplay(props) {
           endTimeStamp={endTimeStamp}
         />
         <RoundCounter currentRound={currentRound} roundCount={roundCount} />
-        <TotalTimeTracker />
+        <TotalTimeTracker status={status} />
         <NextMatchUp matchUp={nextMatchUp} />
-        <KeepAwake/>
+        <KeepAwake />
       </Content>
       <Footer>
         <ControlBar

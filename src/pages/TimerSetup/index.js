@@ -8,6 +8,7 @@ import SetTimeModal from '../../components/modals/SetTimeModal';
 import SettingsButton from '../../components/SettingsButton';
 import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
 import ManageParticipantsModal from '../../components/modals/ManageParticipantsModal';
+import AddParticipantModal from '../../components/modals/AddParticipantModal';
 
 function TimerSetup(props) {
   const {
@@ -80,8 +81,12 @@ function TimerSetup(props) {
           onClosePress={() => setShowParticipantInput(false)}
           onAddParticipantPress={() => {
             console.log('partic? ' + !showAddParticipant);
-            setShowAddParticipant(!showAddParticipant);
+            setShowAddParticipant(true);
           }}
+        />
+        <AddParticipantModal
+          isVisible={showAddParticipant}
+          closeModal={() => setShowAddParticipant(false)}
         />
       </Content>
       <Footer>

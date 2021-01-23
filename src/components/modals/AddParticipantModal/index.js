@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-native-modal';
 import {
   Button,
@@ -12,7 +12,8 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { Grid, Col } from 'react-native-easy-grid';
-import { StyleSheet, Switch, TextInput } from 'react-native';
+import { StyleSheet, Switch } from 'react-native';
+import { addParticipants, activateParticipants } from '../../../actions';
 
 const styles = StyleSheet.create({
   card: {
@@ -40,29 +41,49 @@ const styles = StyleSheet.create({
 });
 
 function AddParticipantModal(props) {
-  const { isVisible, closeModal } = props;
+  const {
+    isVisible,
+    closeModal,
+    addParticipants,
+    activateParticipants,
+  } = props;
+
   const [addToActive, setAddToActive] = useState(true);
   const [name, setName] = useState(null);
-  function onChangeText(text) {
-    setName(text);
+
+  const onCloseModal = (arg) => {
+    setName(null);
+    closeModal(arg);
   }
 
-  const addParticipant = () => console.log('would add participant');
+  const onChangeText = (text) => {
+    console.log('CALLING ONCHANGE');
+    console.log(text);
+    setName(text);
+  };
+
+  function isValid() {
+    console.log('name shit: ' + name);
+    return name !== null && name.length > 0;
+  }
+
+  const addParticipant = () => {
+    console.log('would add participant');
+    if (isValid(name)) {
+      console.log('would add');
+    } else {
+      console.log('not valid name');
+    }
+  };
 
   return (
     <Modal style={styles.modal} isVisible={isVisible}>
       <Card style={styles.card} transparent>
         <CardItem style={styles.cardItem}>
-          {false && (
-            <TextInput
-              onChangeText={(text) => onChangeText(text)}
-              value={name}
-            />
-          )}
           <Form style={{ width: '100%', height: 80 }}>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Participant Name</Label>
-              <Input />
+              <Input onChangeText={onChangeText} />
             </Item>
             <Item inlineLabel>
               <Switch
@@ -82,7 +103,7 @@ function AddParticipantModal(props) {
               </Button>
             </Col>
             <Col>
-              <Button onPress={closeModal}>
+              <Button onPress={onCloseModal}>
                 <Text>Cancel</Text>
               </Button>
             </Col>
@@ -97,7 +118,10 @@ const mapStateToProps = (state) => {
   return {};
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  activateParticipants,
+  addParticipants,
+};
 
 export default connect(
   mapStateToProps,

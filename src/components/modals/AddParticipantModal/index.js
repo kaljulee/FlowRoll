@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { Grid, Col } from 'react-native-easy-grid';
-import { StyleSheet, Switch } from 'react-native';
+import { StyleSheet, Switch, ToastAndroid } from 'react-native';
 import { addParticipants, activateParticipants } from '../../../actions';
 
 const styles = StyleSheet.create({
@@ -54,7 +54,7 @@ function AddParticipantModal(props) {
   const onCloseModal = (arg) => {
     setName(null);
     closeModal(arg);
-  }
+  };
 
   const onChangeText = (text) => {
     console.log('CALLING ONCHANGE');
@@ -70,9 +70,9 @@ function AddParticipantModal(props) {
   const addParticipant = () => {
     console.log('would add participant');
     if (isValid(name)) {
-      console.log('would add');
+      addParticipants([{ name }]);
     } else {
-      console.log('not valid name');
+      ToastAndroid.show('name not valid for some reason', ToastAndroid.SHORT);
     }
   };
 

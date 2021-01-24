@@ -11,7 +11,6 @@ import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds } from '../helpers/time';
 
-
 // common recipes
 const expireTimer = () => ({
   startTimeStamp: undefined,
@@ -78,6 +77,7 @@ const getInitialState = () => {
   const schedule = createCompleteCycle(matchUps, sortedParticipants.active);
   return {
     participants,
+    nextParticipantID: 5,
     activeParticipants,
     roundDuration: { h: 0, m: 0, s: 8 },
     breakDuration: { h: 0, m: 0, s: 5 },
@@ -102,7 +102,17 @@ const basicReducer = (state = getInitialState(), action) => {
       console.log('reseting DB');
       return getInitialState();
     case types.ADD_PARTICIPANTS:
-      return state;
+      let newNextParticipantID = state.nextParticipantID;
+      const newParticipants = payload.map((p) => {
+        const newP = { ...p, id: newNextParticipantID };
+        newNextParticipantID = newNextParticipantID + 1;
+        return newP;
+      });
+      return {
+        ...state,
+        nextParticipantID: newNextParticipantID,
+        participants: [...state.participants, ...newParticipants],
+      };
     case types.ACTIVATE_PARTICIPANTS:
       return {
         ...state,

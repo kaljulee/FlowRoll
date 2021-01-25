@@ -25,6 +25,7 @@ function ParticipantManager(props) {
     addParticipants,
     activateParticipants,
     deactivateParticipants,
+    onLongPressParticipant,
   } = props;
 
   const { available, active } = participantsByActive(
@@ -38,6 +39,7 @@ function ParticipantManager(props) {
         <Col style={styles.item}>
           <Text>out</Text>
           <ParticipantList
+            onLongPressParticipant={(id) => onLongPressParticipant(id)}
             onParticipantPress={(id) => activateParticipants([id])}
             header={'out'}
             participants={available}
@@ -46,6 +48,7 @@ function ParticipantManager(props) {
         <Col style={styles.item}>
           <Text>in</Text>
           <ParticipantList
+            onLongPressParticipant={(id) => onLongPressParticipant(id)}
             onParticipantPress={(id) => deactivateParticipants([id])}
             header={'in'}
             participants={active}

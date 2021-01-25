@@ -1,6 +1,7 @@
 export const types = {
   RESET: 'RESET',
   ADD_PARTICIPANTS: 'ADD_PARTICIPANTS',
+  DELETE_PARTICIPANTS: 'DELETE_PARTICIPANTS',
   ACTIVATE_PARTICIPANTS: 'ACTIVATE_PARTICIPANTS',
   DEACTIVATE_PARTICIPANTS: 'DEACTIVATE_PARTICIPANTS',
   SET_BREAK_TIME: 'SET_BREAK_TIME',
@@ -36,6 +37,11 @@ export const setCurrentRound = (round) => ({
 
 export const addParticipants = (participants) => ({
   type: types.ADD_PARTICIPANTS,
+  payload: participants,
+});
+
+export const deleteParticipants = (participants) => ({
+  type: types.DELETE_PARTICIPANTS,
   payload: participants,
 });
 

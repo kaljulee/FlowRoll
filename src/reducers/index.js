@@ -113,6 +113,22 @@ const basicReducer = (state = getInitialState(), action) => {
         nextParticipantID: newNextParticipantID,
         participants: [...state.participants, ...newParticipants],
       };
+    case types.DELETE_PARTICIPANTS:
+      update = {};
+      update.activeParticipants = _.without(
+        state.activeParticipants,
+        ...payload,
+      );
+      update.participants = state.participants.reduce((acc, p) => {
+        if (!_.find(payload, (o) => o === p.id)) {
+          acc.push(p);
+        }
+        return acc;
+      }, []);
+      return {
+        ...state,
+        ...update,
+      };
     case types.ACTIVATE_PARTICIPANTS:
       return {
         ...state,

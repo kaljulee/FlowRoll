@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardItem } from 'native-base';
-import { Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   card: {
@@ -20,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 function ParticipantList(props) {
-  const { participants, onParticipantPress } = props;
+  const { participants, onParticipantPress, onLongPressParticipant } = props;
 
   const EmptyList = () => (
     <Card>
@@ -30,6 +36,13 @@ function ParticipantList(props) {
     </Card>
   );
 
+  function onParticipantLongPress(id) {
+    ToastAndroid.show('long press! ' + id, ToastAndroid.SHORT);
+    if (onLongPressParticipant) {
+      onLongPressParticipant(id);
+    }
+  }
+
   return (
     <FlatList
       style={styles.list}
@@ -38,7 +51,9 @@ function ParticipantList(props) {
       ListEmptyComponent={() => EmptyList()}
       renderItem={({ item }) => {
         return (
-          <TouchableOpacity onPress={() => onParticipantPress(item.id)}>
+          <TouchableOpacity
+            onPress={() => onParticipantPress(item.id)}
+            onLongPress={() => onParticipantLongPress(item.id)}>
             <Card style={styles.card}>
               <CardItem style={styles.item}>
                 <Text>{item.name}</Text>

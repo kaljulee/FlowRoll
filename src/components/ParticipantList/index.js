@@ -56,7 +56,7 @@ function ParticipantList(props) {
             onLongPress={() => onParticipantLongPress(item.id)}>
             <Card style={styles.card}>
               <CardItem style={styles.item}>
-                <Text>{item.name}</Text>
+                <Text>{`${item.name}`}</Text>
               </CardItem>
             </Card>
           </TouchableOpacity>

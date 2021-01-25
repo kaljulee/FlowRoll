@@ -63,14 +63,12 @@ function AddParticipantModal(props) {
   };
 
   function isValid() {
-    console.log('name shit: ' + name);
     return name !== null && name.length > 0;
   }
 
   const addParticipant = () => {
-    console.log('would add participant');
     if (isValid(name)) {
-      addParticipants([{ name }]);
+      addParticipants({ participants: [{ name }], activate: addToActive });
     } else {
       ToastAndroid.show('name not valid for some reason', ToastAndroid.SHORT);
     }

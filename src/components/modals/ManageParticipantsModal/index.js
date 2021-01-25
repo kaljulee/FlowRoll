@@ -25,12 +25,16 @@ function ManageParticipantsModal(props) {
     isVisible,
     onClosePress,
     onAddParticipantPress,
+    onLongPressParticipant,
   } = props;
   return (
     <Modal style={{ height: '100%' }} isVisible={isVisible}>
       <Card style={styles.card}>
         <CardItem>
-          <ParticipantManager participants={participants} />
+          <ParticipantManager
+            onLongPressParticipant={onLongPressParticipant}
+            participants={participants}
+          />
         </CardItem>
       </Card>
       <Grid

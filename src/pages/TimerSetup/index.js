@@ -9,6 +9,7 @@ import SettingsButton from '../../components/SettingsButton';
 import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
 import ManageParticipantsModal from '../../components/modals/ManageParticipantsModal';
 import AddParticipantModal from '../../components/modals/AddParticipantModal';
+import DeleteParticipantModal from '../../components/modals/DeleteParticipantModal';
 
 function TimerSetup(props) {
   const {
@@ -26,6 +27,7 @@ function TimerSetup(props) {
   const [showParticipantInput, setShowParticipantInput] = useState(false);
   const [showRoundCountInput, setShowRoundCountInput] = useState(false);
   const [showAddParticipant, setShowAddParticipant] = useState(false);
+  const [showDeleteParticipant, setShowDeleteParticipant] = useState(false);
 
   function onStartPress() {
     startTimerRun();
@@ -76,6 +78,7 @@ function TimerSetup(props) {
           onClosePress={() => setShowRoundCountInput(false)}
         />
         <ManageParticipantsModal
+          onLongPressParticipant={setShowDeleteParticipant}
           participants={participants}
           isVisible={showParticipantInput}
           onClosePress={() => setShowParticipantInput(false)}
@@ -87,6 +90,11 @@ function TimerSetup(props) {
         <AddParticipantModal
           isVisible={showAddParticipant}
           closeModal={() => setShowAddParticipant(false)}
+        />
+        <DeleteParticipantModal
+          setShowDeleteParticipant={setShowDeleteParticipant}
+          deletableParticipant={showDeleteParticipant}
+          closeModal={() => setShowDeleteParticipant(null)}
         />
       </Content>
       <Footer>

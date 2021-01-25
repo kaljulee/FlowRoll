@@ -26,9 +26,7 @@ const styles = StyleSheet.create({
 });
 
 function ParticipantList(props) {
-  const { participants, onParticipantPress } = props;
-
-  const [longPressed, setLongPressed] = useState(null);
+  const { participants, onParticipantPress, onLongPressParticipant } = props;
 
   const EmptyList = () => (
     <Card>
@@ -40,7 +38,9 @@ function ParticipantList(props) {
 
   function onParticipantLongPress(id) {
     ToastAndroid.show('long press! ' + id, ToastAndroid.SHORT);
-    setLongPressed(id);
+    if (onLongPressParticipant) {
+      onLongPressParticipant(id);
+    }
   }
 
   return (

@@ -12,6 +12,7 @@ import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds } from '../helpers/time';
 
 // common recipes
+//timer related
 const expireTimer = () => ({
   startTimeStamp: undefined,
   endTimeStamp: undefined,
@@ -60,6 +61,10 @@ const roundToBreak = (duration) => {
   };
 };
 
+// participant related
+const mergeActiveParticipants = (oldParticipants, newParticipants) =>
+  _.uniq([...oldParticipants, ...newParticipants]);
+
 const getInitialState = () => {
   const participants = [
     createParticipant('Kalju', 1),
@@ -102,16 +107,24 @@ const basicReducer = (state = getInitialState(), action) => {
       console.log('reseting DB');
       return getInitialState();
     case types.ADD_PARTICIPANTS:
+      let update = {};
       let newNextParticipantID = state.nextParticipantID;
-      const newParticipants = payload.map((p) => {
+      const newParticipants = payload.participants.map((p) => {
         const newP = { ...p, id: newNextParticipantID };
         newNextParticipantID = newNextParticipantID + 1;
         return newP;
       });
+      update.participants = [...state.participants, ...newParticipants];
+      update.nextParticipantID = newNextParticipantID;
+      if (payload.activate) {
+        update.activeParticipants = mergeActiveParticipants(
+          state.activeParticipants,
+          newParticipants.map((p) => p.id),
+        );
+      }
       return {
         ...state,
-        nextParticipantID: newNextParticipantID,
-        participants: [...state.participants, ...newParticipants],
+        ...update,
       };
     case types.DELETE_PARTICIPANTS:
       update = {};
@@ -132,7 +145,10 @@ const basicReducer = (state = getInitialState(), action) => {
     case types.ACTIVATE_PARTICIPANTS:
       return {
         ...state,
-        activeParticipants: _.uniq([...state.activeParticipants, ...payload]),
+        activeParticipants: mergeActiveParticipants(
+          state.activeParticipants,
+          payload,
+        ),
       };
     case types.DEACTIVATE_PARTICIPANTS:
       return {

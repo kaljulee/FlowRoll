@@ -5,6 +5,8 @@ import { StyleSheet } from 'react-native';
 import CloseModalButton from '../../CloseModalButton';
 import { numberInputFontSize } from '../../../constants/styleValues';
 import { NumberInputLabel } from '../../NumberInput';
+import { setRoundCount } from '../../../actions';
+import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
   card: {
@@ -23,8 +25,12 @@ const styles = StyleSheet.create({
 });
 
 function SetRoundCountModal(props) {
-  const { isVisible, onClosePress, label } = props;
-  const [value, setValue] = useState(props.value.toString());
+  const { isVisible, onClosePress, label, setRoundCount } = props;
+  const [value, _setValue] = useState(props.value.toString());
+  const setValue = (v) => {
+    _setValue(v);
+    setRoundCount(v);
+  };
   return (
     <Modal isVisible={isVisible}>
       <Card style={styles.card}>
@@ -53,4 +59,15 @@ SetRoundCountModal.defaultProps = {
   label: 'rounds',
 };
 
-export default SetRoundCountModal;
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = {
+  setRoundCount,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SetRoundCountModal);

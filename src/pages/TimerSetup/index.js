@@ -14,7 +14,6 @@ import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
 import ManageParticipantsModal from '../../components/modals/ManageParticipantsModal';
 import AddParticipantModal from '../../components/modals/AddParticipantModal';
 import DeleteParticipantModal from '../../components/modals/DeleteParticipantModal';
-import { STATUS } from '../../helpers/utils';
 
 function TimerSetup(props) {
   const {

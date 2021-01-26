@@ -33,12 +33,18 @@ import {
   Tabs,
 } from 'native-base';
 import TimeKeeperContainer from './src/components/TimeKeeperContainer';
+import ActiveTimerWarningModal from './src/components/modals/ActiveTimerWarningModal';
 
 const { store, persistor } = configureStore();
 
 const App: () => React$Node = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const hasHeader = false;
+
+  function onReturnToTimerPress() {
+    setCurrentTab(1);
+  }
+
   return (
     <>
       <Provider store={store}>
@@ -49,27 +55,36 @@ const App: () => React$Node = () => {
               contentInsetAdjustmentBehavior="automatic"
               style={styles.scrollView}>
               <TimeKeeperContainer>
-                {hasHeader && <Header hasTabs>
-                  <Left>
-                    <Button transparent>
-                      <Icon name="menu" />
-                    </Button>
-                  </Left>
-                  <Body>
-                    <Title>Header</Title>
-                  </Body>
-                  <Right />
-                </Header>}
+                {hasHeader && (
+                  <Header hasTabs>
+                    <Left>
+                      <Button transparent>
+                        <Icon name="menu" />
+                      </Button>
+                    </Left>
+                    <Body>
+                      <Title>Header</Title>
+                    </Body>
+                    <Right />
+                  </Header>
+                )}
                 <Tabs
                   page={currentTab}
                   onChangeTab={(page) => setCurrentTab(page.i)}>
                   <Tab heading={'setup'}>
-                    <TimerSetup changeTab={(page) => setCurrentTab(page)} />
+                    <TimerSetup
+                      currentTab={currentTab}
+                      changeTab={(page) => setCurrentTab(page)}
+                    />
                   </Tab>
                   <Tab heading={'timer'}>
                     <MainDisplay />
                   </Tab>
                 </Tabs>
+                <ActiveTimerWarningModal
+                  onReturnToTimerPress={onReturnToTimerPress}
+                  currentTab={currentTab}
+                />
               </TimeKeeperContainer>
             </ScrollView>
           </SafeAreaView>

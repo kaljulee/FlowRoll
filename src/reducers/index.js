@@ -160,9 +160,9 @@ const basicReducer = (state = getInitialState(), action) => {
     case types.SET_SCHEDULE:
       return { ...state, schedule: payload };
     case types.SET_BREAK_TIME:
-      return state;
+      return { ...state, breakDuration: payload };
     case types.SET_ROUND_TIME:
-      return state;
+      return { ...state, roundDuration: payload };
     case types.SET_ROUND_COUNT:
       return state;
     case types.SET_EST_TIME:

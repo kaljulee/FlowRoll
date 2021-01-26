@@ -164,7 +164,7 @@ const basicReducer = (state = getInitialState(), action) => {
     case types.SET_ROUND_TIME:
       return { ...state, roundDuration: payload };
     case types.SET_ROUND_COUNT:
-      return state;
+      return { ...state, roundCount: payload };
     case types.SET_EST_TIME:
       return state;
     case types.SET_START_TIMESTAMP:

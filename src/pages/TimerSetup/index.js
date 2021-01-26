@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { hourMinuteSecond } from '../../helpers/time';
 import { Container, Content, Footer, Button, Text } from 'native-base';
-import { startTimerRun, resetDB } from '../../actions';
+import {
+  startTimerRun,
+  resetDB,
+  setBreakTime,
+  setRoundTime,
+} from '../../actions';
 import SetTimeModal from '../../components/modals/SetTimeModal';
 import SettingsButton from '../../components/SettingsButton';
 import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
@@ -21,6 +25,8 @@ function TimerSetup(props) {
     changeTab,
     activeParticipants,
     startTimerRun,
+    setRoundTime,
+    setBreakTime,
   } = props;
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
@@ -64,12 +70,14 @@ function TimerSetup(props) {
           label={'round length'}
           isVisible={showRoundTimeInput}
           value={roundDuration}
+          onSelectedChange={setRoundTime}
           onClosePress={() => setShowRoundTimeInput(false)}
         />
         <SetTimeModal
           label={'break length'}
           isVisible={showBreakTimeInput}
           value={breakDuration}
+          onSelectedChange={setBreakTime}
           onClosePress={() => setShowBreakTimeInput(false)}
         />
         <SetRoundCountModal
@@ -134,6 +142,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   resetDB,
+  setRoundTime,
+  setBreakTime,
   startTimerRun,
 };
 

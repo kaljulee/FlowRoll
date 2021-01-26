@@ -4,10 +4,15 @@ import CloseModalButton from '../../CloseModalButton';
 import React from 'react';
 
 function SetTimeModal(props) {
-  const { isVisible, value, onClosePress, label } = props;
+  const { isVisible, value, onClosePress, label, onSelectedChange } = props;
+
   return (
     <Modal isVisible={isVisible}>
-      <TimeInput value={value} label={label} />
+      <TimeInput
+        value={value}
+        label={label}
+        onSelectedChange={onSelectedChange}
+      />
       <CloseModalButton onPress={onClosePress} />
     </Modal>
   );

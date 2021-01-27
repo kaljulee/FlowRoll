@@ -199,6 +199,12 @@ const basicReducer = (state = getInitialState(), action) => {
         ...state,
         ...update,
       };
+    case types.TIMER_RESET:
+      update = resetTimer();
+      return {
+        ...state,
+        ...update,
+      }
     case types.START_TIMER_RUN:
       update = startTimerRun(state.roundDuration);
       return {

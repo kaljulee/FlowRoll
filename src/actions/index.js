@@ -15,6 +15,7 @@ export const types = {
   TIMER_ROLLOVER: 'TIMER_ROLLOVER',
   START_TIMER_RUN: 'START_TIMER_RUN',
   TIMER_EXPIRE: 'TIMER_EXPIRE',
+  TIMER_RESET: 'TIMER_RESET',
   SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
   // SET_REMAINING_SECONDS: 'SET_REMAINING_SECONDS',
 };
@@ -29,6 +30,8 @@ export const setSchedule = (schedule) => ({
 });
 
 export const timerRollover = () => ({ type: types.TIMER_ROLLOVER });
+
+export const resetTimer = () => ({ type: types.TIMER_RESET});
 
 export const setCurrentRound = (round) => ({
   type: types.SET_CURRENT_ROUND,

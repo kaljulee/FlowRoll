@@ -44,7 +44,7 @@ function TimeKeeperContainer(props) {
   useEffect(() => {
     if (expired) {
       expireTimer();
-      setTimeout(timerRollover, 1500);
+      setTimeout(timerRollover, 1000);
     } else {
       setElapsedSeconds(elapsedTime, 'TimeKeeperContainer');
     }

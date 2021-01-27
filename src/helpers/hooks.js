@@ -11,7 +11,7 @@ export function useElapsedTime(startTimeStamp, endTimeStamp) {
   const [activeTimer, setActiveTimer] = useState(null);
 
   // cancel interval and reset elapsedTime
-  const resetTimer = useCallback((intervalID) => {
+  const resetElapsedTime = useCallback((intervalID) => {
     clearInterval(intervalID);
     setElapsedTime(0);
     setActiveTimer(null);
@@ -27,16 +27,16 @@ export function useElapsedTime(startTimeStamp, endTimeStamp) {
       }, 1000);
       setActiveTimer(intervalID);
     }
-  }, [activeTimer, resetTimer, startTimeStamp, endTimeStamp]);
+  }, [activeTimer, resetElapsedTime, startTimeStamp, endTimeStamp]);
 
   // remove expired timer.  resetTimer logic maybe could be moved into here?
   useEffect(() => {
     if (activeTimer && moment().isAfter(endTimeStamp)) {
-      resetTimer(activeTimer);
+      resetElapsedTime(activeTimer);
     }
-  }, [activeTimer, elapsedTime, endTimeStamp, resetTimer]);
+  }, [activeTimer, elapsedTime, endTimeStamp, resetElapsedTime]);
 
-  return { elapsedTime, resetTimer };
+  return { elapsedTime, resetElapsedTime };
 }
 
 export function useCountDown(elapsedTime, startTimeStamp, endTime) {
@@ -90,7 +90,7 @@ export function useTotalElapsedTime(status) {
   const [activeTimer, setActiveTimer] = useState(null);
 
   // cancel interval, no timer reset
-  const resetTimer = useCallback((intervalID) => {
+  const resetElapsedTime = useCallback((intervalID) => {
     clearInterval(intervalID);
     setActiveTimer(null);
   }, []);
@@ -110,9 +110,9 @@ export function useTotalElapsedTime(status) {
 
   useEffect(() => {
     if (activeTimer && status === STATUS.IDLE) {
-      resetTimer(activeTimer);
+      resetElapsedTime(activeTimer);
     }
-  }, [activeTimer, resetTimer, status]);
+  }, [activeTimer, resetElapsedTime, status]);
 
-  return { elapsedTime, resetTimer };
+  return { elapsedTime, resetElapsedTime };
 }

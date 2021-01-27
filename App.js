@@ -78,7 +78,7 @@ const App: () => React$Node = () => {
                     />
                   </Tab>
                   <Tab heading={'timer'}>
-                    <MainDisplay />
+                    <MainDisplay onPressRestart={() => console.log('missing restart function at APP level')} />
                   </Tab>
                 </Tabs>
                 <ActiveTimerWarningModal

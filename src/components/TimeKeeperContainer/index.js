@@ -7,6 +7,7 @@ import {
   timerRollover,
   expireTimer,
   setElapsedSeconds,
+  resetTimer,
 } from '../../actions';
 import { useTimerExpired, useElapsedTime } from '../../helpers/hooks';
 
@@ -18,12 +19,20 @@ function TimeKeeperContainer(props) {
     timerRollover,
     endTimeStamp,
     setElapsedSeconds,
+    expireTimer,
+    resetTimer,
   } = props;
   const timerDebugControls = false;
-  const { elapsedTime, resetTimer } = useElapsedTime(
+  const [initialized, setInitialized] = useState(false);
+  const { elapsedTime, resetElapsedTime } = useElapsedTime(
     startTimeStamp,
     endTimeStamp,
   );
+  if (!initialized) {
+    resetElapsedTime();
+    resetTimer();
+    setInitialized(true);
+  }
 
   function beginTimer() {
     startTimerRun();
@@ -35,7 +44,7 @@ function TimeKeeperContainer(props) {
   useEffect(() => {
     if (expired) {
       expireTimer();
-      setTimeout(timerRollover, 1500);
+      setTimeout(timerRollover, 1000);
     } else {
       setElapsedSeconds(elapsedTime, 'TimeKeeperContainer');
     }
@@ -50,7 +59,7 @@ function TimeKeeperContainer(props) {
         </Button>
       )}
       {timerDebugControls && (
-        <Button onPress={() => resetTimer()}>
+        <Button onPress={() => resetElapsedTime()}>
           <Text>clear timer</Text>
         </Button>
       )}
@@ -75,6 +84,7 @@ const mapDispatchToProps = {
   expireTimer,
   timerRollover,
   setElapsedSeconds,
+  resetTimer,
 };
 
 export default connect(

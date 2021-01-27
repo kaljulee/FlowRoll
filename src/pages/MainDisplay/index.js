@@ -212,7 +212,7 @@ function MainDisplay(props) {
       </Content>
       <Footer>
         <ControlBar
-          onPressPlay={onPressPlay}
+          onPressPlay={status === STATUS.IDLE ? onPressPlay : onPressRestart}
           onPressPause={onPressPause}
           onPressRestart={onPressRestart}
         />

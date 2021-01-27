@@ -10,7 +10,6 @@ function onCancelPress(args) {
 
 function ActiveTimerWarningModal(props) {
   const { currentTab, status, onReturnToTimerPress } = props;
-  console.log(currentTab);
   const isVisible = currentTab !== 1 && status !== STATUS.IDLE;
   return (
     <Modal isVisible={isVisible}>

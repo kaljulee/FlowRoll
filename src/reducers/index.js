@@ -11,6 +11,11 @@ import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds } from '../helpers/time';
 
+function validateRoundCount(payload) {
+  const payloadAsInt = parseInt(payload);
+  return payloadAsInt;
+}
+
 // common recipes
 //timer related
 const expireTimer = () => ({
@@ -164,7 +169,7 @@ const basicReducer = (state = getInitialState(), action) => {
     case types.SET_ROUND_TIME:
       return { ...state, roundDuration: payload };
     case types.SET_ROUND_COUNT:
-      return { ...state, roundCount: payload };
+      return { ...state, roundCount: validateRoundCount(payload) };
     case types.SET_EST_TIME:
       return state;
     case types.SET_START_TIMESTAMP:

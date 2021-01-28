@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Button } from 'native-base';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
+import { STATUS } from '../../helpers/utils';
 import {
   startTimerRun,
   timerRollover,
@@ -10,6 +11,23 @@ import {
   resetTimer,
 } from '../../actions';
 import { useTimerExpired, useElapsedTime } from '../../helpers/hooks';
+
+// import sound module
+var Sound = require('react-native-sound');
+// enable playback ins slience mode
+Sound.setCategory('Playback');
+var startSound = new Sound('respawn_beep_1.mp3', Sound.MAIN_BUNDLE, (err) => {
+  if (err) {
+    console.log('failed to load sound', err);
+    return;
+  }
+});
+var endSound = new Sound('respawn_beep_2.mp3', Sound.MAIN_BUNDLE, (error) => {
+  if (error) {
+    console.log('failed to load sound', error);
+    return;
+  }
+});
 
 function TimeKeeperContainer(props) {
   const {
@@ -21,6 +39,7 @@ function TimeKeeperContainer(props) {
     setElapsedSeconds,
     expireTimer,
     resetTimer,
+    status,
   } = props;
   const timerDebugControls = false;
   const [initialized, setInitialized] = useState(false);
@@ -42,13 +61,28 @@ function TimeKeeperContainer(props) {
 
   // either expire the timer or update elapsed seconds
   useEffect(() => {
+    // if start of round, play start sound
+    if (elapsedTime === 0 && status === STATUS.ROUND) {
+      startSound.play();
+    }
+    // play end sound at round expire
     if (expired) {
+      if (status === STATUS.ROUND) {
+        endSound.play();
+      }
       expireTimer();
       setTimeout(timerRollover, 1000);
     } else {
       setElapsedSeconds(elapsedTime, 'TimeKeeperContainer');
     }
-  }, [expired, timerRollover, elapsedTime, setElapsedSeconds]);
+  }, [
+    expired,
+    timerRollover,
+    elapsedTime,
+    setElapsedSeconds,
+    status,
+    expireTimer,
+  ]);
 
   return (
     <Container>
@@ -70,9 +104,10 @@ function TimeKeeperContainer(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { roundDuration, startTimeStamp, endTimeStamp },
+    basicReducer: { status, roundDuration, startTimeStamp, endTimeStamp },
   } = state;
   return {
+    status,
     endTimeStamp,
     roundDuration,
     startTimeStamp,

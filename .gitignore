@@ -60,3 +60,4 @@ buck-out/
 
 #trying to avoid wav
 **.wav
+**.mp3

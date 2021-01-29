@@ -83,7 +83,7 @@ function filterOnRecentParticipants(
   return matchUps;
 }
 
-export function createCompleteCycle(matchUps, participants) {
+export function createCompleteRRCycle(matchUps, participants) {
   // return value
   const schedule = [];
 
@@ -130,7 +130,7 @@ export function createCompleteCycle(matchUps, participants) {
 
 export function createDefaultOrdering(participants) {
   const matchUps = createMatchUps(participants);
-  const completeCycle = createCompleteCycle(matchUps, participants);
+  const completeCycle = createCompleteRRCycle(matchUps, participants);
   // console.group('complete cycle');
   // completeCycle.forEach((c) => {
   //   const match = findMatchUpByID(matchUps, c);

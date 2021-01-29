@@ -77,12 +77,12 @@ const updateParticipantMatchUps = (participants, activeParticipants) => {
     activeParticipants,
   );
   update.matchUps = createMatchUps(sortedParticipants.active);
-  update.completeCyle = createCompleteRRCycle(
+  update.completeRRCycle = createCompleteRRCycle(
     update.matchUps,
     sortedParticipants.active,
   );
   // schedule defaults to same as rr cycle
-  update.schedule = update.completeCyle;
+  update.schedule = update.completeRRCycle;
   return update;
 };
 
@@ -198,7 +198,10 @@ const basicReducer = (state = getInitialState(), action) => {
       // update matchups
       update = {
         ...update,
-        ...updateParticipantMatchUps(update),
+        ...updateParticipantMatchUps(
+          state.participants,
+          update.activeParticipants,
+        ),
       };
       return {
         ...state,

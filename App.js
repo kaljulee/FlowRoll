@@ -34,6 +34,7 @@ import {
 } from 'native-base';
 import TimeKeeperContainer from './src/components/TimeKeeperContainer';
 import ActiveTimerWarningModal from './src/components/modals/ActiveTimerWarningModal';
+import TrainSchedule from './src/pages/TrainSchedule';
 
 const { store, persistor } = configureStore();
 
@@ -78,7 +79,14 @@ const App: () => React$Node = () => {
                     />
                   </Tab>
                   <Tab heading={'timer'}>
-                    <MainDisplay onPressRestart={() => console.log('missing restart function at APP level')} />
+                    <MainDisplay
+                      onPressRestart={() =>
+                        console.log('missing restart function at APP level')
+                      }
+                    />
+                  </Tab>
+                  <Tab heading={'train schedule'}>
+                    <TrainSchedule />
                   </Tab>
                 </Tabs>
                 <ActiveTimerWarningModal

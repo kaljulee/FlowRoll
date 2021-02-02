@@ -189,11 +189,14 @@ function MainDisplay(props) {
     startTimerRun();
   }
 
-  const currentMatchUp = findMatchUpByID(matchUps, schedule[currentRound]);
+  // !! danger !!
+  // current round count starts at 1, schedule starts at 0
+  const currentMatchUp = findMatchUpByID(matchUps, schedule[currentRound - 1]);
   const nextMatchUp =
-    currentRound + 1 === roundCount
-      ? undefined
-      : findMatchUpByID(matchUps, schedule[currentRound + 1]);
+      currentRound + 1 === roundCount
+          ? undefined
+          : findMatchUpByID(matchUps, schedule[currentRound]);
+
   return (
     <Container>
       <Content contentContainerStyle={styles.content}>

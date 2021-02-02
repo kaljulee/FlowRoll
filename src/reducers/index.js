@@ -126,6 +126,7 @@ const getInitialState = () => {
     endTimeStamp: undefined,
     timerDuration: undefined,
     completeRRCycle,
+    mute: true,
   };
 };
 
@@ -271,6 +272,11 @@ const basicReducer = (state = getInitialState(), action) => {
         ...state,
         elapsedSeconds: payload,
         remainingSeconds: isNaN(newRemaining) ? 0 : newRemaining,
+      };
+    case types.MUTE_TOGGLE:
+      return {
+        ...state,
+        mute: !state.mute,
       };
     default:
       return state;

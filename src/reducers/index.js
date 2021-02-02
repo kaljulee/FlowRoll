@@ -10,6 +10,7 @@ import {
 import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds } from '../helpers/time';
+import { createLegType } from '../models/Leg';
 
 function validateRoundCount(payload) {
   const payloadAsInt = parseInt(payload);
@@ -109,6 +110,11 @@ const getInitialState = () => {
     sortedParticipants.active,
   );
 
+  const defaultLegTypes = [];
+  defaultLegTypes.push(createLegType('break', 0, { h: 0, m: 0, s: 30 }, 'red'));
+  defaultLegTypes.push(createLegType('round', 1, { h: 0, m: 6, s: 0 }, 'blue'));
+  const nextLegTypeID = 2;
+
   return {
     participants,
     nextParticipantID: 5,
@@ -127,6 +133,11 @@ const getInitialState = () => {
     timerDuration: undefined,
     completeRRCycle,
     mute: true,
+    defaultLegTypes,
+    nextLegTypeID,
+    legTypes: [],
+    legTypesTemp: [],
+    trainSchedule: { legs: [] },
   };
 };
 

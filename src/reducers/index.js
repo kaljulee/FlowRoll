@@ -83,6 +83,8 @@ const updateParticipantMatchUps = (participants, activeParticipants) => {
   );
   // schedule defaults to same as rr cycle
   update.schedule = update.completeRRCycle;
+  // defaults round count to complete cycle
+  update.roundCount = update.completeRRCycle.length;
   return update;
 };
 

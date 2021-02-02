@@ -40,6 +40,7 @@ function TimeKeeperContainer(props) {
     expireTimer,
     resetTimer,
     status,
+    mute,
   } = props;
   const timerDebugControls = false;
   const [initialized, setInitialized] = useState(false);
@@ -61,14 +62,16 @@ function TimeKeeperContainer(props) {
 
   // either expire the timer or update elapsed seconds
   useEffect(() => {
-    // if start of round, play start sound
-    if (elapsedTime === 0 && status === STATUS.ROUND) {
-      startSound.play();
-    }
-    // play end sound at round expire
-    if (expired) {
-      if (status === STATUS.ROUND) {
-        endSound.play();
+    if (!mute) {
+      // if start of round, play start sound
+      if (elapsedTime === 0 && status === STATUS.ROUND) {
+        startSound.play();
+      }
+      // play end sound at round expire
+      if (expired) {
+        if (status === STATUS.ROUND) {
+          endSound.play();
+        }
       }
       expireTimer();
       setTimeout(timerRollover, 1000);
@@ -82,6 +85,7 @@ function TimeKeeperContainer(props) {
     setElapsedSeconds,
     status,
     expireTimer,
+    mute,
   ]);
 
   return (
@@ -104,13 +108,14 @@ function TimeKeeperContainer(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { status, roundDuration, startTimeStamp, endTimeStamp },
+    basicReducer: { status, roundDuration, startTimeStamp, endTimeStamp, mute },
   } = state;
   return {
     status,
     endTimeStamp,
     roundDuration,
     startTimeStamp,
+    mute,
   };
 };
 

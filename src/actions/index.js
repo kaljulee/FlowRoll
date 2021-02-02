@@ -17,6 +17,7 @@ export const types = {
   TIMER_EXPIRE: 'TIMER_EXPIRE',
   TIMER_RESET: 'TIMER_RESET',
   SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
+  MUTE_TOGGLE: 'MUTE_TOGGLE',
   // SET_REMAINING_SECONDS: 'SET_REMAINING_SECONDS',
 };
 
@@ -31,7 +32,7 @@ export const setSchedule = (schedule) => ({
 
 export const timerRollover = () => ({ type: types.TIMER_ROLLOVER });
 
-export const resetTimer = () => ({ type: types.TIMER_RESET});
+export const resetTimer = () => ({ type: types.TIMER_RESET });
 
 export const setCurrentRound = (round) => ({
   type: types.SET_CURRENT_ROUND,
@@ -86,6 +87,11 @@ const setStartTimeStamp = (stamp) => ({
 
 export const expireTimer = () => ({ type: types.TIMER_EXPIRE });
 
-export const setElapsedSeconds = (payload) => ({type: types.SET_ELAPSED_SECONDS, payload});
+export const setElapsedSeconds = (payload) => ({
+  type: types.SET_ELAPSED_SECONDS,
+  payload,
+});
 
 // export const setRemainingSeconds = (payload) => ({ type: types.SET_REMAINING_SECONDS, payload});
+
+export const toggleMute = () => ({ type: types.MUTE_TOGGLE });

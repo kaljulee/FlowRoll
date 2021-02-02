@@ -83,7 +83,7 @@ function filterOnRecentParticipants(
   return matchUps;
 }
 
-export function createCompleteCycle(matchUps, participants) {
+export function createCompleteRRCycle(matchUps, participants) {
   // return value
   const schedule = [];
 
@@ -130,14 +130,14 @@ export function createCompleteCycle(matchUps, participants) {
 
 export function createDefaultOrdering(participants) {
   const matchUps = createMatchUps(participants);
-  const completeCycle = createCompleteCycle(matchUps, participants);
+  const completeRRCycle = createCompleteRRCycle(matchUps, participants);
   // console.group('complete cycle');
-  // completeCycle.forEach((c) => {
+  // completeRRCycle.forEach((c) => {
   //   const match = findMatchUpByID(matchUps, c);
   //   console.log(match.toString());
   // });
   // console.groupEnd();
-  return completeCycle;
+  return completeRRCycle;
 }
 
 export function participantsByActive(participants, activeParticipants) {

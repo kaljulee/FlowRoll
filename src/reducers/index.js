@@ -3,7 +3,7 @@ import { types } from '../actions';
 import { createParticipant } from '../models/Participant';
 import _ from 'lodash';
 import {
-  createCompleteCycle,
+  createCompleteRRCycle,
   createMatchUps,
   participantsByActive,
 } from '../helpers/ordering';
@@ -70,6 +70,26 @@ const roundToBreak = (duration) => {
 const mergeActiveParticipants = (oldParticipants, newParticipants) =>
   _.uniq([...oldParticipants, ...newParticipants]);
 
+const updateParticipantMatchUps = (participants, activeParticipants) => {
+  const update = {};
+  const sortedParticipants = participantsByActive(
+    participants,
+    activeParticipants,
+  );
+  update.matchUps = createMatchUps(sortedParticipants.active);
+  update.completeRRCycle = createCompleteRRCycle(
+    update.matchUps,
+    sortedParticipants.active,
+  );
+  // schedule defaults to same as rr cycle
+  update.schedule = update.completeRRCycle;
+  // defaults round count to complete cycle
+  update.roundCount = update.completeRRCycle.length;
+  return update;
+};
+
+//////////////////////////
+
 const getInitialState = () => {
   const participants = [
     createParticipant('Kalju', 1),
@@ -84,7 +104,11 @@ const getInitialState = () => {
     activeParticipants,
   );
   const matchUps = createMatchUps(sortedParticipants.active);
-  const schedule = createCompleteCycle(matchUps, sortedParticipants.active);
+  const completeRRCycle = createCompleteRRCycle(
+    matchUps,
+    sortedParticipants.active,
+  );
+
   return {
     participants,
     nextParticipantID: 5,
@@ -94,13 +118,14 @@ const getInitialState = () => {
     roundCount: 2,
     currentRound: 0,
     status: STATUS.IDLE,
-    schedule,
+    schedule: completeRRCycle,
     // matchUps is currently the same as schedule
     matchUps,
     estimatedTime: undefined,
     startTimeStamp: undefined,
     endTimeStamp: undefined,
     timerDuration: undefined,
+    completeRRCycle,
   };
 };
 
@@ -148,17 +173,41 @@ const basicReducer = (state = getInitialState(), action) => {
         ...update,
       };
     case types.ACTIVATE_PARTICIPANTS:
-      return {
-        ...state,
+      // merge in new active participants
+      update = {
         activeParticipants: mergeActiveParticipants(
           state.activeParticipants,
           payload,
         ),
       };
-    case types.DEACTIVATE_PARTICIPANTS:
+      // update matchups
+      update = {
+        ...update,
+        ...updateParticipantMatchUps(
+          state.participants,
+          update.activeParticipants,
+        ),
+      };
       return {
         ...state,
+        ...update,
+      };
+    case types.DEACTIVATE_PARTICIPANTS:
+      // filter out deactivated participants
+      update = {
         activeParticipants: _.without(state.activeParticipants, ...payload),
+      };
+      // update matchups
+      update = {
+        ...update,
+        ...updateParticipantMatchUps(
+          state.participants,
+          update.activeParticipants,
+        ),
+      };
+      return {
+        ...state,
+        ...update,
       };
     case types.SET_CURRENT_ROUND:
       return { ...state, currentRound: payload };
@@ -209,7 +258,7 @@ const basicReducer = (state = getInitialState(), action) => {
       return {
         ...state,
         ...update,
-      }
+      };
     case types.START_TIMER_RUN:
       update = startTimerRun(state.roundDuration);
       return {

@@ -2,15 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Text } from 'native-base';
 import { Grid, Col } from 'react-native-easy-grid';
+import LegManager from '../../components/LegManager';
+import TrainTracker from '../../components/TrainTracker';
 
 function TrainSchedule(props) {
   return (
     <Grid>
       <Col size={3} style={{ borderWidth: 5 }}>
-        <Text>various controls and data</Text>
+        <LegManager />
       </Col>
       <Col size={1} style={{ borderWidth: 5 }}>
-        <Text>train schedule visualization</Text>
+        <TrainTracker />
       </Col>
     </Grid>
   );

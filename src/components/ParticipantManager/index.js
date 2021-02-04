@@ -1,23 +1,12 @@
 import React from 'react';
-import { Grid, Col, Row } from 'react-native-easy-grid';
-import { StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { participantsByActive } from '../../helpers/ordering';
-import ParticipantList from '../ParticipantList';
 import {
   activateParticipants,
   deactivateParticipants,
   addParticipants,
 } from '../../actions';
-import ToggleList from '../ScheduleManager/ToggleList';
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-  },
-  item: { flex: 1, flexDirection: 'column', height: '100%' },
-});
+import ToggleList from '../ToggleList';
 
 function ParticipantManager(props) {
   const {

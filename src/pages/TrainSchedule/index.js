@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Text } from 'native-base';
-import { Grid, Col } from 'react-native-easy-grid';
+import { Text, Button } from 'native-base';
+import { Grid, Col, Row } from 'react-native-easy-grid';
 import LegManager from '../../components/LegManager';
 import TrainTracker from '../../components/TrainTracker';
 import { unscheduleLeg, addLegToSchedule, deleteLegType } from '../../actions';
@@ -14,6 +14,9 @@ function TrainSchedule(props) {
     deleteLegType,
     addLegToSchedule,
   } = props;
+
+  const [showAddLegModal, setShowAddLegModal] = useState(false);
+
   const unscheduleAllOfType = (id) => {
     console.log('would unschedule all of type ' + id);
   };
@@ -22,7 +25,7 @@ function TrainSchedule(props) {
     console.log(`would delete type ${id}`);
   };
   const unschedule = (id) => {
-    unscheduleLeg({legs: [id]});
+    unscheduleLeg({ legs: [id] });
   };
   const scheduleDefault = (id) => {
     addLegToSchedule({ legs: [{ legType: id }] });
@@ -31,14 +34,21 @@ function TrainSchedule(props) {
   return (
     <Grid>
       <Col size={3} style={{ borderWidth: 5 }}>
-        <LegManager
-          onPressAvailableLeg={scheduleDefault}
-          onPressActiveLeg={unschedule}
-          onLongPressActiveLeg={unscheduleAllOfType}
-          onLongPressAvailableLeg={deleteType}
-          schedule={legs}
-          available={legTypes}
-        />
+        <Row>
+          <LegManager
+            onPressAvailableLeg={scheduleDefault}
+            onPressActiveLeg={unschedule}
+            onLongPressActiveLeg={unscheduleAllOfType}
+            onLongPressAvailableLeg={deleteType}
+            schedule={legs}
+            available={legTypes}
+          />
+        </Row>
+        <Row>
+          <Button onPress={() => setShowAddLegModal(true)}>
+            <Text>Add New Type</Text>
+          </Button>
+        </Row>
       </Col>
       <Col size={1} style={{ borderWidth: 5 }}>
         <TrainTracker />

@@ -9,6 +9,7 @@ import {
   deactivateParticipants,
   addParticipants,
 } from '../../actions';
+import ToggleList from '../ScheduleManager/ToggleList';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,28 +35,16 @@ function ParticipantManager(props) {
   );
 
   return (
-    <Grid style={styles.container}>
-      <Row style={{ height: '100%' }}>
-        <Col style={styles.item}>
-          <Text>out</Text>
-          <ParticipantList
-            onLongPressParticipant={(id) => onLongPressParticipant(id)}
-            onParticipantPress={(id) => activateParticipants([id])}
-            header={'out'}
-            participants={available}
-          />
-        </Col>
-        <Col style={styles.item}>
-          <Text>in</Text>
-          <ParticipantList
-            onLongPressParticipant={(id) => onLongPressParticipant(id)}
-            onParticipantPress={(id) => deactivateParticipants([id])}
-            header={'in'}
-            participants={active}
-          />
-        </Col>
-      </Row>
-    </Grid>
+    <ToggleList
+      available={available}
+      active={active}
+      onPressAvailable={(id) => activateParticipants([id])}
+      onLongPressAvailable={(id) => onLongPressParticipant(id)}
+      onPressActive={(id) => deactivateParticipants([id])}
+      onLongPressActive={(id) => onLongPressParticipant(id)}
+      activeHeader={'in'}
+      availableHeader={'out'}
+    />
   );
 }
 

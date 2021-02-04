@@ -2,22 +2,23 @@ import React from 'react';
 import ToggleList from '../ToggleList';
 
 function LegManager(props) {
-  const { available, scheduled } = props;
-
-  const onPressAvailableLeg = () => {};
-  const onLongPressAvailableLeg = () => {};
-  const onPressScheduledLeg = () => {};
-
-  const onLongPressScheduledLeg = () => {};
+  const {
+    available,
+    schedule,
+    onPressAvailableLeg,
+    onPressActiveLeg,
+    onLongPressActiveLeg,
+    onLongPressAvailableLeg,
+  } = props;
 
   return (
     <ToggleList
       available={available}
-      active={scheduled}
+      active={schedule}
       onPressAvailable={onPressAvailableLeg}
       onLongPressAvailable={onLongPressAvailableLeg}
-      onPressActive={onPressScheduledLeg}
-      onLongPressActive={onLongPressScheduledLeg}
+      onPressActive={onPressActiveLeg}
+      onLongPressActive={onLongPressActiveLeg}
       activeHeader={'scheduled'}
       availableHeader={'available'}
     />

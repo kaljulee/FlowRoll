@@ -11,7 +11,6 @@ import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds } from '../helpers/time';
 import { createLegType } from '../models/Leg';
-
 function validateRoundCount(payload) {
   const payloadAsInt = parseInt(payload);
   return payloadAsInt;
@@ -136,6 +135,7 @@ const getInitialState = () => {
     nextLegTypeID,
     legTypes: defaultLegTypes,
     trainSchedule: { legs: [] },
+    nextLegID: 1,
   };
 };
 
@@ -286,6 +286,48 @@ const basicReducer = (state = getInitialState(), action) => {
       return {
         ...state,
         mute: !state.mute,
+      };
+    case types.LEG_SCHEDULE:
+      let newNextLegID = state.nextLegID;
+      update = {
+        trainSchedule: {
+          ...state.trainSchedule,
+          legs: [
+            ...state.trainSchedule.legs,
+            ...payload.legs.map((l) => {
+              const selectedLegType = state.legTypes[l.legType];
+              const newLeg = {
+                ...selectedLegType,
+                legType: selectedLegType.id,
+                ...l.settings,
+                id: newNextLegID,
+              };
+              newNextLegID = newNextLegID + 1;
+              return newLeg;
+            }),
+          ],
+        },
+      };
+      update.nextLegID = newNextLegID;
+      return {
+        ...state,
+        ...update,
+      };
+    case types.LEG_UNSCHEDULE:
+      update = {
+        trainSchedule: {
+          ...state.trainSchedule,
+          legs: state.trainSchedule.legs.reduce((acc, l) => {
+            if (!_.find(payload.legs, (e) => parseInt(e) === l.id)) {
+              acc.push(l);
+            }
+            return acc;
+          }, []),
+        },
+      };
+      return {
+        ...state,
+        ...update,
       };
     default:
       return state;

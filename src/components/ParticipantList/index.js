@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardItem } from 'native-base';
+
 import {
   Text,
   FlatList,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
+import SchedulingList from '../SchedulingList';
 
 const styles = StyleSheet.create({
   card: {
@@ -44,24 +46,10 @@ function ParticipantList(props) {
   }
 
   return (
-    <FlatList
-      style={styles.list}
+    <SchedulingList
       data={participants}
-      keyExtractor={(item) => item.id.toString()}
-      ListEmptyComponent={() => EmptyList()}
-      renderItem={({ item }) => {
-        return (
-          <TouchableOpacity
-            onPress={() => onParticipantPress(item.id)}
-            onLongPress={() => onParticipantLongPress(item.id)}>
-            <Card style={styles.card}>
-              <CardItem style={styles.item}>
-                <Text>{`${item.name}`}</Text>
-              </CardItem>
-            </Card>
-          </TouchableOpacity>
-        );
-      }}
+      onLongPress={onParticipantLongPress}
+      onPress={onParticipantPress}
     />
   );
 }

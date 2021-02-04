@@ -1,6 +1,9 @@
 export function createLegType(name, id, defaultLength, defaultColor, settings) {
-  if (!name || !id) {
+  if (!name || isNaN(id)) {
     console.log('bad legType data');
+    console.log(name);
+    console.log(id);
+    console.log('////////');
     return;
   }
   return {
@@ -9,12 +12,6 @@ export function createLegType(name, id, defaultLength, defaultColor, settings) {
   };
 }
 
-export function createLeg(legType, customizations) {
-  return {
-    ...legType,
-    ...customizations,
-  };
-}
 // not sure exactly how this is going to work, but some sort of leg grouping (or leg breaking up) should happen.
 // maybe a leg can contain other legs?
 export function Activity(legs) {

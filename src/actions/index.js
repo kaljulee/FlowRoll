@@ -25,6 +25,8 @@ export const types = {
   // LEG_TYPE_ADD_TEMP: 'LEG_TYPE_ADD_TEMP',
   // LEG_TYPE_DELETE_TEMP: 'LEG_TYPE_DELETE_TEMP',
   LEG_ADD: 'LEG_ADD',
+  LEGTYPE_ADD: 'LEGTYPE_ADD',
+  LEGTYPE_DELETE: 'LEGTYPE_DELETE',
   LEG_DELETE: 'LEG_DELETE',
   // LEG_TYPE_SAVED_EDIT: 'LEG_TYPE_EDIT',
   // LEG_TYPE_TEMP_EDIT: 'LEG_TYPE_TEMP_EDIT',
@@ -122,10 +124,16 @@ export const unscheduleLeg = (payload) => {
   };
 };
 
-export const deleteLegType = (payload) => {
+export const addLegType = ({ legType }) => {
   return {
-    type: types.LEG_DELETE,
-    payload,
-    // type: types.LEG
+    type: types.LEGTYPE_ADD,
+    payload: { legType },
+  };
+};
+
+export const deleteLegType = ({ id }) => {
+  return {
+    type: types.LEGTYPE_DELETE,
+    payload: { id },
   };
 };

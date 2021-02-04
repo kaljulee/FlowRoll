@@ -329,6 +329,22 @@ const basicReducer = (state = getInitialState(), action) => {
         ...state,
         ...update,
       };
+    case types.LEGTYPE_ADD:
+      update = {};
+      if (payload.legType) {
+        let newLegType = { ...payload.legType };
+        newLegType.id = state.nextLegTypeID;
+        update.nextLegTypeID = state.nextLegTypeID + 1;
+        update.legTypes = [...state.legTypes, newLegType];
+      }
+      return {
+        ...state,
+        ...update,
+      };
+    case types.LEGTYPE_DELETE:
+      return {
+        ...state,
+      }
     default:
       return state;
   }

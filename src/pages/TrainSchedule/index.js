@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Text, Button } from 'native-base';
+import { Text, Button, Container } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import LegManager from '../../components/LegManager';
 import TrainTracker from '../../components/TrainTracker';
 import { unscheduleLeg, addLegToSchedule, deleteLegType } from '../../actions';
+import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
 
 function TrainSchedule(props) {
   const {
@@ -32,28 +33,34 @@ function TrainSchedule(props) {
   };
 
   return (
-    <Grid>
-      <Col size={3} style={{ borderWidth: 5 }}>
-        <Row>
-          <LegManager
-            onPressAvailableLeg={scheduleDefault}
-            onPressActiveLeg={unschedule}
-            onLongPressActiveLeg={unscheduleAllOfType}
-            onLongPressAvailableLeg={deleteType}
-            schedule={legs}
-            available={legTypes}
-          />
-        </Row>
-        <Row>
-          <Button onPress={() => setShowAddLegModal(true)}>
-            <Text>Add New Type</Text>
-          </Button>
-        </Row>
-      </Col>
-      <Col size={1} style={{ borderWidth: 5 }}>
-        <TrainTracker />
-      </Col>
-    </Grid>
+    <Container>
+      <Grid>
+        <Col size={3} style={{ borderWidth: 5 }}>
+          <Row>
+            <LegManager
+              onPressAvailableLeg={scheduleDefault}
+              onPressActiveLeg={unschedule}
+              onLongPressActiveLeg={unscheduleAllOfType}
+              onLongPressAvailableLeg={deleteType}
+              schedule={legs}
+              available={legTypes}
+            />
+          </Row>
+          <Row>
+            <Button onPress={() => setShowAddLegModal(true)}>
+              <Text>Add New Type</Text>
+            </Button>
+          </Row>
+        </Col>
+        <Col size={1} style={{ borderWidth: 5 }}>
+          <TrainTracker />
+        </Col>
+      </Grid>
+      <AddLegTypeModal
+        isVisible={showAddLegModal}
+        closeModal={() => setShowAddLegModal(false)}
+      />
+    </Container>
   );
 }
 

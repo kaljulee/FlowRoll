@@ -133,10 +133,8 @@ const getInitialState = () => {
     timerDuration: undefined,
     completeRRCycle,
     mute: true,
-    defaultLegTypes,
     nextLegTypeID,
-    legTypes: [],
-    legTypesTemp: [],
+    legTypes: defaultLegTypes,
     trainSchedule: { legs: [] },
   };
 };

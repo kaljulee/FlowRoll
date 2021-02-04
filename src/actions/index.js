@@ -19,15 +19,18 @@ export const types = {
   SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
   MUTE_TOGGLE: 'MUTE_TOGGLE',
   // SET_REMAINING_SECONDS: 'SET_REMAINING_SECONDS',
-  LEG_TYPE_ADD_SAVED: 'LEG_TYPE_ADD_SAVED',
-  LEG_TYPE_DELETE_SAVED: 'LEG_TYPE_DELETE_SAVED',
-  LEG_TYPE_ADD_TEMP: 'LEG_TYPE_ADD_TEMP',
-  LEG_TYPE_DELETE_TEMP: 'LEG_TYPE_DELETE_TEMP',
+
+  // LEG_TYPE_ADD_SAVED: 'LEG_TYPE_ADD_SAVED',
+  // LEG_TYPE_DELETE_SAVED: 'LEG_TYPE_DELETE_SAVED',
+  // LEG_TYPE_ADD_TEMP: 'LEG_TYPE_ADD_TEMP',
+  // LEG_TYPE_DELETE_TEMP: 'LEG_TYPE_DELETE_TEMP',
   LEG_ADD: 'LEG_ADD',
   LEG_DELETE: 'LEG_DELETE',
-  LEG_TYPE_SAVED_EDIT: 'LEG_TYPE_EDIT',
-  LEG_TYPE_TEMP_EDIT: 'LEG_TYPE_TEMP_EDIT',
+  // LEG_TYPE_SAVED_EDIT: 'LEG_TYPE_EDIT',
+  // LEG_TYPE_TEMP_EDIT: 'LEG_TYPE_TEMP_EDIT',
   LEG_EDIT: 'LEG_EDIT',
+  LEG_SCHEDULE: 'LEG_SCHEDULE',
+  LEG_UNSCHEDULE: 'LEG_UNSCHEDULE',
 };
 
 export const resetDB = () => ({ type: types.RESET });
@@ -104,3 +107,25 @@ export const setElapsedSeconds = (payload) => ({
 // export const setRemainingSeconds = (payload) => ({ type: types.SET_REMAINING_SECONDS, payload});
 
 export const toggleMute = () => ({ type: types.MUTE_TOGGLE });
+
+export const addLegToSchedule = (payload) => {
+  return {
+    type: types.LEG_SCHEDULE,
+    payload,
+  };
+};
+
+export const unscheduleLeg = (payload) => {
+  return {
+    type: types.LEG_UNSCHEDULE,
+    payload,
+  };
+};
+
+export const deleteLegType = (payload) => {
+  return {
+    type: types.LEG_DELETE,
+    payload,
+    // type: types.LEG
+  };
+};

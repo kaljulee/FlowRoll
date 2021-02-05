@@ -11,6 +11,7 @@ import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds } from '../helpers/time';
 import { createLegType } from '../models/Leg';
+import { COLORS } from '../constants/styleValues';
 function validateRoundCount(payload) {
   const payloadAsInt = parseInt(payload);
   return payloadAsInt;
@@ -110,8 +111,12 @@ const getInitialState = () => {
   );
 
   const defaultLegTypes = [];
-  defaultLegTypes.push(createLegType('break', 0, { h: 0, m: 0, s: 30 }, 'red'));
-  defaultLegTypes.push(createLegType('round', 1, { h: 0, m: 6, s: 0 }, 'blue'));
+  defaultLegTypes.push(
+    createLegType('break', 0, { h: 0, m: 0, s: 30 }, COLORS.RED),
+  );
+  defaultLegTypes.push(
+    createLegType('round', 1, { h: 0, m: 6, s: 0 }, COLORS.LIGHTBLUE),
+  );
   const nextLegTypeID = 2;
 
   return {
@@ -344,7 +349,7 @@ const basicReducer = (state = getInitialState(), action) => {
     case types.LEGTYPE_DELETE:
       return {
         ...state,
-      }
+      };
     default:
       return state;
   }

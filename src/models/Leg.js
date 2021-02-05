@@ -9,6 +9,8 @@ export function createLegType(name, id, defaultLength, defaultColor, settings) {
   return {
     name,
     id: parseInt(id, 10),
+    color: defaultColor,
+    duration: defaultLength,
   };
 }
 

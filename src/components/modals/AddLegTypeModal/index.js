@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-native-modal';
 import {
   Button,
@@ -13,10 +13,25 @@ import {
 import { ToastAndroid } from 'react-native';
 import { addLegType } from '../../../actions';
 import { connect } from 'react-redux';
+import SecondSlider from '../../SecondSlider';
+import { hourMinuteSecond, secondsToHMS } from '../../../helpers/time';
 
 function AddLegTypeModal(props) {
   const { isVisible, closeModal, addLegType } = props;
   const [name, setName] = useState(null);
+  const [durationInSeconds, setDurationInSeconds] = useState(0);
+  const [hmsDuration, _setHmsDuration] = useState({ h: 0, m: 0, s: 0 });
+  const [displayDuration, setDisplayDuration] = useState('no duration');
+
+  const setHmsDuration = (seconds) => {
+    const hms = secondsToHMS(seconds);
+    _setHmsDuration(hms);
+    setDisplayDuration(hourMinuteSecond(hms));
+  };
+
+  useEffect(() => {
+    setHmsDuration(durationInSeconds);
+  }, [durationInSeconds]);
 
   const onNameChange = (text) => {
     setName(text);
@@ -48,6 +63,16 @@ function AddLegTypeModal(props) {
             <Item stackedLabel>
               <Label>Name</Label>
               <Input onChangeText={onNameChange} />
+            </Item>
+            <Item stackedLabel>
+              <Label>Time</Label>
+              <Text>{displayDuration}</Text>
+              <SecondSlider
+                value={durationInSeconds}
+                onValueChange={(arg) => {
+                  setDurationInSeconds(arg);
+                }}
+              />
             </Item>
           </Form>
         </CardItem>

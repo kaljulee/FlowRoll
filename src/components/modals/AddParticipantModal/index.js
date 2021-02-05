@@ -11,7 +11,7 @@ import {
   Label,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { Grid, Col } from 'react-native-easy-grid';
+import { Grid, Col, Row } from 'react-native-easy-grid';
 import { StyleSheet, Switch, ToastAndroid } from 'react-native';
 import { addParticipants, activateParticipants } from '../../../actions';
 

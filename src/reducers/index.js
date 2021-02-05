@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds } from '../helpers/time';
-
+import { createLegType } from '../models/Leg';
 function validateRoundCount(payload) {
   const payloadAsInt = parseInt(payload);
   return payloadAsInt;
@@ -109,6 +109,11 @@ const getInitialState = () => {
     sortedParticipants.active,
   );
 
+  const defaultLegTypes = [];
+  defaultLegTypes.push(createLegType('break', 0, { h: 0, m: 0, s: 30 }, 'red'));
+  defaultLegTypes.push(createLegType('round', 1, { h: 0, m: 6, s: 0 }, 'blue'));
+  const nextLegTypeID = 2;
+
   return {
     participants,
     nextParticipantID: 5,
@@ -127,6 +132,10 @@ const getInitialState = () => {
     timerDuration: undefined,
     completeRRCycle,
     mute: true,
+    nextLegTypeID,
+    legTypes: defaultLegTypes,
+    trainSchedule: { legs: [] },
+    nextLegID: 1,
   };
 };
 
@@ -278,6 +287,64 @@ const basicReducer = (state = getInitialState(), action) => {
         ...state,
         mute: !state.mute,
       };
+    case types.LEG_SCHEDULE:
+      let newNextLegID = state.nextLegID;
+      update = {
+        trainSchedule: {
+          ...state.trainSchedule,
+          legs: [
+            ...state.trainSchedule.legs,
+            ...payload.legs.map((l) => {
+              const selectedLegType = state.legTypes[l.legType];
+              const newLeg = {
+                ...selectedLegType,
+                legType: selectedLegType.id,
+                ...l.settings,
+                id: newNextLegID,
+              };
+              newNextLegID = newNextLegID + 1;
+              return newLeg;
+            }),
+          ],
+        },
+      };
+      update.nextLegID = newNextLegID;
+      return {
+        ...state,
+        ...update,
+      };
+    case types.LEG_UNSCHEDULE:
+      update = {
+        trainSchedule: {
+          ...state.trainSchedule,
+          legs: state.trainSchedule.legs.reduce((acc, l) => {
+            if (!_.find(payload.legs, (e) => parseInt(e) === l.id)) {
+              acc.push(l);
+            }
+            return acc;
+          }, []),
+        },
+      };
+      return {
+        ...state,
+        ...update,
+      };
+    case types.LEGTYPE_ADD:
+      update = {};
+      if (payload.legType) {
+        let newLegType = { ...payload.legType };
+        newLegType.id = state.nextLegTypeID;
+        update.nextLegTypeID = state.nextLegTypeID + 1;
+        update.legTypes = [...state.legTypes, newLegType];
+      }
+      return {
+        ...state,
+        ...update,
+      };
+    case types.LEGTYPE_DELETE:
+      return {
+        ...state,
+      }
     default:
       return state;
   }

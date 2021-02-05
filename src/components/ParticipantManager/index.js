@@ -1,22 +1,12 @@
 import React from 'react';
-import { Grid, Col, Row } from 'react-native-easy-grid';
-import { StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { participantsByActive } from '../../helpers/ordering';
-import ParticipantList from '../ParticipantList';
 import {
   activateParticipants,
   deactivateParticipants,
   addParticipants,
 } from '../../actions';
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-  },
-  item: { flex: 1, flexDirection: 'column', height: '100%' },
-});
+import ToggleList from '../ToggleList';
 
 function ParticipantManager(props) {
   const {
@@ -34,28 +24,16 @@ function ParticipantManager(props) {
   );
 
   return (
-    <Grid style={styles.container}>
-      <Row style={{ height: '100%' }}>
-        <Col style={styles.item}>
-          <Text>out</Text>
-          <ParticipantList
-            onLongPressParticipant={(id) => onLongPressParticipant(id)}
-            onParticipantPress={(id) => activateParticipants([id])}
-            header={'out'}
-            participants={available}
-          />
-        </Col>
-        <Col style={styles.item}>
-          <Text>in</Text>
-          <ParticipantList
-            onLongPressParticipant={(id) => onLongPressParticipant(id)}
-            onParticipantPress={(id) => deactivateParticipants([id])}
-            header={'in'}
-            participants={active}
-          />
-        </Col>
-      </Row>
-    </Grid>
+    <ToggleList
+      available={available}
+      active={active}
+      onPressAvailable={(id) => activateParticipants([id])}
+      onLongPressAvailable={(id) => onLongPressParticipant(id)}
+      onPressActive={(id) => deactivateParticipants([id])}
+      onLongPressActive={(id) => onLongPressParticipant(id)}
+      activeHeader={'in'}
+      availableHeader={'out'}
+    />
   );
 }
 

@@ -19,19 +19,35 @@ import { hourMinuteSecond, secondsToHMS } from '../../../helpers/time';
 function AddLegTypeModal(props) {
   const { isVisible, closeModal, addLegType } = props;
   const [name, setName] = useState(null);
-  const [durationInSeconds, setDurationInSeconds] = useState(0);
+  const [durationInSeconds, _setDurationInSeconds] = useState(0);
   const [hmsDuration, _setHmsDuration] = useState({ h: 0, m: 0, s: 0 });
   const [displayDuration, setDisplayDuration] = useState('no duration');
   const [editDuration, setEditDuration] = useState(false);
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
   const toggleEditDuration = () => {
     setEditDuration(!editDuration);
+  };
+
+  const toggleColorPicker = () => {
+    setShowColorPicker(!showColorPicker);
   };
 
   const setHmsDuration = (seconds) => {
     const hms = secondsToHMS(seconds);
     _setHmsDuration(hms);
     setDisplayDuration(hourMinuteSecond(hms));
+  };
+
+  const setDurationInSeconds = (value) => {
+    // const minp = 0;
+    // const maxp = 300;
+    // const minv = Math.log(1);
+    // const maxv = Math.log(3600);
+    // const scale = (maxv - minv) / (maxp - minp);
+    // const output = Math.exp(minv + scale * (value - minp));
+    // console.log(output);
+    _setDurationInSeconds(value);
   };
 
   useEffect(() => {
@@ -71,8 +87,13 @@ function AddLegTypeModal(props) {
             </Item>
             <Item stackedLabel>
               <Label>Time</Label>
-              <Button onPress={toggleEditDuration}>
+              <Button transparent onPress={toggleEditDuration}>
                 <Text>{displayDuration}</Text>
+              </Button>
+            </Item>
+            <Item stackedLabel>
+              <Button onPress={toggleColorPicker}>
+                <Text>color picker</Text>
               </Button>
             </Item>
           </Form>

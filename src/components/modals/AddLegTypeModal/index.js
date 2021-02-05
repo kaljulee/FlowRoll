@@ -22,6 +22,11 @@ function AddLegTypeModal(props) {
   const [durationInSeconds, setDurationInSeconds] = useState(0);
   const [hmsDuration, _setHmsDuration] = useState({ h: 0, m: 0, s: 0 });
   const [displayDuration, setDisplayDuration] = useState('no duration');
+  const [editDuration, setEditDuration] = useState(false);
+
+  const toggleEditDuration = () => {
+    setEditDuration(!editDuration);
+  };
 
   const setHmsDuration = (seconds) => {
     const hms = secondsToHMS(seconds);
@@ -66,15 +71,18 @@ function AddLegTypeModal(props) {
             </Item>
             <Item stackedLabel>
               <Label>Time</Label>
-              <Text>{displayDuration}</Text>
-              <SecondSlider
-                value={durationInSeconds}
-                onValueChange={(arg) => {
-                  setDurationInSeconds(arg);
-                }}
-              />
+              <Button onPress={toggleEditDuration}>
+                <Text>{displayDuration}</Text>
+              </Button>
             </Item>
           </Form>
+          <SecondSlider
+            isVisible={editDuration}
+            value={durationInSeconds}
+            onValueChange={(arg) => {
+              setDurationInSeconds(arg);
+            }}
+          />
         </CardItem>
         <CardItem>
           <Button onPress={onAddPress}>

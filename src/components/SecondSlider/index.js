@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Slider from '@react-native-community/slider';
 
 const style = {
-  width: 200,
+  width: '100%',
   height: 40,
+  position: 'absolute',
+  alignSelf: 'center',
 };
 
 const trackColors = {
@@ -12,8 +14,10 @@ const trackColors = {
 };
 
 function SecondSlider(props) {
-  const { value, onValueChange } = props;
-
+  const { value, onValueChange, isVisible } = props;
+  if (!isVisible) {
+    return false;
+  }
   return (
     <Slider
       step={10}

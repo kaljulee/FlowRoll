@@ -1,3 +1,5 @@
+import {hourMinuteSecond} from '../helpers/time';
+
 export function createLegType(name, id, defaultLength, defaultColor, settings) {
   if (!name || isNaN(id)) {
     console.log('bad legType data');
@@ -11,6 +13,7 @@ export function createLegType(name, id, defaultLength, defaultColor, settings) {
     id: parseInt(id, 10),
     color: defaultColor,
     duration: defaultLength,
+    label: `${name} ${hourMinuteSecond(defaultLength)}`,
   };
 }
 

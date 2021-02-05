@@ -48,7 +48,7 @@ function SchedulingList(props) {
             onLongPress={() => onLongPress(item.id)}>
             <Card style={{ ...styles.card, backgroundColor: item.color }}>
               <CardItem style={{ ...styles.item, backgroundColor: item.color }}>
-                <Text>{`${item.name}`}</Text>
+                <Text>{`${item.label}`}</Text>
               </CardItem>
             </Card>
           </TouchableOpacity>

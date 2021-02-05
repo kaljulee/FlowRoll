@@ -73,7 +73,7 @@ function AddLegTypeModal(props) {
     console.log('onAddPress - maybe validate here?');
     if (isValid(name)) {
       console.log('would update with name ' + name);
-      addLegType({ legType: { name } });
+      addLegType({ legType: { name, color, duration: hmsDuration } });
       setName(null);
     } else {
       ToastAndroid.show(

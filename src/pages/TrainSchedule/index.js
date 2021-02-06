@@ -4,7 +4,7 @@ import { Text, Button, Container, Card, CardItem } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import LegManager from '../../components/LegManager';
 import TrainTracker from '../../components/TrainTracker';
-import { unscheduleLeg, addLegToSchedule, deleteLegType } from '../../actions';
+import { unscheduleLeg, addLegToSchedule, deleteLegType, editLegType } from '../../actions';
 import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
 import { hourMinuteSecond, sumLegRunTimes } from '../../helpers/time';
 import ConfirmDeleteModal from '../../components/modals/ConfirmDeleteModal';
@@ -26,7 +26,7 @@ function TrainSchedule(props) {
     hourMinuteSecond(hmsTotalTime),
   );
   const [idToDelete, setIDToDelete] = useState(null);
-  const [editLeg, _setEditLeg] = useState(null);
+  const [editLeg, _setEditLeg] = useState(undefined);
 
   const unscheduleAllOfType = (id) => {
     console.log('would unschedule all of type ' + id);
@@ -92,8 +92,8 @@ function TrainSchedule(props) {
         closeModal={() => setShowAddLegModal(false)}
       />
       <EditLegTypeModal
-        closeModal={() => setEditLeg(null)}
-        {...editLeg}
+        closeModal={() => setEditLeg(undefined)}
+        editLeg={editLeg}
       />
       <ConfirmDeleteModal
         idToDelete={idToDelete}
@@ -117,6 +117,7 @@ const mapDispatchToProps = {
   addLegToSchedule,
   unscheduleLeg,
   deleteLegType,
+  editLegType,
 };
 
 export default connect(

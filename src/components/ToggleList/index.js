@@ -19,28 +19,27 @@ function ToggleList(props) {
     onPressActive,
     onLongPressAvailable,
     onLongPressActive,
-    activerHeader,
+    activeHeader,
     availableHeader,
   } = props;
-
   return (
     <Grid style={styles.container}>
       <Row style={{ height: '100%' }}>
         <Col style={styles.item}>
-          <Text>out</Text>
+          <Text>{availableHeader || 'out'}</Text>
           <SchedulingList
             onLongPress={onLongPressAvailable}
             onPress={onPressAvailable}
-            header={availableHeader || 'out'}
+            header={availableHeader}
             data={available}
           />
         </Col>
         <Col style={styles.item}>
-          <Text>in</Text>
+          <Text>{activeHeader || 'in'}</Text>
           <SchedulingList
             onLongPress={onLongPressActive}
             onPress={onPressActive}
-            header={activerHeader || 'in'}
+            header={activeHeader}
             data={active}
           />
         </Col>

@@ -115,16 +115,16 @@ const getInitialState = () => {
     createLegType({
       name: 'break',
       id: 0,
-      defaultLength: { h: 0, m: 0, s: 30 },
-      defaultColor: COLORS.RED,
+      runTime: { h: 0, m: 0, s: 30 },
+      color: COLORS.RED,
     }),
   );
   defaultLegTypes.push(
     createLegType({
       name: 'round',
       id: 1,
-      defaultLength: { h: 0, m: 6, s: 0 },
-      defaultColor: COLORS.LIGHTBLUE,
+      runTime: { h: 0, m: 6, s: 0 },
+      color: COLORS.LIGHTBLUE,
     }),
   );
   const nextLegTypeID = 2;

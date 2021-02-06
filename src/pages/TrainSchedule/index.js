@@ -6,7 +6,7 @@ import LegManager from '../../components/LegManager';
 import TrainTracker from '../../components/TrainTracker';
 import { unscheduleLeg, addLegToSchedule, deleteLegType } from '../../actions';
 import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
-import { hourMinuteSecond, sumLegDurations } from '../../helpers/time';
+import { hourMinuteSecond, sumLegRunTimes } from '../../helpers/time';
 import ConfirmDeleteModal from '../../components/modals/ConfirmDeleteModal';
 import _ from 'lodash';
 import EditLegTypeModal from '../../components/modals/EditLegTypeModal';
@@ -21,7 +21,7 @@ function TrainSchedule(props) {
   } = props;
 
   const [showAddLegModal, setShowAddLegModal] = useState(false);
-  const [hmsTotalTime, setHmsTotalTime] = useState(sumLegDurations(legs));
+  const [hmsTotalTime, setHmsTotalTime] = useState(sumLegRunTimes(legs));
   const [displayTotalTime, setDisplayTotalTime] = useState(
     hourMinuteSecond(hmsTotalTime),
   );
@@ -50,7 +50,7 @@ function TrainSchedule(props) {
   };
 
   useEffect(() => {
-    const newSum = sumLegDurations(legs);
+    const newSum = sumLegRunTimes(legs);
     setHmsTotalTime(newSum);
     setDisplayTotalTime(hourMinuteSecond(newSum));
   }, [legs]);

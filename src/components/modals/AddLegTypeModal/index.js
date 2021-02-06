@@ -74,7 +74,7 @@ function AddLegTypeModal(props) {
     if (isValid(name)) {
       console.log('would update with name ' + name);
       addLegType({
-        legType: { name, defaultColor: color, defaultLength: hmsDuration },
+        legType: { name, color: color, runTime: hmsDuration },
       });
       setName(null);
       closeModal();

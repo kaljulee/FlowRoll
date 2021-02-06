@@ -89,6 +89,39 @@ const updateParticipantMatchUps = (participants, activeParticipants) => {
   return update;
 };
 
+// leg related
+const createLeg = (legID, legType, settings) => {
+  const leg = {
+    ...legType,
+    legType: legType.id,
+    ...settings,
+    id: legID,
+  };
+
+  const newNextLegID = legID + 1;
+  return { leg, newNextLegID };
+};
+
+const updateScheduleWithLegEdits = (
+  updatedLeg,
+  oldTrainSchedule,
+  nextLegID,
+) => {
+  let newNextLegID = nextLegID;
+  const newLegs = oldTrainSchedule.legs.map((l) => {
+    if (l.legType === updatedLeg.id) {
+      const result = createLeg(newNextLegID, updatedLeg);
+      newNextLegID = result.newNextLegID;
+      return result.leg;
+    } else {
+      return l;
+    }
+  });
+  return {
+    trainSchedule: { ...oldTrainSchedule, legs: newLegs },
+    nextLegID: newNextLegID,
+  };
+};
 //////////////////////////
 
 const getInitialState = () => {
@@ -313,12 +346,7 @@ const basicReducer = (state = getInitialState(), action) => {
               const selectedLegType = _.find(state.legTypes, function(t) {
                 return l.legType === t.id;
               });
-              const newLeg = {
-                ...selectedLegType,
-                legType: selectedLegType.id,
-                ...l.settings,
-                id: newNextLegID,
-              };
+              const { newLeg } = createLeg(newNextLegID, selectedLegType);
               newNextLegID = newNextLegID + 1;
               return newLeg;
             }),
@@ -377,6 +405,31 @@ const basicReducer = (state = getInitialState(), action) => {
           return acc;
         }, []),
       };
+      return {
+        ...state,
+        ...update,
+      };
+    case types.LEGTYPE_EDIT:
+      update = {};
+      let editedLeg = _.find(state.legTypes, (l) => l.id === payload.id);
+      if (!editedLeg) {
+        console.log('could not find legtype to edit');
+        return { ...state };
+      }
+      editedLeg = { ...editedLeg, ...payload.data };
+      update.legTypes = state.legTypes.reduce((acc, t) => {
+        if (t.id === editedLeg.id) {
+          acc.push(editedLeg);
+        } else {
+          acc.push(t);
+        }
+      }, []);
+      const scheduleUpdateResult = updateScheduleWithLegEdits(
+        editedLeg,
+        state.trainSchedule,
+      );
+      update.trainSchedule = scheduleUpdateResult.trainSchedule;
+      update.nextLegID = scheduleUpdateResult.nextLegID;
       return {
         ...state,
         ...update,

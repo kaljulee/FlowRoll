@@ -27,8 +27,6 @@ const styles = StyleSheet.create({
   },
   item: {
     width: '100%',
-    borderColor: 'black',
-    borderWidth: 1,
   },
   list: {
     width: '100%',
@@ -48,9 +46,9 @@ function SchedulingList(props) {
           <TouchableOpacity
             onPress={() => onPress(item.id)}
             onLongPress={() => onLongPress(item.id)}>
-            <Card style={styles.card}>
-              <CardItem style={styles.item}>
-                <Text>{`${item.name}`}</Text>
+            <Card style={{ ...styles.card, backgroundColor: item.color }}>
+              <CardItem style={{ ...styles.item, backgroundColor: item.color }}>
+                <Text>{`${item.label}`}</Text>
               </CardItem>
             </Card>
           </TouchableOpacity>

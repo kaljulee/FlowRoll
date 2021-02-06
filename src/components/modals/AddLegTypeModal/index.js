@@ -15,6 +15,8 @@ import { addLegType } from '../../../actions';
 import { connect } from 'react-redux';
 import SecondSlider from '../../SecondSlider';
 import { hourMinuteSecond, secondsToHMS } from '../../../helpers/time';
+import ColorPicker from '../../ColorPicker';
+import { COLORS } from '../../../constants/styleValues';
 
 function AddLegTypeModal(props) {
   const { isVisible, closeModal, addLegType } = props;
@@ -24,6 +26,7 @@ function AddLegTypeModal(props) {
   const [displayDuration, setDisplayDuration] = useState('no duration');
   const [editDuration, setEditDuration] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [color, setColor] = useState(COLORS.MINT);
 
   const toggleEditDuration = () => {
     setEditDuration(!editDuration);
@@ -58,6 +61,10 @@ function AddLegTypeModal(props) {
     setName(text);
   };
 
+  const onColorPress = (c) => {
+    setColor(c);
+  };
+
   function isValid() {
     return name !== null && name.length > 0;
   }
@@ -66,8 +73,11 @@ function AddLegTypeModal(props) {
     console.log('onAddPress - maybe validate here?');
     if (isValid(name)) {
       console.log('would update with name ' + name);
-      addLegType({ legType: { name } });
+      addLegType({
+        legType: { name, defaultColor: color, defaultLength: hmsDuration },
+      });
       setName(null);
+      closeModal();
     } else {
       ToastAndroid.show(
         'name not valid for some reason ' + name,
@@ -92,7 +102,9 @@ function AddLegTypeModal(props) {
               </Button>
             </Item>
             <Item stackedLabel>
-              <Button onPress={toggleColorPicker}>
+              <Button
+                style={{ backgroundColor: color }}
+                onPress={toggleColorPicker}>
                 <Text>color picker</Text>
               </Button>
             </Item>
@@ -103,6 +115,10 @@ function AddLegTypeModal(props) {
             onValueChange={(arg) => {
               setDurationInSeconds(arg);
             }}
+          />
+          <ColorPicker
+            isVisible={showColorPicker}
+            onColorPress={onColorPress}
           />
         </CardItem>
         <CardItem>

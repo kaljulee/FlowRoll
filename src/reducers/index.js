@@ -11,6 +11,7 @@ import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds } from '../helpers/time';
 import { createLegType } from '../models/Leg';
+import { COLORS } from '../constants/styleValues';
 function validateRoundCount(payload) {
   const payloadAsInt = parseInt(payload);
   return payloadAsInt;
@@ -110,8 +111,22 @@ const getInitialState = () => {
   );
 
   const defaultLegTypes = [];
-  defaultLegTypes.push(createLegType('break', 0, { h: 0, m: 0, s: 30 }, 'red'));
-  defaultLegTypes.push(createLegType('round', 1, { h: 0, m: 6, s: 0 }, 'blue'));
+  defaultLegTypes.push(
+    createLegType({
+      name: 'break',
+      id: 0,
+      defaultLength: { h: 0, m: 0, s: 30 },
+      defaultColor: COLORS.RED,
+    }),
+  );
+  defaultLegTypes.push(
+    createLegType({
+      name: 'round',
+      id: 1,
+      defaultLength: { h: 0, m: 6, s: 0 },
+      defaultColor: COLORS.LIGHTBLUE,
+    }),
+  );
   const nextLegTypeID = 2;
 
   return {
@@ -295,7 +310,9 @@ const basicReducer = (state = getInitialState(), action) => {
           legs: [
             ...state.trainSchedule.legs,
             ...payload.legs.map((l) => {
-              const selectedLegType = state.legTypes[l.legType];
+              const selectedLegType = _.find(state.legTypes, function(t) {
+                return l.legType === t.id;
+              });
               const newLeg = {
                 ...selectedLegType,
                 legType: selectedLegType.id,
@@ -332,8 +349,10 @@ const basicReducer = (state = getInitialState(), action) => {
     case types.LEGTYPE_ADD:
       update = {};
       if (payload.legType) {
-        let newLegType = { ...payload.legType };
-        newLegType.id = state.nextLegTypeID;
+        let newLegType = createLegType({
+          ...payload.legType,
+          id: state.nextLegTypeID,
+        });
         update.nextLegTypeID = state.nextLegTypeID + 1;
         update.legTypes = [...state.legTypes, newLegType];
       }
@@ -342,9 +361,26 @@ const basicReducer = (state = getInitialState(), action) => {
         ...update,
       };
     case types.LEGTYPE_DELETE:
+      update = {};
+      update.legTypes = state.legTypes.reduce((acc, l) => {
+        if (l.id !== payload.id) {
+          acc.push(l);
+        }
+        return acc;
+      }, []);
+      update.trainSchedule = {
+        ...state.trainSchedule,
+        legs: state.trainSchedule.legs.reduce((acc, l) => {
+          if (l.legType !== payload.id) {
+            acc.push(l);
+          }
+          return acc;
+        }, []),
+      };
       return {
         ...state,
-      }
+        ...update,
+      };
     default:
       return state;
   }

@@ -7,6 +7,7 @@ import TrainTracker from '../../components/TrainTracker';
 import { unscheduleLeg, addLegToSchedule, deleteLegType } from '../../actions';
 import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
 import { hourMinuteSecond, sumLegDurations } from '../../helpers/time';
+import ConfirmDeleteModal from '../../components/modals/ConfirmDeleteModal';
 
 function TrainSchedule(props) {
   const {
@@ -22,13 +23,15 @@ function TrainSchedule(props) {
   const [displayTotalTime, setDisplayTotalTime] = useState(
     hourMinuteSecond(hmsTotalTime),
   );
+  const [idToDelete, setIDToDelete] = useState(null);
 
   const unscheduleAllOfType = (id) => {
     console.log('would unschedule all of type ' + id);
   };
 
   const deleteType = (id) => {
-    console.log(`would delete type ${id}`);
+    deleteLegType({ id });
+    setIDToDelete(null);
   };
   const unschedule = (id) => {
     unscheduleLeg({ legs: [id] });
@@ -52,7 +55,7 @@ function TrainSchedule(props) {
               onPressAvailableLeg={scheduleDefault}
               onPressActiveLeg={unschedule}
               onLongPressActiveLeg={unscheduleAllOfType}
-              onLongPressAvailableLeg={deleteType}
+              onLongPressAvailableLeg={setIDToDelete}
               schedule={legs}
               available={legTypes}
             />
@@ -78,6 +81,13 @@ function TrainSchedule(props) {
       <AddLegTypeModal
         isVisible={showAddLegModal}
         closeModal={() => setShowAddLegModal(false)}
+      />
+      <ConfirmDeleteModal
+        idToDelete={idToDelete}
+        confirmDelete={(id) => {
+          deleteType(id);
+        }}
+        closeModal={() => setIDToDelete(null)}
       />
     </Container>
   );

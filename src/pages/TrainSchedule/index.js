@@ -8,6 +8,8 @@ import { unscheduleLeg, addLegToSchedule, deleteLegType } from '../../actions';
 import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
 import { hourMinuteSecond, sumLegDurations } from '../../helpers/time';
 import ConfirmDeleteModal from '../../components/modals/ConfirmDeleteModal';
+import _ from 'lodash';
+import EditLegTypeModal from '../../components/modals/EditLegTypeModal';
 
 function TrainSchedule(props) {
   const {
@@ -24,6 +26,7 @@ function TrainSchedule(props) {
     hourMinuteSecond(hmsTotalTime),
   );
   const [idToDelete, setIDToDelete] = useState(null);
+  const [editLeg, _setEditLeg] = useState(null);
 
   const unscheduleAllOfType = (id) => {
     console.log('would unschedule all of type ' + id);
@@ -33,6 +36,12 @@ function TrainSchedule(props) {
     deleteLegType({ id });
     setIDToDelete(null);
   };
+
+  const setEditLeg = (id) => {
+    const type = _.find(legTypes, (l) => l.id === id);
+    _setEditLeg(type);
+  };
+
   const unschedule = (id) => {
     unscheduleLeg({ legs: [id] });
   };
@@ -55,7 +64,7 @@ function TrainSchedule(props) {
               onPressAvailableLeg={scheduleDefault}
               onPressActiveLeg={unschedule}
               onLongPressActiveLeg={unscheduleAllOfType}
-              onLongPressAvailableLeg={setIDToDelete}
+              onLongPressAvailableLeg={setEditLeg}
               schedule={legs}
               available={legTypes}
             />
@@ -81,6 +90,10 @@ function TrainSchedule(props) {
       <AddLegTypeModal
         isVisible={showAddLegModal}
         closeModal={() => setShowAddLegModal(false)}
+      />
+      <EditLegTypeModal
+        closeModal={() => setEditLeg(null)}
+        {...editLeg}
       />
       <ConfirmDeleteModal
         idToDelete={idToDelete}

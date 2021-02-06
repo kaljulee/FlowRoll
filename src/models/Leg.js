@@ -1,6 +1,12 @@
-import {hourMinuteSecond} from '../helpers/time';
+import { hourMinuteSecond } from '../helpers/time';
 
-export function createLegType(name, id, defaultLength, defaultColor, settings) {
+export function createLegType({
+  name,
+  id,
+  defaultLength,
+  defaultColor,
+  settings,
+}) {
   if (!name || isNaN(id)) {
     console.log('bad legType data');
     console.log(name);

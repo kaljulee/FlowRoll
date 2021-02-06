@@ -73,8 +73,11 @@ function AddLegTypeModal(props) {
     console.log('onAddPress - maybe validate here?');
     if (isValid(name)) {
       console.log('would update with name ' + name);
-      addLegType({ legType: { name, color, duration: hmsDuration } });
+      addLegType({
+        legType: { name, defaultColor: color, defaultLength: hmsDuration },
+      });
       setName(null);
+      closeModal();
     } else {
       ToastAndroid.show(
         'name not valid for some reason ' + name,

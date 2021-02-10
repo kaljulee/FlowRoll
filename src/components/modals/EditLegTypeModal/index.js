@@ -130,7 +130,7 @@ function EditLegTypeModal(props) {
           </Form>
           <SecondSlider
             isVisible={setShowEditRunTimeModal}
-            value={runTimeInSeconds}
+            seconds={runTimeInSeconds}
             onValueChange={(arg) => {
               setRunTimeInSeconds(arg);
             }}

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import _ from 'lodash';
 import Slider from '@react-native-community/slider';
+import { connect } from 'react-redux';
 
 const style = {
   width: '100%',
@@ -14,22 +16,37 @@ const trackColors = {
 };
 
 function SecondSlider(props) {
-  const { value, onValueChange, isVisible } = props;
+  const { seconds, onValueChange, isVisible, secondsByValue } = props;
   if (!isVisible) {
     return false;
   }
+
   return (
     <Slider
-      step={10}
+      step={1}
       style={style}
       minimumTrackTintColor={trackColors.minimumTrackTintColor}
       maximumTrackTintColor={trackColors.maximumTrackTintColor}
       minimumValue={0}
-      maximumValue={3600}
-      onValueChange={onValueChange}
-      value={value}
+      maximumValue={29}
+      onValueChange={(v) => {
+        onValueChange(secondsByValue[v]);
+      }}
+      value={_.indexOf(secondsByValue, seconds)}
     />
   );
 }
 
-export default SecondSlider;
+const mapStateToProps = (state) => {
+  const {
+    secondSliderConverter: { secondsByValue },
+  } = state.basicReducer;
+  return { secondsByValue };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SecondSlider);

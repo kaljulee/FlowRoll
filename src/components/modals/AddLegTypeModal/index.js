@@ -110,7 +110,7 @@ function AddLegTypeModal(props) {
           </Form>
           <SecondSlider
             isVisible={editDuration}
-            value={durationInSeconds}
+            seconds={durationInSeconds}
             onValueChange={(arg) => {
               setDurationInSeconds(arg);
             }}

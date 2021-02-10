@@ -123,6 +123,29 @@ const updateScheduleWithLegEdits = (
 };
 //////////////////////////
 
+const createSecondSliderConversion = () => {
+  const secondsByValue = [];
+  let remainingPoints = 0;
+  let seconds = 0;
+  while (remainingPoints < 30) {
+    if (remainingPoints > 23) {
+      seconds += 240;
+    }
+    if (remainingPoints > 17) {
+      seconds += 120;
+    } else if (remainingPoints > 11) {
+      seconds += 60;
+    } else if (remainingPoints > 5) {
+      seconds += 30;
+    } else {
+      seconds += 10;
+    }
+    remainingPoints += 1;
+    secondsByValue.push(seconds);
+  }
+  return { secondsByValue };
+};
+
 const getInitialState = () => {
   const participants = [
     createParticipant('Kalju', 1),
@@ -183,6 +206,7 @@ const getInitialState = () => {
     legTypes: defaultLegTypes,
     trainSchedule: { legs: [] },
     nextLegID: 1,
+    secondSliderConverter: createSecondSliderConversion(),
   };
 };
 

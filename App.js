@@ -51,10 +51,10 @@ const App: () => React$Node = () => {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <StatusBar barStyle="dark-content" />
-          <SafeAreaView>
-            <ScrollView
+          <SafeAreaView style={styles.SafeAreaView}>
+            <View
               contentInsetAdjustmentBehavior="automatic"
-              style={styles.scrollView}>
+              style={styles.View}>
               <TimeKeeperContainer>
                 {hasHeader && (
                   <Header hasTabs>
@@ -94,7 +94,7 @@ const App: () => React$Node = () => {
                   currentTab={currentTab}
                 />
               </TimeKeeperContainer>
-            </ScrollView>
+            </View>
           </SafeAreaView>
         </PersistGate>
       </Provider>
@@ -103,9 +103,12 @@ const App: () => React$Node = () => {
 };
 
 const styles = StyleSheet.create({
-  // scrollView: {
-  //   backgroundColor: Colors.lighter,
-  // },
+  SafeAreaView: { flex: 1 },
+  View: {
+    // borderWidth: 5,
+    // borderColor: 'purple',
+    flex: 1,
+  },
   // engine: {
   //   position: 'absolute',
   //   right: 0,

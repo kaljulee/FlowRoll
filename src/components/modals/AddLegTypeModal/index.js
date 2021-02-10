@@ -72,9 +72,8 @@ function AddLegTypeModal(props) {
   const onAddPress = () => {
     console.log('onAddPress - maybe validate here?');
     if (isValid(name)) {
-      console.log('would update with name ' + name);
       addLegType({
-        legType: { name, defaultColor: color, defaultLength: hmsDuration },
+        legType: { name, color: color, runTime: hmsDuration },
       });
       setName(null);
       closeModal();
@@ -111,7 +110,7 @@ function AddLegTypeModal(props) {
           </Form>
           <SecondSlider
             isVisible={editDuration}
-            value={durationInSeconds}
+            seconds={durationInSeconds}
             onValueChange={(arg) => {
               setDurationInSeconds(arg);
             }}

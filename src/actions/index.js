@@ -27,6 +27,7 @@ export const types = {
   LEG_ADD: 'LEG_ADD',
   LEGTYPE_ADD: 'LEGTYPE_ADD',
   LEGTYPE_DELETE: 'LEGTYPE_DELETE',
+  LEGTYPE_EDIT: 'LEGTYPE_EDIT',
   LEG_DELETE: 'LEG_DELETE',
   // LEG_TYPE_SAVED_EDIT: 'LEG_TYPE_EDIT',
   // LEG_TYPE_TEMP_EDIT: 'LEG_TYPE_TEMP_EDIT',
@@ -135,5 +136,12 @@ export const deleteLegType = ({ id }) => {
   return {
     type: types.LEGTYPE_DELETE,
     payload: { id },
+  };
+};
+
+export const editLegType = ({ id, color, runTime, name }) => {
+  return {
+    type: types.LEGTYPE_EDIT,
+    payload: { id, data: { color, runTime, name } },
   };
 };

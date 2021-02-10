@@ -9,7 +9,7 @@ import {
 } from '../helpers/ordering';
 import moment from 'moment';
 import { STATUS } from '../helpers/utils';
-import { getEndTime, HMSToSeconds } from '../helpers/time';
+import { getEndTime, HMSToSeconds, hourMinuteSecond } from '../helpers/time';
 import { createLegType } from '../models/Leg';
 import { COLORS } from '../constants/styleValues';
 function validateRoundCount(payload) {
@@ -89,7 +89,62 @@ const updateParticipantMatchUps = (participants, activeParticipants) => {
   return update;
 };
 
+// leg related
+const createLeg = (legID, legType, settings) => {
+  const newLeg = {
+    ...legType,
+    legType: legType.id,
+    ...settings,
+    id: legID,
+  };
+  const newNextLegID = legID + 1;
+  return { newLeg, newNextLegID };
+};
+
+const updateScheduleWithLegEdits = (
+  updatedLeg,
+  oldTrainSchedule,
+  nextLegID,
+) => {
+  let newNextLegID = nextLegID;
+  const newLegs = oldTrainSchedule.legs.map((l) => {
+    if (l.legType === updatedLeg.id) {
+      const result = createLeg(newNextLegID, updatedLeg);
+      newNextLegID = result.newNextLegID;
+      return result.newLeg;
+    } else {
+      return l;
+    }
+  });
+  return {
+    trainSchedule: { ...oldTrainSchedule, legs: newLegs },
+    nextLegID: newNextLegID,
+  };
+};
 //////////////////////////
+
+const createSecondSliderConversion = () => {
+  const secondsByValue = [];
+  let remainingPoints = 0;
+  let seconds = 0;
+  while (remainingPoints < 30) {
+    if (remainingPoints > 23) {
+      seconds += 240;
+    }
+    if (remainingPoints > 17) {
+      seconds += 120;
+    } else if (remainingPoints > 11) {
+      seconds += 60;
+    } else if (remainingPoints > 5) {
+      seconds += 30;
+    } else {
+      seconds += 10;
+    }
+    remainingPoints += 1;
+    secondsByValue.push(seconds);
+  }
+  return { secondsByValue };
+};
 
 const getInitialState = () => {
   const participants = [
@@ -114,20 +169,20 @@ const getInitialState = () => {
   defaultLegTypes.push(
     createLegType({
       name: 'break',
-      id: 0,
-      defaultLength: { h: 0, m: 0, s: 30 },
-      defaultColor: COLORS.RED,
+      id: 1,
+      runTime: { h: 0, m: 0, s: 30 },
+      color: COLORS.RED,
     }),
   );
   defaultLegTypes.push(
     createLegType({
       name: 'round',
-      id: 1,
-      defaultLength: { h: 0, m: 6, s: 0 },
-      defaultColor: COLORS.LIGHTBLUE,
+      id: 2,
+      runTime: { h: 0, m: 6, s: 0 },
+      color: COLORS.LIGHTBLUE,
     }),
   );
-  const nextLegTypeID = 2;
+  const nextLegTypeID = 3;
 
   return {
     participants,
@@ -151,6 +206,7 @@ const getInitialState = () => {
     legTypes: defaultLegTypes,
     trainSchedule: { legs: [] },
     nextLegID: 1,
+    secondSliderConverter: createSecondSliderConversion(),
   };
 };
 
@@ -313,12 +369,7 @@ const basicReducer = (state = getInitialState(), action) => {
               const selectedLegType = _.find(state.legTypes, function(t) {
                 return l.legType === t.id;
               });
-              const newLeg = {
-                ...selectedLegType,
-                legType: selectedLegType.id,
-                ...l.settings,
-                id: newNextLegID,
-              };
+              const { newLeg } = createLeg(newNextLegID, selectedLegType);
               newNextLegID = newNextLegID + 1;
               return newLeg;
             }),
@@ -377,6 +428,35 @@ const basicReducer = (state = getInitialState(), action) => {
           return acc;
         }, []),
       };
+      return {
+        ...state,
+        ...update,
+      };
+    case types.LEGTYPE_EDIT:
+      update = {};
+      let editedLeg = _.find(state.legTypes, (l) => l.id === payload.id);
+      if (!editedLeg) {
+        return { ...state };
+      }
+      editedLeg = { ...editedLeg, ...payload.data };
+      editedLeg.label = `${editedLeg.name} ${hourMinuteSecond(
+        editedLeg.runTime,
+      )}`;
+      update.legTypes = state.legTypes.reduce((acc, t) => {
+        if (t.id === editedLeg.id) {
+          acc.push(editedLeg);
+        } else {
+          acc.push(t);
+        }
+        return acc;
+      }, []);
+      const scheduleUpdateResult = updateScheduleWithLegEdits(
+        editedLeg,
+        state.trainSchedule,
+        state.nextLegID,
+      );
+      update.trainSchedule = scheduleUpdateResult.trainSchedule;
+      update.nextLegID = scheduleUpdateResult.nextLegID;
       return {
         ...state,
         ...update,

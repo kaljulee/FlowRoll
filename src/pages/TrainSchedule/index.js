@@ -4,10 +4,12 @@ import { Text, Button, Container, Card, CardItem } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import LegManager from '../../components/LegManager';
 import TrainTracker from '../../components/TrainTracker';
-import { unscheduleLeg, addLegToSchedule, deleteLegType } from '../../actions';
+import { unscheduleLeg, addLegToSchedule, deleteLegType, editLegType } from '../../actions';
 import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
-import { hourMinuteSecond, sumLegDurations } from '../../helpers/time';
+import { hourMinuteSecond, sumLegRunTimes } from '../../helpers/time';
 import ConfirmDeleteModal from '../../components/modals/ConfirmDeleteModal';
+import _ from 'lodash';
+import EditLegTypeModal from '../../components/modals/EditLegTypeModal';
 
 function TrainSchedule(props) {
   const {
@@ -19,11 +21,12 @@ function TrainSchedule(props) {
   } = props;
 
   const [showAddLegModal, setShowAddLegModal] = useState(false);
-  const [hmsTotalTime, setHmsTotalTime] = useState(sumLegDurations(legs));
+  const [hmsTotalTime, setHmsTotalTime] = useState(sumLegRunTimes(legs));
   const [displayTotalTime, setDisplayTotalTime] = useState(
     hourMinuteSecond(hmsTotalTime),
   );
   const [idToDelete, setIDToDelete] = useState(null);
+  const [editLeg, _setEditLeg] = useState(undefined);
 
   const unscheduleAllOfType = (id) => {
     console.log('would unschedule all of type ' + id);
@@ -33,6 +36,12 @@ function TrainSchedule(props) {
     deleteLegType({ id });
     setIDToDelete(null);
   };
+
+  const setEditLeg = (id) => {
+    const type = _.find(legTypes, (l) => l.id === id);
+    _setEditLeg(type);
+  };
+
   const unschedule = (id) => {
     unscheduleLeg({ legs: [id] });
   };
@@ -41,7 +50,7 @@ function TrainSchedule(props) {
   };
 
   useEffect(() => {
-    const newSum = sumLegDurations(legs);
+    const newSum = sumLegRunTimes(legs);
     setHmsTotalTime(newSum);
     setDisplayTotalTime(hourMinuteSecond(newSum));
   }, [legs]);
@@ -50,12 +59,12 @@ function TrainSchedule(props) {
     <Container>
       <Grid>
         <Col size={3} style={{ borderWidth: 5 }}>
-          <Row size={4}>
+          <Row size={6}>
             <LegManager
               onPressAvailableLeg={scheduleDefault}
               onPressActiveLeg={unschedule}
               onLongPressActiveLeg={unscheduleAllOfType}
-              onLongPressAvailableLeg={setIDToDelete}
+              onLongPressAvailableLeg={setEditLeg}
               schedule={legs}
               available={legTypes}
             />
@@ -82,6 +91,10 @@ function TrainSchedule(props) {
         isVisible={showAddLegModal}
         closeModal={() => setShowAddLegModal(false)}
       />
+      <EditLegTypeModal
+        closeModal={() => setEditLeg(undefined)}
+        editLeg={editLeg}
+      />
       <ConfirmDeleteModal
         idToDelete={idToDelete}
         confirmDelete={(id) => {
@@ -104,6 +117,7 @@ const mapDispatchToProps = {
   addLegToSchedule,
   unscheduleLeg,
   deleteLegType,
+  editLegType,
 };
 
 export default connect(

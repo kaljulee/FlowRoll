@@ -57,8 +57,6 @@ function AddParticipantModal(props) {
   };
 
   const onChangeText = (text) => {
-    console.log('CALLING ONCHANGE');
-    console.log(text);
     setName(text);
   };
 

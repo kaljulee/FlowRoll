@@ -62,6 +62,6 @@ export function sumHMS(times) {
   }, ZERO_TIME);
 }
 
-export function sumLegDurations(legs) {
-  return sumHMS(legs.map((l) => l.duration));
+export function sumLegRunTimes(legs) {
+  return sumHMS(legs.map((l) => l.runTime));
 }

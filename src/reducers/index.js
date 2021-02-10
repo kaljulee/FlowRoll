@@ -9,7 +9,7 @@ import {
 } from '../helpers/ordering';
 import moment from 'moment';
 import { STATUS } from '../helpers/utils';
-import { getEndTime, HMSToSeconds } from '../helpers/time';
+import { getEndTime, HMSToSeconds, hourMinuteSecond } from '../helpers/time';
 import { createLegType } from '../models/Leg';
 import { COLORS } from '../constants/styleValues';
 function validateRoundCount(payload) {
@@ -91,15 +91,14 @@ const updateParticipantMatchUps = (participants, activeParticipants) => {
 
 // leg related
 const createLeg = (legID, legType, settings) => {
-  const leg = {
+  const newLeg = {
     ...legType,
     legType: legType.id,
     ...settings,
     id: legID,
   };
-
   const newNextLegID = legID + 1;
-  return { leg, newNextLegID };
+  return { newLeg, newNextLegID };
 };
 
 const updateScheduleWithLegEdits = (
@@ -112,7 +111,7 @@ const updateScheduleWithLegEdits = (
     if (l.legType === updatedLeg.id) {
       const result = createLeg(newNextLegID, updatedLeg);
       newNextLegID = result.newNextLegID;
-      return result.leg;
+      return result.newLeg;
     } else {
       return l;
     }
@@ -147,7 +146,7 @@ const getInitialState = () => {
   defaultLegTypes.push(
     createLegType({
       name: 'break',
-      id: 0,
+      id: 1,
       runTime: { h: 0, m: 0, s: 30 },
       color: COLORS.RED,
     }),
@@ -155,12 +154,12 @@ const getInitialState = () => {
   defaultLegTypes.push(
     createLegType({
       name: 'round',
-      id: 1,
+      id: 2,
       runTime: { h: 0, m: 6, s: 0 },
       color: COLORS.LIGHTBLUE,
     }),
   );
-  const nextLegTypeID = 2;
+  const nextLegTypeID = 3;
 
   return {
     participants,
@@ -413,20 +412,24 @@ const basicReducer = (state = getInitialState(), action) => {
       update = {};
       let editedLeg = _.find(state.legTypes, (l) => l.id === payload.id);
       if (!editedLeg) {
-        console.log('could not find legtype to edit');
         return { ...state };
       }
       editedLeg = { ...editedLeg, ...payload.data };
+      editedLeg.label = `${editedLeg.name} ${hourMinuteSecond(
+        editedLeg.runTime,
+      )}`;
       update.legTypes = state.legTypes.reduce((acc, t) => {
         if (t.id === editedLeg.id) {
           acc.push(editedLeg);
         } else {
           acc.push(t);
         }
+        return acc;
       }, []);
       const scheduleUpdateResult = updateScheduleWithLegEdits(
         editedLeg,
         state.trainSchedule,
+        state.nextLegID,
       );
       update.trainSchedule = scheduleUpdateResult.trainSchedule;
       update.nextLegID = scheduleUpdateResult.nextLegID;

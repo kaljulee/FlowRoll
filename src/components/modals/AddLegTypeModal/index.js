@@ -72,7 +72,6 @@ function AddLegTypeModal(props) {
   const onAddPress = () => {
     console.log('onAddPress - maybe validate here?');
     if (isValid(name)) {
-      console.log('would update with name ' + name);
       addLegType({
         legType: { name, color: color, runTime: hmsDuration },
       });

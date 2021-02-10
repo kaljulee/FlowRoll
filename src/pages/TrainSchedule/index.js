@@ -59,7 +59,7 @@ function TrainSchedule(props) {
     <Container>
       <Grid>
         <Col size={3} style={{ borderWidth: 5 }}>
-          <Row size={4}>
+          <Row size={6}>
             <LegManager
               onPressAvailableLeg={scheduleDefault}
               onPressActiveLeg={unschedule}

@@ -32,7 +32,6 @@ import {
   Tab,
   Tabs,
 } from 'native-base';
-import TimeKeeperContainer from './src/components/TimeKeeperContainer';
 import ActiveTimerWarningModal from './src/components/modals/ActiveTimerWarningModal';
 import TrainSchedule from './src/pages/TrainSchedule';
 
@@ -55,45 +54,43 @@ const App: () => React$Node = () => {
             <View
               contentInsetAdjustmentBehavior="automatic"
               style={styles.View}>
-              <TimeKeeperContainer>
-                {hasHeader && (
-                  <Header hasTabs>
-                    <Left>
-                      <Button transparent>
-                        <Icon name="menu" />
-                      </Button>
-                    </Left>
-                    <Body>
-                      <Title>Header</Title>
-                    </Body>
-                    <Right />
-                  </Header>
-                )}
-                <Tabs
-                  page={currentTab}
-                  onChangeTab={(page) => setCurrentTab(page.i)}>
-                  <Tab heading={'setup'}>
-                    <TimerSetup
-                      currentTab={currentTab}
-                      changeTab={(page) => setCurrentTab(page)}
-                    />
-                  </Tab>
-                  <Tab heading={'timer'}>
-                    <MainDisplay
-                      onPressRestart={() =>
-                        console.log('missing restart function at APP level')
-                      }
-                    />
-                  </Tab>
-                  <Tab heading={'train schedule'}>
-                    <TrainSchedule />
-                  </Tab>
-                </Tabs>
-                <ActiveTimerWarningModal
-                  onReturnToTimerPress={onReturnToTimerPress}
-                  currentTab={currentTab}
-                />
-              </TimeKeeperContainer>
+              {hasHeader && (
+                <Header hasTabs>
+                  <Left>
+                    <Button transparent>
+                      <Icon name="menu" />
+                    </Button>
+                  </Left>
+                  <Body>
+                    <Title>Header</Title>
+                  </Body>
+                  <Right />
+                </Header>
+              )}
+              <Tabs
+                page={currentTab}
+                onChangeTab={(page) => setCurrentTab(page.i)}>
+                <Tab heading={'setup'}>
+                  <TimerSetup
+                    currentTab={currentTab}
+                    changeTab={(page) => setCurrentTab(page)}
+                  />
+                </Tab>
+                <Tab heading={'timer'}>
+                  <MainDisplay
+                    onPressRestart={() =>
+                      console.log('missing restart function at APP level')
+                    }
+                  />
+                </Tab>
+                <Tab heading={'train schedule'}>
+                  <TrainSchedule />
+                </Tab>
+              </Tabs>
+              <ActiveTimerWarningModal
+                onReturnToTimerPress={onReturnToTimerPress}
+                currentTab={currentTab}
+              />
             </View>
           </SafeAreaView>
         </PersistGate>

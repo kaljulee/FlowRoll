@@ -19,53 +19,54 @@ function validateRoundCount(payload) {
 
 // common recipes
 //timer related
-const expireTimer = () => ({
-  startTimeStamp: undefined,
-  endTimeStamp: undefined,
-  timerDuration: undefined,
-  remainingSeconds: 0,
-});
 
-const resetTimer = () => ({
-  currentRound: 0,
-  status: STATUS.IDLE,
-  ...expireTimer(),
-});
-
-const startTimer = (duration) => {
-  const startTimeStamp = moment();
-  const endTimeStamp = getEndTime(startTimeStamp, duration);
-  return {
-    elapsedSeconds: 0,
-    remainingSeconds: HMSToSeconds(duration),
-    startTimeStamp,
-    endTimeStamp,
-    timerDuration: duration,
-  };
-};
-
-const startTimerRun = (duration) => {
-  return {
-    currentRound: 1,
-    status: STATUS.ROUND,
-    ...startTimer(duration),
-  };
-};
-
-const breakToRound = (duration, oldCurrentRound) => {
-  return {
-    status: STATUS.ROUND,
-    currentRound: oldCurrentRound + 1,
-    ...startTimer(duration),
-  };
-};
-
-const roundToBreak = (duration) => {
-  return {
-    status: STATUS.BREAK,
-    ...startTimer(duration),
-  };
-};
+// // const expireTimer = () => ({
+// //   startTimeStamp: undefined,
+// //   endTimeStamp: undefined,
+// //   timerDuration: undefined,
+// //   remainingSeconds: 0,
+// // });
+// //
+// // const resetTimer = () => ({
+// //   currentRound: 0,
+// //   status: STATUS.IDLE,
+// //   ...expireTimer(),
+// // });
+// //
+// // const startTimer = (duration) => {
+// //   const startTimeStamp = moment();
+// //   const endTimeStamp = getEndTime(startTimeStamp, duration);
+// //   return {
+// //     elapsedSeconds: 0,
+// //     remainingSeconds: HMSToSeconds(duration),
+// //     startTimeStamp,
+// //     endTimeStamp,
+// //     timerDuration: duration,
+// //   };
+// // };
+//
+// const startTimerRun = (duration) => {
+//   return {
+//     currentRound: 1,
+//     status: STATUS.ROUND,
+//     ...startTimer(duration),
+//   };
+// };
+//
+// const breakToRound = (duration, oldCurrentRound) => {
+//   return {
+//     status: STATUS.ROUND,
+//     currentRound: oldCurrentRound + 1,
+//     ...startTimer(duration),
+//   };
+// };
+//
+// const roundToBreak = (duration) => {
+//   return {
+//     status: STATUS.BREAK,
+//     ...startTimer(duration),
+//   };
+// };
 
 // participant related
 const mergeActiveParticipants = (oldParticipants, newParticipants) =>
@@ -196,10 +197,6 @@ const getInitialState = () => {
     schedule: completeRRCycle,
     // matchUps is currently the same as schedule
     matchUps,
-    estimatedTime: undefined,
-    startTimeStamp: undefined,
-    endTimeStamp: undefined,
-    timerDuration: undefined,
     completeRRCycle,
     mute: true,
     nextLegTypeID,
@@ -304,48 +301,6 @@ const basicReducer = (state = getInitialState(), action) => {
       return state;
     case types.SET_START_TIMESTAMP:
       return { ...state, startTimeStamp: payload || moment() };
-    case types.TIMER_ROLLOVER:
-      // actions broken down by status type
-      switch (state.status) {
-        case STATUS.IDLE:
-          update = startTimerRun(state.roundDuration);
-          break;
-        case STATUS.BREAK:
-          update = breakToRound(state.roundDuration, state.currentRound);
-          break;
-        case STATUS.ROUND:
-          // last round has different behavior
-          if (state.roundCount === state.currentRound) {
-            update = resetTimer();
-          } else {
-            update = roundToBreak(state.breakDuration);
-          }
-          break;
-        default:
-          break;
-      }
-      return {
-        ...state,
-        ...update,
-      };
-    case types.TIMER_EXPIRE:
-      update = expireTimer();
-      return {
-        ...state,
-        ...update,
-      };
-    case types.TIMER_RESET:
-      update = resetTimer();
-      return {
-        ...state,
-        ...update,
-      };
-    case types.START_TIMER_RUN:
-      update = startTimerRun(state.roundDuration);
-      return {
-        ...state,
-        ...update,
-      };
     case types.SET_ELAPSED_SECONDS:
       let newRemaining = HMSToSeconds(state.timerDuration) - payload;
       return {

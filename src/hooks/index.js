@@ -1,12 +1,15 @@
 import { useEffect, useState, useCallback } from 'react';
-import { getElapsedSeconds } from '../logic';
+import { getElapsedSeconds, freshStartTime } from '../logic';
+import moment from 'moment';
 
 // start reporting elapsed seconds since start time, on per second
 // returns elapsed seconds and a cancel function
 // can be provided a number of seconds to self-cancel afterwards
-function useElapsedSecondsUpdates(startTime, cancelAfter) {
+export function useElapsedSecondsUpdates(startTime) {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [intervalID, setIntervalID] = useState(undefined);
+  const [endTime, setEndTime] = useState(undefined);
+
   // begins interval
   const startUpdates = useCallback(() => {
     setIntervalID(
@@ -15,10 +18,17 @@ function useElapsedSecondsUpdates(startTime, cancelAfter) {
       }, 1000),
     );
   }, [startTime]);
+
   // clears interval
   const cancelUpdates = useCallback(
     (id) => {
+      // stop interval
       clearInterval(id);
+      // clear interval id state
+      setIntervalID(undefined);
+      // record end time to detect new start times
+      setEndTime(moment());
+      // setRecordedStartTime(undefined);
       setElapsedSeconds(0);
     },
     [setElapsedSeconds],
@@ -26,22 +36,18 @@ function useElapsedSecondsUpdates(startTime, cancelAfter) {
 
   // checks if an interval should be started or canceled
   useEffect(() => {
-    if (startTime && !intervalID) {
+    // start new interval if there is a new starttime and no active interval
+    if (freshStartTime(startTime, endTime) && !intervalID) {
       startUpdates();
-    }
-    if (cancelAfter) {
-      if (elapsedSeconds > cancelAfter) {
-        cancelUpdates(intervalID);
-      }
     }
   }, [
     elapsedSeconds,
-    cancelAfter,
     cancelUpdates,
     startTime,
     intervalID,
     startUpdates,
+    endTime,
   ]);
 
-  return [elapsedSeconds, () => cancelUpdates(intervalID)];
+  return { elapsedSeconds, cancel: () => cancelUpdates(intervalID) };
 }

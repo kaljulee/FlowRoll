@@ -34,6 +34,7 @@ export const types = {
   LEG_EDIT: 'LEG_EDIT',
   LEG_SCHEDULE: 'LEG_SCHEDULE',
   LEG_UNSCHEDULE: 'LEG_UNSCHEDULE',
+  SET_TRAIN_SCHEDULE: 'SET_TRAIN_SCHEDULE',
 };
 
 export const resetDB = () => ({ type: types.RESET });
@@ -43,6 +44,11 @@ export const resetDB = () => ({ type: types.RESET });
 export const setSchedule = (schedule) => ({
   type: types.SET_SCHEDULE,
   payload: schedule,
+});
+
+export const setTrainRoute = (payload) => ({
+  type: types.SET_TRAIN_SCHEDULE,
+  payload,
 });
 
 // export const timerRollover = () => ({ type: types.TIMER_ROLLOVER });

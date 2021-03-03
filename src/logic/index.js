@@ -15,5 +15,5 @@ export function freshStartTime(startTime, endTime) {
   if (!endTime) {
     return true;
   }
-  return startTime.isAfter(endTime);
+  return moment(startTime).isAfter(endTime);
 }

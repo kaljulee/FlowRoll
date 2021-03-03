@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { Text, Button, Container, Card, CardItem } from 'native-base';
+import { Text, Button, Container, Card, CardItem, Footer } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import LegManager from '../../components/LegManager';
 import TrainTracker from '../../components/TrainTracker';
-import { unscheduleLeg, addLegToSchedule, deleteLegType, editLegType } from '../../actions';
+import {
+  unscheduleLeg,
+  addLegToSchedule,
+  deleteLegType,
+  editLegType,
+  setTrainSchedule,
+  setTrainRoute,
+} from '../../actions';
+import ControlBar from '../../components/ControlBar';
 import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
 import { hourMinuteSecond, sumLegRunTimes } from '../../helpers/time';
 import ConfirmDeleteModal from '../../components/modals/ConfirmDeleteModal';
@@ -17,7 +25,9 @@ function TrainSchedule(props) {
     legTypes,
     unscheduleLeg,
     deleteLegType,
+    setTrainRoute,
     addLegToSchedule,
+    route,
   } = props;
 
   const [showAddLegModal, setShowAddLegModal] = useState(false);
@@ -49,6 +59,10 @@ function TrainSchedule(props) {
     addLegToSchedule({ legs: [{ legType: id }] });
   };
 
+  const onUpdatePress = useCallback(() => {
+    setTrainRoute({ route: legs });
+  }, [legs, setTrainRoute]);
+
   useEffect(() => {
     const newSum = sumLegRunTimes(legs);
     setHmsTotalTime(newSum);
@@ -69,9 +83,14 @@ function TrainSchedule(props) {
               available={legTypes}
             />
           </Row>
-          <Row size={1}>
+          <Row
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+            size={1}>
             <Button onPress={() => setShowAddLegModal(true)}>
               <Text>Add New Type</Text>
+            </Button>
+            <Button success onPress={(legs) => onUpdatePress(legs)}>
+              <Text>Update</Text>
             </Button>
           </Row>
           <Row>
@@ -83,8 +102,8 @@ function TrainSchedule(props) {
             </Card>
           </Row>
         </Col>
-        <Col size={1} style={{ borderWidth: 5 }}>
-          <TrainTracker />
+        <Col size={1} style={{ borderWidth: 1 }}>
+          <TrainTracker route={route} />
         </Col>
       </Grid>
       <AddLegTypeModal
@@ -102,6 +121,15 @@ function TrainSchedule(props) {
         }}
         closeModal={() => setIDToDelete(null)}
       />
+      <Footer>
+        <ControlBar
+          onPressPlay={() => console.log('press play')}
+          onPressPause={() => console.log('press pause')}
+          onPressRestart={() => {
+            console.log('press restart');
+          }}
+        />
+      </Footer>
     </Container>
   );
 }
@@ -109,8 +137,9 @@ function TrainSchedule(props) {
 const mapStateToProps = (state) => {
   const {
     basicReducer: { legTypes, trainSchedule },
+    trainSchedule: { route },
   } = state;
-  return { legTypes, legs: trainSchedule.legs };
+  return { legTypes, legs: trainSchedule.legs, route };
 };
 
 const mapDispatchToProps = {
@@ -118,6 +147,7 @@ const mapDispatchToProps = {
   unscheduleLeg,
   deleteLegType,
   editLegType,
+  setTrainRoute,
 };
 
 export default connect(

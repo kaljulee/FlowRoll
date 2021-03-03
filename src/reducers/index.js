@@ -12,6 +12,8 @@ import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds, hourMinuteSecond } from '../helpers/time';
 import { createLegType } from '../models/Leg';
 import { COLORS } from '../constants/styleValues';
+import timeKeeping from './timeKeepingReducer';
+
 function validateRoundCount(payload) {
   const payloadAsInt = parseInt(payload);
   return payloadAsInt;
@@ -421,6 +423,6 @@ const basicReducer = (state = getInitialState(), action) => {
   }
 };
 
-const reducers = { basicReducer };
+const reducers = { basicReducer, timeKeeping };
 
 export default combineReducers(reducers);

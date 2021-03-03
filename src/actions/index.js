@@ -38,16 +38,16 @@ export const types = {
 
 export const resetDB = () => ({ type: types.RESET });
 
-export const startTimerRun = () => ({ type: types.START_TIMER_RUN });
+// export const startTimerRun = () => ({ type: types.START_TIMER_RUN });
 
 export const setSchedule = (schedule) => ({
   type: types.SET_SCHEDULE,
   payload: schedule,
 });
 
-export const timerRollover = () => ({ type: types.TIMER_ROLLOVER });
-
-export const resetTimer = () => ({ type: types.TIMER_RESET });
+// export const timerRollover = () => ({ type: types.TIMER_ROLLOVER });
+//
+// export const resetTimer = () => ({ type: types.TIMER_RESET });
 
 export const setCurrentRound = (round) => ({
   type: types.SET_CURRENT_ROUND,
@@ -95,17 +95,17 @@ export const setEstimatedTime = (time) => ({
 });
 
 // new plan suggests this shouldn't be exposed
-const setStartTimeStamp = (stamp) => ({
+export const setStartTime = (stamp) => ({
   type: types.SET_START_TIMESTAMP,
   payload: stamp,
 });
-
-export const expireTimer = () => ({ type: types.TIMER_EXPIRE });
-
-export const setElapsedSeconds = (payload) => ({
-  type: types.SET_ELAPSED_SECONDS,
-  payload,
-});
+//
+// export const expireTimer = () => ({ type: types.TIMER_EXPIRE });
+//
+// export const setElapsedSeconds = (payload) => ({
+//   type: types.SET_ELAPSED_SECONDS,
+//   payload,
+// });
 
 // export const setRemainingSeconds = (payload) => ({ type: types.SET_REMAINING_SECONDS, payload});
 

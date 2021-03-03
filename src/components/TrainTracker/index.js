@@ -53,7 +53,7 @@ function TrainTracker(props) {
       <FlatList
         data={route}
         renderItem={renderItem}
-        keyExtractor={(i) => i.id}
+        keyExtractor={(i) => `${i.id}`}
         contentContainerStyle={listStyles.container}
       />
     </SafeAreaView>

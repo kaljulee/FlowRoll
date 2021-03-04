@@ -19,6 +19,7 @@ const getInitialState = () => {
     totalStartTime: undefined,
     timeKeepingTest: true,
     location: undefined,
+    route: [],
   };
 };
 
@@ -26,6 +27,11 @@ const timeKeeping = (state = getInitialState(), action) => {
   const { type, payload } = action;
   let update = {};
   switch (type) {
+    case types.SET_TRAIN_ROUTE:
+      // console.log('in train reducer');
+      // console.log(payload.route);
+      update.route = payload.route;
+      return { ...state, ...update };
     case types.SET_START_TIMESTAMP:
       update.startTime = payload.startTime;
       return { ...state, ...update };

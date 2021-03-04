@@ -9,9 +9,10 @@ import {
   addLegToSchedule,
   deleteLegType,
   editLegType,
-  setTrainSchedule,
   setTrainRoute,
+  setStartTime,
 } from '../../actions';
+import { startTrain } from '../../actions/thunks';
 import ControlBar from '../../components/ControlBar';
 import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
 import { hourMinuteSecond, sumLegRunTimes } from '../../helpers/time';
@@ -45,6 +46,13 @@ function TrainSchedule(props) {
   const deleteType = (id) => {
     deleteLegType({ id });
     setIDToDelete(null);
+  };
+
+  const doStartTrain = () => {
+    // const { startTrain, setStartTime } = props;
+    // console.log('//start time and train called');
+    // setStartTime({ startTime: moment() });
+    // startTrain();
   };
 
   const setEditLeg = (id) => {
@@ -123,7 +131,7 @@ function TrainSchedule(props) {
       />
       <Footer>
         <ControlBar
-          onPressPlay={() => console.log('press play')}
+          onPressPlay={doStartTrain}
           onPressPause={() => console.log('press pause')}
           onPressRestart={() => {
             console.log('press restart');
@@ -136,10 +144,10 @@ function TrainSchedule(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { legTypes, trainSchedule },
-    trainSchedule: { route },
+    trainSchedule: { legs, legTypes },
+    timeKeeping: { route },
   } = state;
-  return { legTypes, legs: trainSchedule.legs, route };
+  return { legTypes, legs, route };
 };
 
 const mapDispatchToProps = {
@@ -148,6 +156,8 @@ const mapDispatchToProps = {
   deleteLegType,
   editLegType,
   setTrainRoute,
+  startTrain,
+  setStartTime,
 };
 
 export default connect(

@@ -13,6 +13,7 @@ export function createLegType({ name, id, runTime, color, settings }) {
     id: parseInt(id, 10),
     color,
     runTime,
+    periodTable: [],
     label: `${name} ${hourMinuteSecond(runTime)}`,
   };
 }

@@ -1,5 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
-import { getElapsedSeconds, freshStartTime } from '../logic';
+import {
+  getElapsedSeconds,
+  freshStartTime,
+} from '../logic';
 import moment from 'moment';
 
 // start reporting elapsed seconds since start time, on per second

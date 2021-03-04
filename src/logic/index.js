@@ -17,3 +17,19 @@ export function freshStartTime(startTime, endTime) {
   }
   return moment(startTime).isAfter(endTime);
 }
+
+// put this in logic some other time, taking too long right now
+
+// export function createEverySecondUpdate(updateAction) {
+//   const intervalID = setInterval(() => {
+//     console.log('about to call updateAction in everysecupdate');
+//     updateAction();
+//   }, 1000);
+//   const cancelInterval = () => {
+//     clearInterval(intervalID);
+//   };
+//   return {
+//     intervalID,
+//     cancelInterval,
+//   };
+// }

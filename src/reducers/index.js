@@ -204,7 +204,6 @@ const getInitialState = () => {
     mute: true,
     nextLegTypeID,
     legTypes: defaultLegTypes,
-    trainSchedule: { legs: [] },
     nextLegID: 1,
     secondSliderConverter: createSecondSliderConversion(),
   };
@@ -290,8 +289,6 @@ const basicReducer = (state = getInitialState(), action) => {
         ...state,
         ...update,
       };
-    case types.SET_CURRENT_ROUND:
-      return { ...state, currentRound: payload };
     case types.SET_SCHEDULE:
       return { ...state, schedule: payload };
     case types.SET_BREAK_TIME:
@@ -300,17 +297,6 @@ const basicReducer = (state = getInitialState(), action) => {
       return { ...state, roundDuration: payload };
     case types.SET_ROUND_COUNT:
       return { ...state, roundCount: validateRoundCount(payload) };
-    case types.SET_EST_TIME:
-      return state;
-    case types.SET_START_TIMESTAMP:
-      return { ...state, startTimeStamp: payload || moment() };
-    case types.SET_ELAPSED_SECONDS:
-      let newRemaining = HMSToSeconds(state.timerDuration) - payload;
-      return {
-        ...state,
-        elapsedSeconds: payload,
-        remainingSeconds: isNaN(newRemaining) ? 0 : newRemaining,
-      };
     case types.MUTE_TOGGLE:
       return {
         ...state,

@@ -16,18 +16,24 @@ import { COLORS } from '../constants/styleValues';
 const getInitialState = () => {
   return {
     startTime: undefined,
+    totalStartTime: undefined,
     timeKeepingTest: true,
+    location: undefined,
   };
 };
 
 const timeKeeping = (state = getInitialState(), action) => {
   const { type, payload } = action;
   let update = {};
-  // console.log('in timekeeping reducer');
-  // console.log(payload);
   switch (type) {
     case types.SET_START_TIMESTAMP:
       update.startTime = payload.startTime;
+      return { ...state, ...update };
+    case types.SET_LOCATION:
+      update.location = payload.location;
+      return { ...state, ...update };
+    case types.SET_NAVIGATION_ID:
+      update.navigationID = payload.id;
       return { ...state, ...update };
     default:
       return state;

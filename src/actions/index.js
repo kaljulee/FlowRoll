@@ -4,19 +4,7 @@ export const types = {
   DELETE_PARTICIPANTS: 'DELETE_PARTICIPANTS',
   ACTIVATE_PARTICIPANTS: 'ACTIVATE_PARTICIPANTS',
   DEACTIVATE_PARTICIPANTS: 'DEACTIVATE_PARTICIPANTS',
-  SET_BREAK_TIME: 'SET_BREAK_TIME',
-  SET_ROUND_TIME: 'SET_ROUND_TIME',
-  SET_ROUND_COUNT: 'SET_ROUND_COUNT',
-  SET_EST_TIME: 'SET_EST_TIME',
-  SET_SCHEDULE: 'SET_SCHEDULE',
-  SET_CURRENT_ROUND: 'SET_CURRENT_ROUND',
   SET_START_TIMESTAMP: 'SET_START_TIMESTAMP',
-  SET_STATUS: 'SET_STATUS',
-  TIMER_ROLLOVER: 'TIMER_ROLLOVER',
-  START_TIMER_RUN: 'START_TIMER_RUN',
-  TIMER_EXPIRE: 'TIMER_EXPIRE',
-  TIMER_RESET: 'TIMER_RESET',
-  SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
   MUTE_TOGGLE: 'MUTE_TOGGLE',
   // SET_REMAINING_SECONDS: 'SET_REMAINING_SECONDS',
 
@@ -34,20 +22,29 @@ export const types = {
   LEG_EDIT: 'LEG_EDIT',
   LEG_SCHEDULE: 'LEG_SCHEDULE',
   LEG_UNSCHEDULE: 'LEG_UNSCHEDULE',
-  SET_TRAIN_SCHEDULE: 'SET_TRAIN_SCHEDULE',
+
+  SET_TRAIN_ROUTE: 'SET_TRAIN_ROUTE',
+  SET_LOCATION: 'SET_LOCATION',
+  SET_NAVIGATION_ID: 'SET_NAVIGATION_ID',
+  SET_ENGINE_ID: 'SET_ENGINE_ID',
 };
 
 export const resetDB = () => ({ type: types.RESET });
 
 // export const startTimerRun = () => ({ type: types.START_TIMER_RUN });
 
-export const setSchedule = (schedule) => ({
-  type: types.SET_SCHEDULE,
-  payload: schedule,
-});
+// export const setSchedule = (schedule) => ({
+//   type: types.SET_SCHEDULE,
+//   payload: schedule,
+// });
 
 export const setTrainRoute = (payload) => ({
-  type: types.SET_TRAIN_SCHEDULE,
+  type: types.SET_TRAIN_ROUTE,
+  payload,
+});
+
+export const setLocation = (payload) => ({
+  type: types.SET_LOCATION,
   payload,
 });
 
@@ -55,10 +52,10 @@ export const setTrainRoute = (payload) => ({
 //
 // export const resetTimer = () => ({ type: types.TIMER_RESET });
 
-export const setCurrentRound = (round) => ({
-  type: types.SET_CURRENT_ROUND,
-  payload: round,
-});
+// export const setCurrentRound = (round) => ({
+//   type: types.SET_CURRENT_ROUND,
+//   payload: round,
+// });
 
 export const addParticipants = (participants) => ({
   type: types.ADD_PARTICIPANTS,
@@ -95,23 +92,20 @@ export const setRoundCount = (count) => ({
   payload: count,
 });
 
-export const setEstimatedTime = (time) => ({
-  type: types.SET_EST_TIME,
-  payload: time,
-});
 
 // new plan suggests this shouldn't be exposed
-export const setStartTime = (stamp) => ({
+export const setStartTime = ({ startTime }) => ({
   type: types.SET_START_TIMESTAMP,
-  payload: stamp,
+  payload: { startTime },
 });
+
+export const setEngineID = ({ id }) => {
+  return {
+    type: types.SET_ENGINE_ID,
+    payload: { id },
+  };
+};
 //
-// export const expireTimer = () => ({ type: types.TIMER_EXPIRE });
-//
-// export const setElapsedSeconds = (payload) => ({
-//   type: types.SET_ELAPSED_SECONDS,
-//   payload,
-// });
 
 // export const setRemainingSeconds = (payload) => ({ type: types.SET_REMAINING_SECONDS, payload});
 
@@ -149,5 +143,12 @@ export const editLegType = ({ id, color, runTime, name }) => {
   return {
     type: types.LEGTYPE_EDIT,
     payload: { id, data: { color, runTime, name } },
+  };
+};
+
+export const setNavigationID = ({ id }) => {
+  return {
+    type: types.SET_NAVIGATION_ID,
+    payload: { id },
   };
 };

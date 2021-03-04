@@ -92,8 +92,6 @@ export const setRoundCount = (count) => ({
   payload: count,
 });
 
-
-// new plan suggests this shouldn't be exposed
 export const setStartTime = ({ startTime }) => ({
   type: types.SET_START_TIMESTAMP,
   payload: { startTime },
@@ -111,10 +109,10 @@ export const setEngineID = ({ id }) => {
 
 export const toggleMute = () => ({ type: types.MUTE_TOGGLE });
 
-export const addLegToSchedule = (payload) => {
+export const addLegToSchedule = ({ legs }) => {
   return {
     type: types.LEG_SCHEDULE,
-    payload,
+    payload: { legs },
   };
 };
 

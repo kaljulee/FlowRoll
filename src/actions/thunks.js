@@ -29,7 +29,7 @@ export function startTrain() {
     const state = getState();
     const {
       // trainSchedule: { route },
-      timeKeeping: { startTime, route },
+      timeKeeping: { departureTime, route },
     } = state;
     // spoofing runTime for now
     // also totalTime
@@ -42,16 +42,18 @@ export function startTrain() {
     });
     // todo route needs to be converted to periods
 
-    const totalRunTime = route.reduce((acc, p) => {
-      return acc + HMSToSeconds(p.runTime);
-    }, 0);
+    const totalRunTime = true
+      ? 5
+      : route.reduce((acc, p) => {
+          return acc + HMSToSeconds(p.runTime);
+        }, 0);
 
     // const periods = legs.reduce((acc, l) => {
     //   return [...acc, ...l.periodTable];
     // }, []);
     // console.log('periods');
     // console.log(periods);
-    const runTime = 4;
+    // const runTime = 4;
     // const totalTime = 5000;
     // console.log('rrr route rrr');
     // console.log(route);
@@ -60,13 +62,17 @@ export function startTrain() {
     //   return;
     // }
 
+    ///////////////////////////////////////////////////
     // begin making checks every second for position
     const navigation = setInterval(() => {
       // check location;
-      const elapsedSeconds = getElapsedSeconds(startTime);
-      dispatch(updatePosition());
+      const elapsedSeconds = getElapsedSeconds(departureTime);
+      dispatch(updatePosition(elapsedSeconds));
     }, 1000);
     //
+    //////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////
     // setting engine cutoff time, will be calculated from total route
     const engine = setTimeout(() => {
       console.log('TIMEOUT shutting down nav sensors');
@@ -77,24 +83,29 @@ export function startTrain() {
   };
 }
 // todo hasn't been tested
-export function stopTrain() {
-  return function(dispatch, getState) {
-    const {
-      timeKeeping: { navigationID, engineID },
-    } = getState();
-    clearInterval(navigationID);
-    clearTimeout(engineID);
-    console.log('thunk clearning id and dispatching to store ' + navigationID);
-    dispatch(setNavigationID(undefined));
-  };
-}
+// export function stopTrain() {
+//   return function(dispatch, getState) {
+//     const {
+//       timeKeeping: { navigationID, engineID },
+//     } = getState();
+//     clearInterval(navigationID);
+//     clearTimeout(engineID);
+//     console.log('thunk clearning id and dispatching to store ' + navigationID);
+//     dispatch(setNavigationID(undefined));
+//   };
+// }
 
 function updatePosition(elapsedSeconds) {
   return function(dispatch, getState) {
     const {
-      timeKeeping: { location, route, startTime },
+      timeKeeping: { location, route, itinerary },
     } = getState();
-    console.log('in updatePOsition'); console.log(elapsedSeconds);console.log(route);
+    console.log('in updatePOsition');
+    console.log('this is the end of the data chain // // // //')
+    console.log(elapsedSeconds);
+    console.log(route);
+    console.log(itinerary);
+    console.log('////');
 
     // todo logic is required here to deal with position changes.
     //  todo should position be by mapping out entire route, or counting off periods?

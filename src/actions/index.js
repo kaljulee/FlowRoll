@@ -4,9 +4,7 @@ export const types = {
   DELETE_PARTICIPANTS: 'DELETE_PARTICIPANTS',
   ACTIVATE_PARTICIPANTS: 'ACTIVATE_PARTICIPANTS',
   DEACTIVATE_PARTICIPANTS: 'DEACTIVATE_PARTICIPANTS',
-  SET_START_TIMESTAMP: 'SET_START_TIMESTAMP',
   MUTE_TOGGLE: 'MUTE_TOGGLE',
-  // SET_REMAINING_SECONDS: 'SET_REMAINING_SECONDS',
 
   // LEG_TYPE_ADD_SAVED: 'LEG_TYPE_ADD_SAVED',
   // LEG_TYPE_DELETE_SAVED: 'LEG_TYPE_DELETE_SAVED',
@@ -27,11 +25,10 @@ export const types = {
   SET_LOCATION: 'SET_LOCATION',
   SET_NAVIGATION_ID: 'SET_NAVIGATION_ID',
   SET_ENGINE_ID: 'SET_ENGINE_ID',
+  SET_DEPARTURE_TIME: 'SET_DEPARTURE_TIME',
 };
 
 export const resetDB = () => ({ type: types.RESET });
-
-// export const startTimerRun = () => ({ type: types.START_TIMER_RUN });
 
 // export const setSchedule = (schedule) => ({
 //   type: types.SET_SCHEDULE,
@@ -92,10 +89,12 @@ export const setRoundCount = (count) => ({
   payload: count,
 });
 
-export const setStartTime = ({ startTime }) => ({
-  type: types.SET_START_TIMESTAMP,
-  payload: { startTime },
-});
+export const setDepartureTime = (payload) => {
+  return {
+    type: types.SET_DEPARTURE_TIME,
+    payload,
+  };
+};
 
 export const setEngineID = ({ id }) => {
   return {

@@ -9,12 +9,11 @@ import {
   Container,
   Footer,
 } from 'native-base';
-import { useElapsedSecondsUpdates } from '../../hooks';
 import { connect } from 'react-redux';
 import { findMatchUpByID, STATUS } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
 import TotalTimeTracker from '../../components/TotalTimeTracker';
-import { setStartTime } from '../../actions';
+import { setDepartureTime } from '../../actions';
 import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
 import KeepAwake from 'react-native-keep-awake';
 import moment from 'moment';
@@ -148,7 +147,7 @@ function NextMatchUp(props) {
 
 function MainDisplay(props) {
   const {
-    // startTimeStamp,
+    departureTime,
     roundCount,
     schedule,
     currentRound,
@@ -156,19 +155,14 @@ function MainDisplay(props) {
     onPressPause,
     onPressRestart,
     roundDuration,
-    // startTimerRun,
     status,
     // endTimeStamp,
     // elapsedSeconds,
     // remainingSeconds,
-    startTime,
   } = props;
 
   function onPressPlay() {
-    const { setStartTime } = props;
-    const newStartTime = moment();
-
-    setStartTime({ startTime: newStartTime });
+    // todo play disabled until departureTime data chain is in place
   }
 
   // !! danger !!
@@ -188,7 +182,7 @@ function MainDisplay(props) {
         <TotalTimeTracker
           styles={styles}
           status={status}
-          startTime={startTime}
+          departureTime={departureTime}
           runTime={4}
         />
         <NextMatchUp matchUp={nextMatchUp} />
@@ -218,11 +212,11 @@ const mapStateToProps = (state) => {
       matchUps,
       timerDuration,
     },
-    timeKeeping: { startTime },
+    navigation: { departureTime },
   } = state;
 
   return {
-      startTime,
+    departureTime,
     status,
     schedule,
     participants,
@@ -236,7 +230,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  setStartTime,
+  setDepartureTime,
 };
 
 export default connect(

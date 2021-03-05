@@ -12,7 +12,7 @@ import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds, hourMinuteSecond } from '../helpers/time';
 import { createLegType } from '../models/Leg';
 import { COLORS } from '../constants/styleValues';
-import timeKeeping from './timeKeepingReducer';
+import navigation from './navigationReducer';
 import trainSchedule from './trainScheduleReducer';
 
 function validateRoundCount(payload) {
@@ -258,6 +258,6 @@ const basicReducer = (state = getInitialState(), action) => {
   }
 };
 
-const reducers = { basicReducer, timeKeeping, trainSchedule, };
+const reducers = { basicReducer, navigation, trainSchedule, };
 
 export default combineReducers(reducers);

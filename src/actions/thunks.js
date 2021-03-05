@@ -4,7 +4,7 @@ import { setLocation } from './index';
 import { getElapsedSeconds } from '../logic';
 import moment from 'moment';
 import { HMSToSeconds } from '../helpers/time';
-import { setNavigationID, setEngineID } from '../actions';
+import { setScopeID, setEngineID } from '../actions';
 
 export function testThunk() {
   return function(dispatch, getState) {
@@ -29,7 +29,7 @@ export function startTrain() {
     const state = getState();
     const {
       // trainSchedule: { route },
-      timeKeeping: { departureTime, route },
+      navigation: { departureTime, route },
     } = state;
     // spoofing runTime for now
     // also totalTime
@@ -64,7 +64,7 @@ export function startTrain() {
 
     ///////////////////////////////////////////////////
     // begin making checks every second for position
-    const navigation = setInterval(() => {
+    const scope = setInterval(() => {
       // check location;
       const elapsedSeconds = getElapsedSeconds(departureTime);
       dispatch(updatePosition(elapsedSeconds));
@@ -76,29 +76,29 @@ export function startTrain() {
     // setting engine cutoff time, will be calculated from total route
     const engine = setTimeout(() => {
       console.log('TIMEOUT shutting down nav sensors');
-      clearInterval(navigation);
+      clearInterval(scope);
     }, totalRunTime * 1000);
     dispatch(setEngineID({ id: engine }));
-    dispatch(setNavigationID({ id: navigation }));
+    dispatch(setScopeID({ id: scope }));
   };
 }
 // todo hasn't been tested
 // export function stopTrain() {
 //   return function(dispatch, getState) {
 //     const {
-//       timeKeeping: { navigationID, engineID },
+//       navigation: { scopeID, engineID },
 //     } = getState();
-//     clearInterval(navigationID);
+//     clearInterval(scopeID);
 //     clearTimeout(engineID);
-//     console.log('thunk clearning id and dispatching to store ' + navigationID);
-//     dispatch(setNavigationID(undefined));
+//     console.log('thunk clearning id and dispatching to store ' + scopeID);
+//     dispatch(setScopeID(undefined));
 //   };
 // }
 
 function updatePosition(elapsedSeconds) {
   return function(dispatch, getState) {
     const {
-      timeKeeping: { location, route, itinerary },
+      navigation: { location, route, itinerary },
     } = getState();
     console.log('in updatePOsition');
     console.log('this is the end of the data chain // // // //')

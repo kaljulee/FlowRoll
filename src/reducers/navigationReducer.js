@@ -19,11 +19,12 @@ const getInitialState = () => {
     totalStartTime: undefined,
     timeKeepingTest: true,
     location: undefined,
+    scopeID: undefined,
     route: [],
   };
 };
 
-const timeKeeping = (state = getInitialState(), action) => {
+const navigation = (state = getInitialState(), action) => {
   const { type, payload } = action;
   let update = {};
   switch (type) {
@@ -38,12 +39,12 @@ const timeKeeping = (state = getInitialState(), action) => {
     case types.SET_LOCATION:
       update.location = payload.location;
       return { ...state, ...update };
-    case types.SET_NAVIGATION_ID:
-      update.navigationID = payload.id;
+    case types.SET_SCOPE_ID:
+      update.scopeID = payload.id;
       return { ...state, ...update };
     default:
       return state;
   }
 };
 
-export default timeKeeping;
+export default navigation;

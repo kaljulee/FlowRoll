@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Text, Button, Container, Card, CardItem, Footer } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import LegManager from '../../components/LegManager';
+import moment from 'moment';
 import TrainTracker from '../../components/TrainTracker';
 import {
   unscheduleLeg,
@@ -10,7 +11,7 @@ import {
   deleteLegType,
   editLegType,
   setTrainRoute,
-  setStartTime,
+  setDepartureTime,
 } from '../../actions';
 import { startTrain } from '../../actions/thunks';
 import ControlBar from '../../components/ControlBar';
@@ -49,10 +50,9 @@ function TrainSchedule(props) {
   };
 
   const doStartTrain = () => {
-    // const { startTrain, setStartTime } = props;
-    // console.log('//start time and train called');
-    // setStartTime({ startTime: moment() });
-    // startTrain();
+    const { startTrain, setDepartureTime } = props;
+    setDepartureTime(moment());
+    startTrain();
   };
 
   const setEditLeg = (id) => {
@@ -145,7 +145,7 @@ function TrainSchedule(props) {
 const mapStateToProps = (state) => {
   const {
     trainSchedule: { legs, legTypes },
-    timeKeeping: { route },
+    navigation: { route },
   } = state;
   return { legTypes, legs, route };
 };
@@ -157,7 +157,7 @@ const mapDispatchToProps = {
   editLegType,
   setTrainRoute,
   startTrain,
-  setStartTime,
+  setDepartureTime,
 };
 
 export default connect(

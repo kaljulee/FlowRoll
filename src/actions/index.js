@@ -23,7 +23,7 @@ export const types = {
 
   SET_TRAIN_ROUTE: 'SET_TRAIN_ROUTE',
   SET_LOCATION: 'SET_LOCATION',
-  SET_NAVIGATION_ID: 'SET_NAVIGATION_ID',
+  SET_SCOPE_ID: 'SET_SCOPE_ID',
   SET_ENGINE_ID: 'SET_ENGINE_ID',
   SET_DEPARTURE_TIME: 'SET_DEPARTURE_TIME',
 };
@@ -143,9 +143,9 @@ export const editLegType = ({ id, color, runTime, name }) => {
   };
 };
 
-export const setNavigationID = ({ id }) => {
+export const setScopeID = ({ id }) => {
   return {
-    type: types.SET_NAVIGATION_ID,
+    type: types.SET_SCOPE_ID,
     payload: { id },
   };
 };

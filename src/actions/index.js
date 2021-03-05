@@ -26,6 +26,8 @@ export const types = {
   SET_SCOPE_ID: 'SET_SCOPE_ID',
   SET_ENGINE_ID: 'SET_ENGINE_ID',
   SET_DEPARTURE_TIME: 'SET_DEPARTURE_TIME',
+  SET_MAP: 'SET_MAP',
+  SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
 };
 
 export const resetDB = () => ({ type: types.RESET });
@@ -102,6 +104,13 @@ export const setEngineID = ({ id }) => {
     payload: { id },
   };
 };
+
+export const setMap = (payload) => {
+  return {
+    type: types.SET_MAP,
+    payload,
+  };
+};
 //
 
 // export const setRemainingSeconds = (payload) => ({ type: types.SET_REMAINING_SECONDS, payload});
@@ -147,5 +156,12 @@ export const setScopeID = ({ id }) => {
   return {
     type: types.SET_SCOPE_ID,
     payload: { id },
+  };
+};
+
+export const setElapsedSeconds = (payload) => {
+  return {
+    type: types.SET_ELAPSED_SECONDS,
+    payload,
   };
 };

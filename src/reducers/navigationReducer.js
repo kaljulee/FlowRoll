@@ -20,6 +20,8 @@ const getInitialState = () => {
     timeKeepingTest: true,
     location: undefined,
     scopeID: undefined,
+    elapsedSeconds: 0,
+    map: { locations: [], totalRunTime: 0 },
     route: [],
   };
 };
@@ -28,20 +30,27 @@ const navigation = (state = getInitialState(), action) => {
   const { type, payload } = action;
   let update = {};
   switch (type) {
+    case types.RESET:
+      console.log('reseting navigation DB');
+      return getInitialState();
     case types.SET_TRAIN_ROUTE:
-      // console.log('in train reducer');
-      // console.log(payload.route);
       update.route = payload.route;
       return { ...state, ...update };
-      case types.SET_DEPARTURE_TIME:
-          update.departureTime = payload;
+    case types.SET_DEPARTURE_TIME:
+      update.departureTime = payload;
       return { ...state, ...update };
     case types.SET_LOCATION:
-      update.location = payload.location;
+      update.location = payload;
       return { ...state, ...update };
     case types.SET_SCOPE_ID:
       update.scopeID = payload.id;
       return { ...state, ...update };
+    case types.SET_MAP:
+      update.map = payload;
+      return { ...state, ...update };
+    case types.SET_ELAPSED_SECONDS:
+      update.elapsedSeconds = payload;
+      return {...state, ...update};
     default:
       return state;
   }

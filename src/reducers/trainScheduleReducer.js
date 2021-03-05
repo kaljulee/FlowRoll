@@ -39,7 +39,7 @@ const getInitialState = () => {
     createLegType({
       name: 'break',
       id: 1,
-      runTime: { h: 0, m: 0, s: 30 },
+      runTime: { h: 0, m: 0, s: 3 },
       color: COLORS.RED,
     }),
   );
@@ -47,7 +47,7 @@ const getInitialState = () => {
     createLegType({
       name: 'round',
       id: 2,
-      runTime: { h: 0, m: 6, s: 0 },
+      runTime: { h: 0, m:0 , s: 5 },
       color: COLORS.LIGHTBLUE,
     }),
   );
@@ -66,7 +66,9 @@ const getInitialState = () => {
 const trainSchedule = (state = getInitialState(), action) => {
   const { type, payload } = action;
   let update = {};
-  switch (type) {
+  switch (type) {    case types.RESET:
+    console.log('reseting trainschedule DB');
+    return getInitialState();
     case types.LEG_SCHEDULE:
       let newNextLegID = state.nextLegID;
       console.log('in reducer, payload');

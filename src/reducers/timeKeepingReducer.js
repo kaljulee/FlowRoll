@@ -15,7 +15,7 @@ import { COLORS } from '../constants/styleValues';
 
 const getInitialState = () => {
   return {
-    startTime: undefined,
+    departureTime: undefined,
     totalStartTime: undefined,
     timeKeepingTest: true,
     location: undefined,
@@ -32,8 +32,8 @@ const timeKeeping = (state = getInitialState(), action) => {
       // console.log(payload.route);
       update.route = payload.route;
       return { ...state, ...update };
-    case types.SET_START_TIMESTAMP:
-      update.startTime = payload.startTime;
+      case types.SET_DEPARTURE_TIME:
+          update.departureTime = payload;
       return { ...state, ...update };
     case types.SET_LOCATION:
       update.location = payload.location;

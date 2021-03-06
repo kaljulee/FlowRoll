@@ -29,6 +29,19 @@ export function extractSegments(routeSegment) {
   return [];
 }
 
+export function flattenLegsIntoSegments(legs, incomingRunTime = 0) {
+  const flattened = [];
+  let totalRunTime = incomingRunTime;
+  legs.forEach((l) => {
+    const segments = extractSegments(l);
+    segments.forEach((s) => {
+      totalRunTime += s.runTime;
+      flattened.push(l);
+    });
+  });
+  return { segments: flattened, totalRunTime };
+}
+
 export function createLocations(segments, offset = 0) {
   let totalRunTime = offset;
   const locations = [];
@@ -64,7 +77,7 @@ export function getLocation(elapsedSeconds, map) {
       return i;
     }
     // if this location is before the next cutoff, return it
-    if ((elapsedSeconds - 1) < map.locations[i + 1].offset) {
+    if (elapsedSeconds - 1 < map.locations[i + 1].offset) {
       return i;
     }
   }
@@ -72,4 +85,8 @@ export function getLocation(elapsedSeconds, map) {
 
 export function getTimeInLocation() {
   // todo this function
+}
+
+export function sumLegRunTimes(legs) {
+  return flattenLegsIntoSegments(legs).totalRunTime;
 }

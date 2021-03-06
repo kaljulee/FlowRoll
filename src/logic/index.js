@@ -19,25 +19,44 @@ export function freshStartTime(startTime, endTime) {
   return moment(startTime).isAfter(endTime);
 }
 
-export function extractSegments(routeSegment) {
-  if (routeSegment.runTime) {
-    return [{ runTime: routeSegment.runTime }];
+// convert a leg into an array of segments
+export function extractSegments(leg, id) {
+  // assumes the incoming id is valid
+  let tempID = id;
+  // if the leg has a runtime, treat it as a segment
+  if (leg.runTime) {
+    return {
+      segments: [{ runTime: leg.runTime, legType: leg.legType, id }],
+      nextID: id + 1,
+    };
   }
-  if (routeSegment.segments) {
-    return routeSegment.segments;
+  // if a leg has segments, use the array of segments
+  if (leg.segments) {
+    return leg.segments.map((s) => {
+      const newSegment = { ...s, legType: leg.LegType, id: tempID };
+      tempID = tempID + 1;
+      return newSegment;
+    });
   }
-  return [];
+  // otherwise return empty segment array, original id
+  return { segments: [], nextID: id };
 }
 
+// takes an array of legs and runTime (defaults to zero)
+// provides ids to the segments
 export function flattenLegsIntoSegments(legs, incomingRunTime = 0) {
   const flattened = [];
   let totalRunTime = incomingRunTime;
+  // this is where segmentID gets defined
+  let segmentID = 1;
+  // for each leg, convert to segments and update runTime
   legs.forEach((l) => {
-    const segments = extractSegments(l);
-    segments.forEach((s) => {
+    const segmentData = extractSegments(l, segmentID);
+    segmentData.segments.forEach((s) => {
       totalRunTime += s.runTime;
-      flattened.push(l);
+      flattened.push(s);
     });
+    segmentID = segmentData.nextID;
   });
   return { segments: flattened, totalRunTime };
 }
@@ -46,39 +65,42 @@ export function createLocations(segments, offset = 0) {
   let totalRunTime = offset;
   const locations = [];
   segments.forEach((s) => {
-    locations.push({ ...s, offset: totalRunTime });
+    locations.push({
+      ...s,
+      offset: totalRunTime,
+    });
     totalRunTime = totalRunTime + s.runTime;
   });
   return { totalRunTime, locations };
 }
 
 export function createMap(route) {
-  const locations = [];
-  let totalRunTime = 0;
-  route.forEach((rSegment) => {
-    const extractedSegments = extractSegments(rSegment);
-    const locationData = createLocations(extractedSegments, totalRunTime);
-    locations.push(...locationData.locations);
-    totalRunTime = locationData.totalRunTime;
-  });
-  return { locations, totalRunTime };
+
+  const segmentData = flattenLegsIntoSegments(route);
+  const locationData = createLocations(segmentData.segments);
+  return locationData;
 }
 
 export function getLocation(elapsedSeconds, map) {
   let location = null;
+  // NOWHERE location if time is outside of map
   if (elapsedSeconds > map.totalRunTime) {
-    return location;
+    return 0;
   }
   for (let i = 0; i < map.locations.length; i += 1) {
     location = map.locations[i];
-
+    // NOWHERE location if location can't be found
+    if (!location) {
+      console.log('error - missing location');
+      return 0;
+    }
     // if this is the last location, return it
     if (!map.locations[i + 1]) {
-      return i;
+      return location.id;
     }
     // if this location is before the next cutoff, return it
     if (elapsedSeconds - 1 < map.locations[i + 1].offset) {
-      return i;
+      return location.id;
     }
   }
 }

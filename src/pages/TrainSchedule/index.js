@@ -10,16 +10,22 @@ import {
   addLegToSchedule,
   deleteLegType,
   editLegType,
-  setTrainRoute,
   setDepartureTime,
 } from '../../actions';
-import { startTrain } from '../../actions/thunks';
+import {
+  createAndSetMap,
+  startTrain,
+  timeInLocation,
+  createAnnotatedMap,
+} from '../../actions/thunks';
+import { sumLegRunTimes } from '../../logic';
 import ControlBar from '../../components/ControlBar';
 import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
-import { hourMinuteSecond, sumLegRunTimes } from '../../helpers/time';
+import { formatSecondsToDisplay } from '../../helpers/time';
 import ConfirmDeleteModal from '../../components/modals/ConfirmDeleteModal';
 import _ from 'lodash';
 import EditLegTypeModal from '../../components/modals/EditLegTypeModal';
+import { getLegTypeByID } from '../../helpers/utils';
 
 function TrainSchedule(props) {
   const {
@@ -27,18 +33,24 @@ function TrainSchedule(props) {
     legTypes,
     unscheduleLeg,
     deleteLegType,
-    setTrainRoute,
     addLegToSchedule,
-    route,
+    createAnnotatedMap,
+    elapsedSeconds,
+    timeInLocation,
+    location,
+    createAndSetMap,
+    map,
   } = props;
 
   const [showAddLegModal, setShowAddLegModal] = useState(false);
-  const [hmsTotalTime, setHmsTotalTime] = useState(sumLegRunTimes(legs));
+  const [totalTime, setTotalTime] = useState(sumLegRunTimes(legs));
+  const [annotatedMap, setAnnotatedMap] = useState(createAnnotatedMap());
   const [displayTotalTime, setDisplayTotalTime] = useState(
-    hourMinuteSecond(hmsTotalTime),
+    formatSecondsToDisplay(totalTime),
   );
   const [idToDelete, setIDToDelete] = useState(null);
   const [editLeg, _setEditLeg] = useState(undefined);
+  const [localTime, setLocalTime] = useState(0);
 
   const unscheduleAllOfType = (id) => {
     console.log('would unschedule all of type ' + id);
@@ -56,7 +68,7 @@ function TrainSchedule(props) {
   };
 
   const setEditLeg = (id) => {
-    const type = _.find(legTypes, (l) => l.id === id);
+    const type = getLegTypeByID(legTypes, id);
     _setEditLeg(type);
   };
 
@@ -67,15 +79,25 @@ function TrainSchedule(props) {
     addLegToSchedule({ legs: [{ legType: id }] });
   };
 
+  // creates a map for navigation
   const onUpdatePress = useCallback(() => {
-    setTrainRoute({ route: legs });
-  }, [legs, setTrainRoute]);
+    createAndSetMap(legs);
+  }, [legs, createAndSetMap]);
 
   useEffect(() => {
     const newSum = sumLegRunTimes(legs);
-    setHmsTotalTime(newSum);
-    setDisplayTotalTime(hourMinuteSecond(newSum));
+    setTotalTime(newSum);
+    setDisplayTotalTime(formatSecondsToDisplay(newSum));
   }, [legs]);
+
+  // updates local time when relavant info changes
+  useEffect(() => {
+    setLocalTime(timeInLocation());
+  }, [elapsedSeconds, localTime, location, timeInLocation]);
+
+  useEffect(() => {
+    setAnnotatedMap(createAnnotatedMap());
+  }, [createAnnotatedMap, map]);
 
   return (
     <Container>
@@ -111,7 +133,11 @@ function TrainSchedule(props) {
           </Row>
         </Col>
         <Col size={1} style={{ borderWidth: 1 }}>
-          <TrainTracker route={route} />
+          <TrainTracker
+            annotatedMap={annotatedMap}
+            location={location}
+            localTime={localTime}
+          />
         </Col>
       </Grid>
       <AddLegTypeModal
@@ -145,9 +171,9 @@ function TrainSchedule(props) {
 const mapStateToProps = (state) => {
   const {
     trainSchedule: { legs, legTypes },
-    navigation: { route },
+    navigation: { location, elapsedSeconds, map },
   } = state;
-  return { legTypes, legs, route };
+  return { legTypes, legs, elapsedSeconds, location, map };
 };
 
 const mapDispatchToProps = {
@@ -155,9 +181,11 @@ const mapDispatchToProps = {
   unscheduleLeg,
   deleteLegType,
   editLegType,
-  setTrainRoute,
+  createAndSetMap,
   startTrain,
   setDepartureTime,
+  timeInLocation,
+  createAnnotatedMap,
 };
 
 export default connect(

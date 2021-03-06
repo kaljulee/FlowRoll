@@ -22,7 +22,6 @@ const getInitialState = () => {
     scopeID: undefined,
     elapsedSeconds: 0,
     map: { locations: [], totalRunTime: 0 },
-    route: [],
   };
 };
 
@@ -50,7 +49,7 @@ const navigation = (state = getInitialState(), action) => {
       return { ...state, ...update };
     case types.SET_ELAPSED_SECONDS:
       update.elapsedSeconds = payload;
-      return {...state, ...update};
+      return { ...state, ...update };
     default:
       return state;
   }

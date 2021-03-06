@@ -3,6 +3,7 @@ import { createLegType } from '../models/Leg';
 import { hourMinuteSecond } from '../helpers/time';
 import { COLORS } from '../constants/styleValues';
 import _ from 'lodash';
+import { getLegTypeByID } from '../helpers/utils';
 
 // leg related
 const createLeg = (legID, legType, settings) => {
@@ -66,24 +67,25 @@ const getInitialState = () => {
 const trainSchedule = (state = getInitialState(), action) => {
   const { type, payload } = action;
   let update = {};
-  switch (type) {    case types.RESET:
-    console.log('reseting trainschedule DB');
-    return getInitialState();
+  switch (type) {
+    case types.RESET:
+      console.log('reseting trainschedule DB');
+      return getInitialState();
     case types.LEG_SCHEDULE:
       let newNextLegID = state.nextLegID;
       console.log('in reducer, payload');
       console.log(payload);
       payload.legs.forEach((l) => console.log('leg'));
       const newLegs = payload.legs.map((l) => {
-
         // console.log('el');
         // console.log(l);
         // state.legTypes.forEach(t => console.log(t.id));
 
-        const selectedLegType = _.find(state.legTypes, function(t) {
-           console.log('looking for legtype ' + l.legType);
-          return l.legType === t.id;
-        });
+        const selectedLegType = getLegTypeByID(state.legTypes, l.legType);
+        //     _.find(state.legTypes, function(t) {
+        //    console.log('looking for legtype ' + l.legType);
+        //   return l.legType === t.id;
+        // });
         // return l;
 
         const { newLeg } = createLeg(newNextLegID, selectedLegType);

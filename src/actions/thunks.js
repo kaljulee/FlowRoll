@@ -1,4 +1,3 @@
-import { setStartTime, types } from './index';
 import thunk from 'redux-thunk';
 import { setLocation } from './index';
 import {
@@ -8,16 +7,8 @@ import {
   getTimeInLocation,
 } from '../logic';
 import moment from 'moment';
-import { HMSToSeconds } from '../helpers/time';
 import { setScopeID, setEngineID, setMap, setElapsedSeconds } from '../actions';
-
-export function testThunk() {
-  return function(dispatch, getState) {
-    const theState = getState();
-    // console.log('state in thunk');
-    // console.log(theState);
-  };
-}
+import { getLegTypeByID } from '../helpers/utils';
 
 // this will store interval id in state, call updates to position and current start time
 
@@ -30,12 +21,8 @@ export function startTrain() {
     // setup thunk environment
     const state = getState();
     const {
-      // trainSchedule: { route },
-      navigation: { departureTime, route },
+      navigation: { departureTime, map },
     } = state;
-    // spoofing runTime for now
-
-    const map = createMap(route);
 
     ///////////////////////////////////////////////////
     // begin making checks every second for position
@@ -58,8 +45,7 @@ export function startTrain() {
     }, (map.totalRunTime + buffer) * 1000);
     // clear old data
     dispatch(resetNavData());
-
-    dispatch(setMap(map));
+    // record engine and scope id's
     dispatch(setEngineID({ id: engine }));
     dispatch(setScopeID({ id: scope }));
   };
@@ -80,7 +66,7 @@ export function startTrain() {
 function updatePosition(elapsedSeconds) {
   return function(dispatch, getState) {
     const {
-      navigation: { location, route, map },
+      navigation: { location, map },
     } = getState();
     if (!map || !map.locations) {
       console.log('missing map or map data');
@@ -107,5 +93,36 @@ export function timeInLocation() {
     } = getState();
     const locationData = map.locations[location];
     return getTimeInLocation(elapsedSeconds, locationData);
+  };
+}
+
+export function createAndSetMap() {
+  return function(dispatch, getState) {
+    const {
+      trainSchedule: { legs },
+    } = getState();
+    dispatch(setMap(createMap(legs)));
+  };
+}
+
+export function createAnnotatedMap() {
+  return function(dispatch, getState) {
+    const {
+      trainSchedule: { legTypes },
+      navigation: { map },
+    } = getState();
+    return {
+      ...map,
+      locations: map.locations.map((m) => {
+        const type = getLegTypeByID(legTypes, m.legType);
+        const { color, name, label } = type;
+        return {
+          ...m,
+          color,
+          name,
+          label,
+        };
+      }),
+    };
   };
 }

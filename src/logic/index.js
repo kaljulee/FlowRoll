@@ -69,3 +69,7 @@ export function getLocation(elapsedSeconds, map) {
     }
   }
 }
+
+export function getTimeInLocation() {
+  // todo this function
+}

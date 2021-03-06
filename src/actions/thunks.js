@@ -30,13 +30,6 @@ export function startTrain() {
       navigation: { departureTime, route },
     } = state;
     // spoofing runTime for now
-    // also totalTime
-    // kind of dangerous because runtime is seconds, totalTime is ms
-    // todo runtime needs to become in seconds
-    // route.forEach((l) => {
-    //   console.log(l.label);
-    // });
-    // todo route needs to be converted to segments
 
     const map = createMap(route);
 

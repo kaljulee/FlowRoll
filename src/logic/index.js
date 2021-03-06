@@ -83,8 +83,17 @@ export function getLocation(elapsedSeconds, map) {
   }
 }
 
-export function getTimeInLocation() {
-  // todo this function
+export function getTimeInLocation(elaspedSeconds, locationData) {
+  if (!locationData) {
+    console.log('no location data, returning NaN');
+    return Number.NaN;
+  }
+  if (elaspedSeconds < locationData.offset) {
+    console.log('should not have arrived at location, returning NaN');
+    return Number.NaN;
+  }
+  // offset adjusts the elapsedSeconds in this location to start at zero
+  return elaspedSeconds - locationData.offset;
 }
 
 export function sumLegRunTimes(legs) {

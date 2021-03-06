@@ -1,7 +1,12 @@
 import { setStartTime, types } from './index';
 import thunk from 'redux-thunk';
 import { setLocation } from './index';
-import { getElapsedSeconds, createMap, getLocation, getTimeInLocation } from '../logic';
+import {
+  getElapsedSeconds,
+  createMap,
+  getLocation,
+  getTimeInLocation,
+} from '../logic';
 import moment from 'moment';
 import { HMSToSeconds } from '../helpers/time';
 import { setScopeID, setEngineID, setMap, setElapsedSeconds } from '../actions';
@@ -97,8 +102,11 @@ export function resetNavData() {
 }
 
 export function timeInLocation() {
-  return function (dispatch, getState) {
-    const {navigation} = getState;
-    return getTimeInLocation();
-  }
+  return function(dispatch, getState) {
+    const {
+      navigation: { elapsedSeconds, map, location },
+    } = getState();
+    const locationData = map.locations[location];
+    return getTimeInLocation(elapsedSeconds, locationData);
+  };
 }

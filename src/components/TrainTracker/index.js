@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, List, ListItem } from 'native-base';
 import { View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 
 function TrainTracker(props) {
-  const { route } = props;
+  const { annotatedMap, location, localTime } = props;
+  const [selectedID, setSelectedID] = useState(0);
 
   const railStyle = {
     position: 'absolute',
@@ -21,13 +22,17 @@ function TrainTracker(props) {
     },
   });
 
+  const checkIfSelected = (id) => {
+    return id === selectedID;
+  };
+
   const renderItem = ({ item }) => {
     return (
       <View
         style={{
           borderWidth: 1,
           borderColor: 'black',
-          backgroundColor: item.color,
+          backgroundColor: checkIfSelected(item.id) ? 'green' : item.color,
           width: 70,
           height: 28,
           display: 'flex',
@@ -36,10 +41,14 @@ function TrainTracker(props) {
           marginTop: 5,
           marginBottom: 5,
         }}>
-        <Text>{item.name}</Text>
+        <Text>{checkIfSelected(item.id) ? localTime : item.name}</Text>
       </View>
     );
   };
+
+  useEffect(() => {
+    setSelectedID(location);
+  }, [location]);
 
   return (
     <SafeAreaView style={{ height: '100%', width: '100%' }}>
@@ -51,10 +60,11 @@ function TrainTracker(props) {
       />
       <View style={{ ...railStyle, right: 60 }} />
       <FlatList
-        data={route}
+        data={annotatedMap.locations}
         renderItem={renderItem}
         keyExtractor={(i) => `${i.id}`}
         contentContainerStyle={listStyles.container}
+        extraData={{ selectedID, localTime }}
       />
     </SafeAreaView>
   );

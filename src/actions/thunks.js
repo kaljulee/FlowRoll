@@ -27,7 +27,6 @@ export function testThunk() {
 
 export function startTrain() {
   return function(dispatch, getState) {
-    console.log('in start train thunk');
     // setup thunk environment
     const state = getState();
     const {

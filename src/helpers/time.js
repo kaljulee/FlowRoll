@@ -48,20 +48,17 @@ export function checkTimerExpiry(endTime) {
   return now.isAfter(moment(endTime));
 }
 
-export function sumHMS(times) {
-  return times.reduce((acc, t) => {
-    let newSeconds = acc.s + t.s;
-    let newMinutes = Math.floor(newSeconds / 60);
-    newSeconds = newSeconds % 60;
-    newMinutes = newMinutes + acc.m + t.m;
-    let newHours = Math.floor(newMinutes / 60);
-    newMinutes = newMinutes % 60;
-    newHours = newHours + acc.h + t.h;
-    let newTime = { h: newHours, m: newMinutes, s: newSeconds };
-    return newTime;
-  }, ZERO_TIME);
-}
-
-export function sumLegRunTimes(legs) {
-  return sumHMS(legs.map((l) => l.runTime));
-}
+// should no longer be necessary to sum HMSs, will be done as ints
+// export function sumHMS(times) {
+//   return times.reduce((acc, t) => {
+//     let newSeconds = acc.s + t.s;
+//     let newMinutes = Math.floor(newSeconds / 60);
+//     newSeconds = newSeconds % 60;
+//     newMinutes = newMinutes + acc.m + t.m;
+//     let newHours = Math.floor(newMinutes / 60);
+//     newMinutes = newMinutes % 60;
+//     newHours = newHours + acc.h + t.h;
+//     let newTime = { h: newHours, m: newMinutes, s: newSeconds };
+//     return newTime;
+//   }, ZERO_TIME);
+// }

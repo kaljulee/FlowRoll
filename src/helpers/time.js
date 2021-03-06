@@ -62,3 +62,7 @@ export function checkTimerExpiry(endTime) {
 //     return newTime;
 //   }, ZERO_TIME);
 // }
+
+export function formatSecondsToDisplay(seconds) {
+    return hourMinuteSecond(secondsToHMS(seconds));
+}

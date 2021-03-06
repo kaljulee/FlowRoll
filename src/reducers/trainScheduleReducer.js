@@ -39,7 +39,7 @@ const getInitialState = () => {
     createLegType({
       name: 'break',
       id: 1,
-      runTime: { h: 0, m: 0, s: 3 },
+      runTime: 3,
       color: COLORS.RED,
     }),
   );
@@ -47,7 +47,7 @@ const getInitialState = () => {
     createLegType({
       name: 'round',
       id: 2,
-      runTime: { h: 0, m:0 , s: 5 },
+      runTime: 5,
       color: COLORS.LIGHTBLUE,
     }),
   );

@@ -1,4 +1,3 @@
-import { hourMinuteSecond } from '../helpers/time';
 
 export function createLegType({ name, id, runTime, color, settings }) {
   if (!name || isNaN(id)) {
@@ -14,7 +13,7 @@ export function createLegType({ name, id, runTime, color, settings }) {
     color,
     runTime,
     segments: [],
-    label: `${name} ${hourMinuteSecond(runTime)}`,
+    label: `${name} ${runTime}`,
   };
 }
 

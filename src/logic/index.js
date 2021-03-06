@@ -34,7 +34,7 @@ export function createLocations(segments, offset = 0) {
   const locations = [];
   segments.forEach((s) => {
     locations.push({ ...s, offset: totalRunTime });
-    totalRunTime = totalRunTime + HMSToSeconds(s.runTime);
+    totalRunTime = totalRunTime + s.runTime;
   });
   return { totalRunTime, locations };
 }

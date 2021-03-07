@@ -8,10 +8,6 @@ import {
 import { createSecondSliderConversion } from '../logic';
 import { types } from '../actions';
 
-
-
-// todo sit down and plan this out before just going crazy
-// todo roundCount may be important, depending on standalone groundRobin requirements
 const getInitialState = () => {
   const participants = [
     createParticipant('Kalju', 1),

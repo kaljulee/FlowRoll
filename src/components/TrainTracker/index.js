@@ -4,7 +4,7 @@ import { View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { EMPTY_MAP } from '../../models/Location';
 
 function TrainTracker(props) {
-  const { annotatedMap, location, localTime } = props;
+  const { map, location, localTime } = props;
   const [selectedID, setSelectedID] = useState(0);
 
   const railStyle = {
@@ -61,7 +61,7 @@ function TrainTracker(props) {
       />
       <View style={{ ...railStyle, right: 60 }} />
       <FlatList
-        data={annotatedMap.locations}
+        data={map.locations}
         renderItem={renderItem}
         keyExtractor={(i) => `${i.id}`}
         contentContainerStyle={listStyles.container}
@@ -72,7 +72,7 @@ function TrainTracker(props) {
 }
 
 TrainTracker.defaultProps = {
-  annotatedMap: EMPTY_MAP,
+  map: EMPTY_MAP,
   location: 0,
   localTime: 0,
 };

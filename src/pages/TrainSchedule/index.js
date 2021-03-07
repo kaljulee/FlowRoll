@@ -2,14 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Text, Button, Container, Card, CardItem, Footer } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
-import LegManager from '../../components/LegManager';
+import RouteManager from '../../components/RouteManager';
 import moment from 'moment';
 import TrainTracker from '../../components/TrainTracker';
 import {
-  unscheduleLeg,
-  addLegToSchedule,
-  deleteLegType,
-  editLegType,
+  unscheduleRoute,
+  addRouteToSchedule,
+  deleteRouteType,
+  editRouteType,
   setDepartureTime,
 } from '../../actions';
 import {
@@ -18,22 +18,22 @@ import {
   timeInLocation,
   createAnnotatedMap,
 } from '../../actions/thunks';
-import { sumLegRunTimes } from '../../logic';
+import { sumRouteRunTimes } from '../../logic';
 import ControlBar from '../../components/ControlBar';
-import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
+import AddRouteTypeModal from '../../components/modals/AddRouteTypeModal';
 import { formatSecondsToDisplay } from '../../helpers/time';
 import ConfirmDeleteModal from '../../components/modals/ConfirmDeleteModal';
 import _ from 'lodash';
-import EditLegTypeModal from '../../components/modals/EditLegTypeModal';
-import { getLegTypeByID } from '../../helpers/utils';
+import EditRouteTypeModal from '../../components/modals/EditRouteTypeModal';
+import { getRouteTypeByID } from '../../helpers/utils';
 
 function TrainSchedule(props) {
   const {
-    legs,
-    legTypes,
-    unscheduleLeg,
-    deleteLegType,
-    addLegToSchedule,
+    routes,
+    routeTypes,
+    unscheduleRoute,
+    deleteRouteType,
+    addRouteToSchedule,
     createAnnotatedMap,
     elapsedSeconds,
     timeInLocation,
@@ -42,14 +42,14 @@ function TrainSchedule(props) {
     map,
   } = props;
 
-  const [showAddLegModal, setShowAddLegModal] = useState(false);
-  const [totalTime, setTotalTime] = useState(sumLegRunTimes(legs));
+  const [showAddRouteModal, setShowAddRouteModal] = useState(false);
+  const [totalTime, setTotalTime] = useState(sumRouteRunTimes(routes));
   const [annotatedMap, setAnnotatedMap] = useState(createAnnotatedMap());
   const [displayTotalTime, setDisplayTotalTime] = useState(
     formatSecondsToDisplay(totalTime),
   );
   const [idToDelete, setIDToDelete] = useState(null);
-  const [editLeg, _setEditLeg] = useState(undefined);
+  const [editRoute, _setEditRoute] = useState(undefined);
   const [localTime, setLocalTime] = useState(0);
 
   const unscheduleAllOfType = (id) => {
@@ -57,7 +57,7 @@ function TrainSchedule(props) {
   };
 
   const deleteType = (id) => {
-    deleteLegType({ id });
+    deleteRouteType({ id });
     setIDToDelete(null);
   };
 
@@ -67,28 +67,28 @@ function TrainSchedule(props) {
     startTrain();
   };
 
-  const setEditLeg = (id) => {
-    const type = getLegTypeByID(legTypes, id);
-    _setEditLeg(type);
+  const setEditRoute = (id) => {
+    const type = getRouteTypeByID(routeTypes, id);
+    _setEditRoute(type);
   };
 
   const unschedule = (id) => {
-    unscheduleLeg({ legs: [id] });
+    unscheduleRoute({ routes: [id] });
   };
   const scheduleDefault = (id) => {
-    addLegToSchedule({ legs: [{ legType: id }] });
+    addRouteToSchedule({ routes: [{ routeType: id }] });
   };
 
   // creates a map for navigation
   const onUpdatePress = useCallback(() => {
-    createAndSetMap(legs);
-  }, [legs, createAndSetMap]);
+    createAndSetMap(routes);
+  }, [routes, createAndSetMap]);
 
   useEffect(() => {
-    const newSum = sumLegRunTimes(legs);
+    const newSum = sumRouteRunTimes(routes);
     setTotalTime(newSum);
     setDisplayTotalTime(formatSecondsToDisplay(newSum));
-  }, [legs]);
+  }, [routes]);
 
   // updates local time when relavant info changes
   useEffect(() => {
@@ -104,22 +104,22 @@ function TrainSchedule(props) {
       <Grid>
         <Col size={3} style={{ borderWidth: 5 }}>
           <Row size={6}>
-            <LegManager
-              onPressAvailableLeg={scheduleDefault}
-              onPressActiveLeg={unschedule}
-              onLongPressActiveLeg={unscheduleAllOfType}
-              onLongPressAvailableLeg={setEditLeg}
-              schedule={legs}
-              available={legTypes}
+            <RouteManager
+              onPressAvailableRoute={scheduleDefault}
+              onPressActiveRoute={unschedule}
+              onLongPressActiveRoute={unscheduleAllOfType}
+              onLongPressAvailableRoute={setEditRoute}
+              schedule={routes}
+              available={routeTypes}
             />
           </Row>
           <Row
             style={{ display: 'flex', justifyContent: 'space-between' }}
             size={1}>
-            <Button onPress={() => setShowAddLegModal(true)}>
+            <Button onPress={() => setShowAddRouteModal(true)}>
               <Text>Add New Type</Text>
             </Button>
-            <Button success onPress={(legs) => onUpdatePress(legs)}>
+            <Button success onPress={(routes) => onUpdatePress(routes)}>
               <Text>Update</Text>
             </Button>
           </Row>
@@ -140,13 +140,13 @@ function TrainSchedule(props) {
           />
         </Col>
       </Grid>
-      <AddLegTypeModal
-        isVisible={showAddLegModal}
-        closeModal={() => setShowAddLegModal(false)}
+      <AddRouteTypeModal
+        isVisible={showAddRouteModal}
+        closeModal={() => setShowAddRouteModal(false)}
       />
-      <EditLegTypeModal
-        closeModal={() => setEditLeg(undefined)}
-        editLeg={editLeg}
+      <EditRouteTypeModal
+        closeModal={() => setEditRoute(undefined)}
+        editRoute={editRoute}
       />
       <ConfirmDeleteModal
         idToDelete={idToDelete}
@@ -170,17 +170,17 @@ function TrainSchedule(props) {
 
 const mapStateToProps = (state) => {
   const {
-    trainSchedule: { legs, legTypes },
+    trainSchedule: { routes, routeTypes },
     navigation: { location, elapsedSeconds, map },
   } = state;
-  return { legTypes, legs, elapsedSeconds, location, map };
+  return { routeTypes, routes, elapsedSeconds, location, map };
 };
 
 const mapDispatchToProps = {
-  addLegToSchedule,
-  unscheduleLeg,
-  deleteLegType,
-  editLegType,
+  addRouteToSchedule,
+  unscheduleRoute,
+  deleteRouteType,
+  editRouteType,
   createAndSetMap,
   startTrain,
   setDepartureTime,

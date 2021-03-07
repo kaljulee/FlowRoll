@@ -21,14 +21,14 @@ import { COLORS } from '../../../constants/styleValues';
 import { connect } from 'react-redux';
 import SecondSlider from '../../SecondSlider';
 import ColorPicker from '../../ColorPicker';
-import { editLegType } from '../../../actions';
+import { editRouteType } from '../../../actions';
 
-function EditLegTypeModal(props) {
-  const { closeModal, editLegType, editLeg } = props;
+function EditRouteTypeModal(props) {
+  const { closeModal, editRouteType, editRoute } = props;
 
-  const { name, runTime, color, iid } = editLeg;
+  const { name, runTime, color, iid } = editRoute;
 
-  const [legID, setLegID] = useState(iid);
+  const [routeID, setRouteID] = useState(iid);
   const [newName, setNewName] = useState(name);
   const [newRunTime, setNewRunTime] = useState(runTime);
   const [newColor, setNewColor] = useState(color);
@@ -54,7 +54,7 @@ function EditLegTypeModal(props) {
 
   function saveAndClose() {
     let errorMessage;
-    if (!legID) {
+    if (!routeID) {
       errorMessage = 'bad id';
     }
     if (!newRunTime) {
@@ -73,12 +73,12 @@ function EditLegTypeModal(props) {
     }
 
     const payload = {
-      id: legID,
+      id: routeID,
       runTime: newRunTime,
       color: newColor,
       name: newName,
     };
-    editLegType(payload);
+    editRouteType(payload);
     closeModal();
   }
 
@@ -91,21 +91,21 @@ function EditLegTypeModal(props) {
   }
 
   useEffect(() => {
-    if (editLeg) {
-      setLegID(editLeg.id);
-      setNewName(editLeg.name);
-      setNewRunTime(editLeg.runTime);
-      setNewColor(editLeg.color);
-      setRunTimeInSeconds(HMSToSeconds(editLeg.runTime));
+    if (editRoute) {
+      setRouteID(editRoute.id);
+      setNewName(editRoute.name);
+      setNewRunTime(editRoute.runTime);
+      setNewColor(editRoute.color);
+      setRunTimeInSeconds(HMSToSeconds(editRoute.runTime));
     }
-  }, [editLeg]);
+  }, [editRoute]);
 
   useEffect(() => {
     setNewRunTime(secondsToHMS(runTimeInSeconds));
   }, [runTimeInSeconds]);
 
   return (
-    <Modal isVisible={!!legID}>
+    <Modal isVisible={!!routeID}>
       <Card>
         <CardItem>
           <Form>
@@ -153,15 +153,15 @@ function EditLegTypeModal(props) {
   );
 }
 
-EditLegTypeModal.defaultProps = { editLeg: { id: false, runTime: ZERO_TIME } };
+EditRouteTypeModal.defaultProps = { editRoute: { id: false, runTime: ZERO_TIME } };
 
 const mapStateToProps = () => {
   return {};
 };
 
-const mapDispatchToProps = { editLegType };
+const mapDispatchToProps = { editRouteType };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(EditLegTypeModal);
+)(EditRouteTypeModal);

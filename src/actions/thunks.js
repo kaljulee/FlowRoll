@@ -8,7 +8,7 @@ import {
 } from '../logic';
 import moment from 'moment';
 import { setScopeID, setEngineID, setMap, setElapsedSeconds } from '../actions';
-import { getLegTypeByID } from '../helpers/utils';
+import { getRouteTypeByID } from '../helpers/utils';
 
 // this will store interval id in state, call updates to position and current start time
 
@@ -36,7 +36,7 @@ export function startTrain() {
     //////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////
-    // setting engine cutoff time, will be calculated from total route
+    // setting engine cutoff time, will be calculated from map total run time
     const buffer = 1;
     const engine = setTimeout(() => {
       console.log('TIMEOUT shutting down nav sensors');
@@ -99,22 +99,22 @@ export function timeInLocation() {
 export function createAndSetMap() {
   return function(dispatch, getState) {
     const {
-      trainSchedule: { legs },
+      trainSchedule: { routes },
     } = getState();
-    dispatch(setMap(createMap(legs)));
+    dispatch(setMap(createMap(routes)));
   };
 }
 
 export function createAnnotatedMap() {
   return function(dispatch, getState) {
     const {
-      trainSchedule: { legTypes },
+      trainSchedule: { routeTypes },
       navigation: { map },
     } = getState();
     return {
       ...map,
       locations: map.locations.map((m) => {
-        const type = getLegTypeByID(legTypes, m.legType);
+        const type = getRouteTypeByID(routeTypes, m.routeType);
         const { color, name, label } = type;
         return {
           ...m,

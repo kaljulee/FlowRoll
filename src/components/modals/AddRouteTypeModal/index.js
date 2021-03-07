@@ -11,15 +11,15 @@ import {
   Label,
 } from 'native-base';
 import { ToastAndroid } from 'react-native';
-import { addLegType } from '../../../actions';
+import { addRouteType } from '../../../actions';
 import { connect } from 'react-redux';
 import SecondSlider from '../../SecondSlider';
 import { hourMinuteSecond, secondsToHMS } from '../../../helpers/time';
 import ColorPicker from '../../ColorPicker';
 import { COLORS } from '../../../constants/styleValues';
 
-function AddLegTypeModal(props) {
-  const { isVisible, closeModal, addLegType } = props;
+function AddRouteTypeModal(props) {
+  const { isVisible, closeModal, addRouteType } = props;
   const [name, setName] = useState(null);
   const [durationInSeconds, _setDurationInSeconds] = useState(0);
   const [hmsDuration, _setHmsDuration] = useState({ h: 0, m: 0, s: 0 });
@@ -72,8 +72,8 @@ function AddLegTypeModal(props) {
   const onAddPress = () => {
     console.log('onAddPress - maybe validate here?');
     if (isValid(name)) {
-      addLegType({
-        legType: { name, color: color, runTime: hmsDuration },
+      addRouteType({
+        routeType: { name, color: color, runTime: hmsDuration },
       });
       setName(null);
       closeModal();
@@ -138,10 +138,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  addLegType,
+  addRouteType,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(AddLegTypeModal);
+)(AddRouteTypeModal);

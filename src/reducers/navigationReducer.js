@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds, hourMinuteSecond } from '../helpers/time';
-import { createLegType } from '../models/Leg';
+import { createRouteType } from '../models/Route';
 import { COLORS } from '../constants/styleValues';
 
 const getInitialState = () => {
@@ -32,9 +32,6 @@ const navigation = (state = getInitialState(), action) => {
     case types.RESET:
       console.log('reseting navigation DB');
       return getInitialState();
-    case types.SET_TRAIN_ROUTE:
-      update.route = payload.route;
-      return { ...state, ...update };
     case types.SET_DEPARTURE_TIME:
       update.departureTime = payload;
       return { ...state, ...update };

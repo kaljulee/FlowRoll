@@ -6,22 +6,22 @@ export const types = {
   DEACTIVATE_PARTICIPANTS: 'DEACTIVATE_PARTICIPANTS',
   MUTE_TOGGLE: 'MUTE_TOGGLE',
 
-  // LEG_TYPE_ADD_SAVED: 'LEG_TYPE_ADD_SAVED',
-  // LEG_TYPE_DELETE_SAVED: 'LEG_TYPE_DELETE_SAVED',
-  // LEG_TYPE_ADD_TEMP: 'LEG_TYPE_ADD_TEMP',
-  // LEG_TYPE_DELETE_TEMP: 'LEG_TYPE_DELETE_TEMP',
-  LEG_ADD: 'LEG_ADD',
-  LEGTYPE_ADD: 'LEGTYPE_ADD',
-  LEGTYPE_DELETE: 'LEGTYPE_DELETE',
-  LEGTYPE_EDIT: 'LEGTYPE_EDIT',
-  LEG_DELETE: 'LEG_DELETE',
-  // LEG_TYPE_SAVED_EDIT: 'LEG_TYPE_EDIT',
-  // LEG_TYPE_TEMP_EDIT: 'LEG_TYPE_TEMP_EDIT',
-  LEG_EDIT: 'LEG_EDIT',
-  LEG_SCHEDULE: 'LEG_SCHEDULE',
-  LEG_UNSCHEDULE: 'LEG_UNSCHEDULE',
+  // these converted from route to route while commented out
+  // ROUTE_TYPE_ADD_SAVED: 'ROUTE_TYPE_ADD_SAVED',
+  // ROUTE_TYsPE_DELETE_SAVED: 'ROUTE_TYPE_DELETE_SAVED',
+  // ROUTE_TYPE_ADD_TEMP: 'ROUTE_TYPE_ADD_TEMP',
+  // ROUTE_TYPE_DELETE_TEMP: 'ROUTE_TYPE_DELETE_TEMP',
+  ROUTE_ADD: 'ROUTE_ADD',
+  ROUTETYPE_ADD: 'ROUTETYPE_ADD',
+  ROUTETYPE_DELETE: 'ROUTETYPE_DELETE',
+  ROUTETYPE_EDIT: 'ROUTETYPE_EDIT',
+  ROUTE_DELETE: 'ROUTE_DELETE',
+  // ROUTE_TYPE_SAVED_EDIT: 'ROUTE_TYPE_EDIT',
+  // ROUTE_TYPE_TEMP_EDIT: 'ROUTE_TYPE_TEMP_EDIT',
+  ROUTE_EDIT: 'ROUTE_EDIT',
+  ROUTE_SCHEDULE: 'ROUTE_SCHEDULE',
+  ROUTE_UNSCHEDULE: 'ROUTE_UNSCHEDULE',
 
-  SET_TRAIN_ROUTE: 'SET_TRAIN_ROUTE',
   SET_LOCATION: 'SET_LOCATION',
   SET_SCOPE_ID: 'SET_SCOPE_ID',
   SET_ENGINE_ID: 'SET_ENGINE_ID',
@@ -32,29 +32,10 @@ export const types = {
 
 export const resetDB = () => ({ type: types.RESET });
 
-// export const setSchedule = (schedule) => ({
-//   type: types.SET_SCHEDULE,
-//   payload: schedule,
-// });
-
-export const setTrainRoute = (payload) => ({
-  type: types.SET_TRAIN_ROUTE,
-  payload,
-});
-
 export const setLocation = (payload) => ({
   type: types.SET_LOCATION,
   payload,
 });
-
-// export const timerRollover = () => ({ type: types.TIMER_ROLLOVER });
-//
-// export const resetTimer = () => ({ type: types.TIMER_RESET });
-
-// export const setCurrentRound = (round) => ({
-//   type: types.SET_CURRENT_ROUND,
-//   payload: round,
-// });
 
 export const addParticipants = (participants) => ({
   type: types.ADD_PARTICIPANTS,
@@ -117,37 +98,37 @@ export const setMap = (payload) => {
 
 export const toggleMute = () => ({ type: types.MUTE_TOGGLE });
 
-export const addLegToSchedule = ({ legs }) => {
+export const addRouteToSchedule = ({ routes }) => {
   return {
-    type: types.LEG_SCHEDULE,
-    payload: { legs },
+    type: types.ROUTE_SCHEDULE,
+    payload: { routes },
   };
 };
 
-export const unscheduleLeg = (payload) => {
+export const unscheduleRoute = (payload) => {
   return {
-    type: types.LEG_UNSCHEDULE,
+    type: types.ROUTE_UNSCHEDULE,
     payload,
   };
 };
 
-export const addLegType = ({ legType }) => {
+export const addRouteType = ({ routeType }) => {
   return {
-    type: types.LEGTYPE_ADD,
-    payload: { legType },
+    type: types.ROUTETYPE_ADD,
+    payload: { routeType },
   };
 };
 
-export const deleteLegType = ({ id }) => {
+export const deleteRouteType = ({ id }) => {
   return {
-    type: types.LEGTYPE_DELETE,
+    type: types.ROUTETYPE_DELETE,
     payload: { id },
   };
 };
 
-export const editLegType = ({ id, color, runTime, name }) => {
+export const editRouteType = ({ id, color, runTime, name }) => {
   return {
-    type: types.LEGTYPE_EDIT,
+    type: types.ROUTETYPE_EDIT,
     payload: { id, data: { color, runTime, name } },
   };
 };

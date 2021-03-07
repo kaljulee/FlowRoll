@@ -24,8 +24,8 @@ export function printSchedule(schedule, matchUps) {
   console.log(JSON.stringify(named, null, 4));
 }
 
-export function getLegTypeByID(legTypes, id) {
-  return _.find(legTypes, function(t) {
+export function getRouteTypeByID(routeTypes, id) {
+  return _.find(routeTypes, function(t) {
     return id === t.id;
   });
 }

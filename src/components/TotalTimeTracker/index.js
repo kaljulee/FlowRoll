@@ -4,21 +4,13 @@ import { Body, Card, CardItem, Text } from 'native-base';
 import { hourMinuteSecond, secondsToHMS } from '../../helpers/time';
 
 function TotalTimeTracker(props) {
-  const { startTime, runTime, styles } = props;
+  const { departureTime, runTime, styles, elapsedSeconds } = props;
 
-  const { elapsedSeconds, cancel } = useElapsedSecondsUpdates(
-    startTime,
-    // runTime,
-  );
   useEffect(() => {
-    // // console.log('start time');
-    // // console.log(startTime)
-    // console.log('totaltimetracker starttime');
-    // console.log(startTime);
     if (elapsedSeconds > runTime) {
-      cancel();
+      // cancel();
     }
-  }, [elapsedSeconds, runTime, cancel, startTime]);
+  }, [elapsedSeconds, runTime, departureTime]);
   return (
     <Card style={styles.totalTimeTracker}>
       <CardItem>

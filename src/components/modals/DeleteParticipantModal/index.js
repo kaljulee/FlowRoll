@@ -44,7 +44,7 @@ function DeleteParticipantModal(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { participants },
+    groundRobin: { participants },
   } = state;
   return { participants };
 };

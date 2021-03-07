@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { hourMinuteSecond } from '../../helpers/time';
+import { hourMinuteSecond, ZERO_TIME } from '../../helpers/time';
 import { Container, Content, Footer, Button, Text } from 'native-base';
 import {
   startTimerRun,
@@ -16,18 +16,13 @@ import AddParticipantModal from '../../components/modals/AddParticipantModal';
 import DeleteParticipantModal from '../../components/modals/DeleteParticipantModal';
 
 function TimerSetup(props) {
-  const {
-    roundDuration,
-    breakDuration,
-    resetDB,
-    roundCount,
-    participants,
-    changeTab,
-    activeParticipants,
-    startTimerRun,
-    setRoundTime,
-    setBreakTime,
-  } = props;
+  const { resetDB, participants, changeTab, activeParticipants } = props;
+
+  // todo do something with these anti-crash hard codes
+  const roundCount = 0;
+  const roundDuration = ZERO_TIME;
+  const breakDuration = ZERO_TIME;
+
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
@@ -119,7 +114,7 @@ function TimerSetup(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: {
+    groundRobin: {
       activeParticipants,
       breakDuration,
       currentRound,

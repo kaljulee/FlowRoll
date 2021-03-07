@@ -39,7 +39,7 @@ function ParticipantManager(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { participants, activeParticipants },
+    groundRobin: { participants, activeParticipants },
   } = state;
   return {
     participants,

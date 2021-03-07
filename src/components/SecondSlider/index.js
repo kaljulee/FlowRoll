@@ -40,7 +40,7 @@ function SecondSlider(props) {
 const mapStateToProps = (state) => {
   const {
     secondSliderConverter: { secondsByValue },
-  } = state.basicReducer;
+  } = state.groundRobin;
   return { secondsByValue };
 };
 

@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds, hourMinuteSecond } from '../helpers/time';
-import { createLegType } from '../models/Leg';
+import { createRouteType } from '../models/Route';
 import { COLORS } from '../constants/styleValues';
 import navigation from './navigationReducer';
 import trainSchedule from './trainScheduleReducer';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 import SchedulingList from '../SchedulingList';
-function LegList(props) {
-  const { legs } = props;
+function RouteList(props) {
+  const { routes } = props;
 
   const onLongPress = () => {
     console.log('on long press');
@@ -13,8 +13,8 @@ function LegList(props) {
   };
 
   return (
-    <SchedulingList data={legs} onPress={onPress} onLongPress={onLongPress} />
+    <SchedulingList data={routes} onPress={onPress} onLongPress={onLongPress} />
   );
 }
 
-export default LegList;
+export default RouteList;

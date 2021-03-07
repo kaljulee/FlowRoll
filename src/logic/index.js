@@ -21,21 +21,21 @@ export function freshStartTime(startTime, endTime) {
   return moment(startTime).isAfter(endTime);
 }
 
-// convert a leg into an array of segments
-export function extractSegments(leg, id) {
+// convert a route into an array of segments
+export function extractSegments(route, id) {
   // assumes the incoming id is valid
   let tempID = id;
-  // if the leg has a runtime, treat it as a segment
-  if (leg.runTime) {
+  // if the route has a runtime, treat it as a segment
+  if (route.runTime) {
     return {
-      segments: [{ runTime: leg.runTime, legType: leg.legType, id }],
+      segments: [{ runTime: route.runTime, routeType: route.routeType, id }],
       nextID: id + 1,
     };
   }
-  // if a leg has segments, use the array of segments
-  if (leg.segments) {
-    return leg.segments.map((s) => {
-      const newSegment = { ...s, legType: leg.LegType, id: tempID };
+  // if a route has segments, use the array of segments
+  if (route.segments) {
+    return route.segments.map((s) => {
+      const newSegment = { ...s, routeType: route.RouteType, id: tempID };
       tempID = tempID + 1;
       return newSegment;
     });
@@ -44,15 +44,15 @@ export function extractSegments(leg, id) {
   return { segments: [], nextID: id };
 }
 
-// takes an array of legs and runTime (defaults to zero)
+// takes an array of routes and runTime (defaults to zero)
 // provides ids to the segments
-export function flattenLegsIntoSegments(legs, incomingRunTime = 0) {
+export function flattenRoutesIntoSegments(routes, incomingRunTime = 0) {
   const flattened = [];
   let totalRunTime = incomingRunTime;
   // this is where segmentID gets defined
   let segmentID = 1;
-  // for each leg, convert to segments and update runTime
-  legs.forEach((l) => {
+  // for each route, convert to segments and update runTime
+  routes.forEach((l) => {
     const segmentData = extractSegments(l, segmentID);
     segmentData.segments.forEach((s) => {
       totalRunTime += s.runTime;
@@ -78,7 +78,7 @@ export function createLocations(segments, offset = 0) {
 
 export function createMap(routes) {
 
-  const segmentData = flattenLegsIntoSegments(routes);
+  const segmentData = flattenRoutesIntoSegments(routes);
   const locationData = createLocations(segmentData.segments);
   return locationData;
 }
@@ -130,6 +130,6 @@ export function getTimeInLocation(elaspedSeconds, locationData) {
   return elaspedSeconds - locationData.offset;
 }
 
-export function sumLegRunTimes(legs) {
-  return flattenLegsIntoSegments(legs).totalRunTime;
+export function sumRouteRunTimes(routes) {
+  return flattenRoutesIntoSegments(routes).totalRunTime;
 }

@@ -1,65 +1,65 @@
 import { types } from '../actions';
-import { createLegType } from '../models/Leg';
+import { createRouteType } from '../models/Route';
 import { hourMinuteSecond } from '../helpers/time';
 import { COLORS } from '../constants/styleValues';
 import _ from 'lodash';
-import { getLegTypeByID } from '../helpers/utils';
+import { getRouteTypeByID } from '../helpers/utils';
 
-// leg related
-const createLeg = (legID, legType, settings) => {
-  const newLeg = {
-    ...legType,
-    legType: legType.id,
+// route related
+const createRoute = (routeID, routeType, settings) => {
+  const newRoute = {
+    ...routeType,
+    routeType: routeType.id,
     ...settings,
-    id: legID,
+    id: routeID,
   };
-  const newNextLegID = legID + 1;
-  return { newLeg, newNextLegID };
+  const newNextRouteID = routeID + 1;
+  return { newRoute, newNextRouteID };
 };
 
-const updateScheduleWithLegEdits = (updatedLeg, legs, nextLegID) => {
-  let newNextLegID = nextLegID;
-  const newLegs = legs.map((l) => {
-    if (l.legType === updatedLeg.id) {
-      const result = createLeg(newNextLegID, updatedLeg);
-      newNextLegID = result.newNextLegID;
-      return result.newLeg;
+const updateScheduleWithRouteEdits = (updatedRoute, routes, nextRouteID) => {
+  let newNextRouteID = nextRouteID;
+  const newRoutes = routes.map((l) => {
+    if (l.routeType === updatedRoute.id) {
+      const result = createRoute(newNextRouteID, updatedRoute);
+      newNextRouteID = result.newNextRouteID;
+      return result.newRoute;
     } else {
       return l;
     }
   });
   return {
-    newLegs,
-    nextLegID: newNextLegID,
+    newRoutes,
+    nextRouteID: newNextRouteID,
   };
 };
 
 const getInitialState = () => {
-  const defaultLegTypes = [];
-  defaultLegTypes.push(
-    createLegType({
+  const defaultRouteTypes = [];
+  defaultRouteTypes.push(
+    createRouteType({
       name: 'break',
       id: 1,
       runTime: 3,
       color: COLORS.RED,
     }),
   );
-  defaultLegTypes.push(
-    createLegType({
+  defaultRouteTypes.push(
+    createRouteType({
       name: 'round',
       id: 2,
       runTime: 5,
       color: COLORS.LIGHTBLUE,
     }),
   );
-  const nextLegTypeID = 3;
+  const nextRouteTypeID = 3;
 
   return {
-    defaultLegTypes,
-    nextLegTypeID,
-    nextLegID: 1,
-    legs: [],
-    legTypes: defaultLegTypes,
+    defaultRouteTypes,
+    nextRouteTypeID,
+    nextRouteID: 1,
+    routes: [],
+    routeTypes: defaultRouteTypes,
     trainScheduleTest: true,
   };
 };
@@ -71,52 +71,52 @@ const trainSchedule = (state = getInitialState(), action) => {
     case types.RESET:
       console.log('reseting trainschedule DB');
       return getInitialState();
-    case types.LEG_SCHEDULE:
-      let newNextLegID = state.nextLegID;
+    case types.ROUTE_SCHEDULE:
+      let newNextRouteID = state.nextRouteID;
       console.log('in reducer, payload');
       console.log(payload);
-      payload.legs.forEach((l) => console.log('leg'));
-      const newLegs = payload.legs.map((l) => {
+      payload.routes.forEach((l) => console.log('route'));
+      const newRoutes = payload.routes.map((l) => {
         // console.log('el');
         // console.log(l);
-        // state.legTypes.forEach(t => console.log(t.id));
+        // state.routeTypes.forEach(t => console.log(t.id));
 
-        const selectedLegType = getLegTypeByID(state.legTypes, l.legType);
-        //     _.find(state.legTypes, function(t) {
-        //    console.log('looking for legtype ' + l.legType);
-        //   return l.legType === t.id;
+        const selectedRouteType = getRouteTypeByID(state.routeTypes, l.routeType);
+        //     _.find(state.routeTypes, function(t) {
+        //    console.log('looking for routetype ' + l.routeType);
+        //   return l.routeType === t.id;
         // });
         // return l;
 
-        const { newLeg } = createLeg(newNextLegID, selectedLegType);
-        newNextLegID = newNextLegID + 1;
-        return newLeg;
+        const { newRoute } = createRoute(newNextRouteID, selectedRouteType);
+        newNextRouteID = newNextRouteID + 1;
+        return newRoute;
       });
       update = {
-        legs: [...state.legs, ...newLegs],
-        //   ...state.legs,
-        //   ...payload.legs.map((l) => {
-        //     console.log('mapping leg');
+        routes: [...state.routes, ...newRoutes],
+        //   ...state.routes,
+        //   ...payload.routes.map((l) => {
+        //     console.log('mapping route');
         //     console.log(l);
-        //     const selectedLegType = _.find(state.legTypes, function(t) {
-        //       return l.legType === t.id;
+        //     const selectedRouteType = _.find(state.routeTypes, function(t) {
+        //       return l.routeType === t.id;
         //     });
-        //     const { newLeg } = createLeg(newNextLegID, selectedLegType);
-        //     newNextLegID = newNextLegID + 1;
-        //     return newLeg;
+        //     const { newRoute } = createRoute(newNextRouteID, selectedRouteType);
+        //     newNextRouteID = newNextRouteID + 1;
+        //     return newRoute;
         //   }),
         // ],
       };
-      update.nextLegID = newNextLegID;
+      update.nextRouteID = newNextRouteID;
       return {
         ...state,
         ...update,
       };
-    case types.LEG_UNSCHEDULE:
+    case types.ROUTE_UNSCHEDULE:
       update = {
         // trainSchedule: {
-        legs: state.legs.reduce((acc, l) => {
-          if (!_.find(payload.legs, (e) => parseInt(e) === l.id)) {
+        routes: state.routes.reduce((acc, l) => {
+          if (!_.find(payload.routes, (e) => parseInt(e) === l.id)) {
             acc.push(l);
           }
           return acc;
@@ -127,31 +127,31 @@ const trainSchedule = (state = getInitialState(), action) => {
         ...state,
         ...update,
       };
-    case types.LEGTYPE_ADD:
+    case types.ROUTETYPE_ADD:
       update = {};
-      if (payload.legType) {
-        let newLegType = createLegType({
-          ...payload.legType,
-          id: state.nextLegTypeID,
+      if (payload.routeType) {
+        let newRouteType = createRouteType({
+          ...payload.routeType,
+          id: state.nextRouteTypeID,
         });
-        update.nextLegTypeID = state.nextLegTypeID + 1;
-        update.legTypes = [...state.legTypes, newLegType];
+        update.nextRouteTypeID = state.nextRouteTypeID + 1;
+        update.routeTypes = [...state.routeTypes, newRouteType];
       }
       return {
         ...state,
         ...update,
       };
-    case types.LEGTYPE_DELETE:
+    case types.ROUTETYPE_DELETE:
       update = {};
-      update.legTypes = state.legTypes.reduce((acc, l) => {
+      update.routeTypes = state.routeTypes.reduce((acc, l) => {
         if (l.id !== payload.id) {
           acc.push(l);
         }
         return acc;
       }, []);
       update = {
-        legs: state.legs.reduce((acc, l) => {
-          if (l.legType !== payload.id) {
+        routes: state.routes.reduce((acc, l) => {
+          if (l.routeType !== payload.id) {
             acc.push(l);
           }
           return acc;
@@ -161,32 +161,32 @@ const trainSchedule = (state = getInitialState(), action) => {
         ...state,
         ...update,
       };
-    case types.LEGTYPE_EDIT:
+    case types.ROUTETYPE_EDIT:
       update = {};
-      let editedLeg = _.find(state.legTypes, (l) => l.id === payload.id);
-      if (!editedLeg) {
+      let editedRoute = _.find(state.routeTypes, (l) => l.id === payload.id);
+      if (!editedRoute) {
         return { ...state };
       }
-      editedLeg = { ...editedLeg, ...payload.data };
-      editedLeg.label = `${editedLeg.name} ${hourMinuteSecond(
-        editedLeg.runTime,
+      editedRoute = { ...editedRoute, ...payload.data };
+      editedRoute.label = `${editedRoute.name} ${hourMinuteSecond(
+        editedRoute.runTime,
       )}`;
-      update.legTypes = state.legTypes.reduce((acc, t) => {
-        if (t.id === editedLeg.id) {
-          acc.push(editedLeg);
+      update.routeTypes = state.routeTypes.reduce((acc, t) => {
+        if (t.id === editedRoute.id) {
+          acc.push(editedRoute);
         } else {
           acc.push(t);
         }
         return acc;
       }, []);
-      const scheduleUpdateResult = updateScheduleWithLegEdits(
-        editedLeg,
-        state.legs,
-        state.nextLegID,
+      const scheduleUpdateResult = updateScheduleWithRouteEdits(
+        editedRoute,
+        state.routes,
+        state.nextRouteID,
       );
-      update.legs = scheduleUpdateResult.newLegs;
+      update.routes = scheduleUpdateResult.newRoutes;
       // update.trainSchedule = scheduleUpdateResult.trainSchedule;
-      update.nextLegID = scheduleUpdateResult.nextLegID;
+      update.nextRouteID = scheduleUpdateResult.nextRouteID;
       return {
         ...state,
         ...update,

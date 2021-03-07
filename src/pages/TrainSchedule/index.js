@@ -134,7 +134,7 @@ function TrainSchedule(props) {
         </Col>
         <Col size={1} style={{ borderWidth: 1 }}>
           <TrainTracker
-            annotatedMap={annotatedMap}
+            map={annotatedMap}
             location={location}
             localTime={localTime}
           />

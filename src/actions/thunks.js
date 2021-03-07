@@ -5,6 +5,7 @@ import {
   createMap,
   getLocation,
   getTimeInLocation,
+  getLocationByID,
 } from '../logic';
 import moment from 'moment';
 import { setScopeID, setEngineID, setMap, setElapsedSeconds } from '../actions';
@@ -91,7 +92,7 @@ export function timeInLocation() {
     const {
       navigation: { elapsedSeconds, map, location },
     } = getState();
-    const locationData = map.locations[location];
+    const locationData = getLocationByID(map.locations, location);
     return getTimeInLocation(elapsedSeconds, locationData);
   };
 }

@@ -18,7 +18,7 @@ import DeleteParticipantModal from '../../components/modals/DeleteParticipantMod
 import TrainTracker from '../../components/TrainTracker';
 
 function TimerSetup(props) {
-  const { resetDB, participants, changeTab, activeParticipants } = props;
+  const { resetDB, participants, changeTab, activeParticipants, location, map, localTime, } = props;
 
   // todo do something with these anti-crash hard codes
   const roundCount = 0;
@@ -66,7 +66,7 @@ function TimerSetup(props) {
           </Button>
         </Col>
         <Col size={1} style={{ borderWidth: 5 }}>
-          <TrainTracker />
+          <TrainTracker location={location} map={map} localTime={localTime} />
         </Col>
         <SetTimeModal
           label={'round length'}

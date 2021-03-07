@@ -12,11 +12,11 @@ import {
 import { connect } from 'react-redux';
 import { findMatchUpByID, STATUS } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
-import { startTimerRun } from '../../actions';
+import TotalTimeTracker from '../../components/TotalTimeTracker';
+import { setDepartureTime } from '../../actions';
 import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
 import KeepAwake from 'react-native-keep-awake';
 import moment from 'moment';
-import { useTotalElapsedTime } from '../../helpers/hooks';
 
 const cardStyle = {
   width: '90%',
@@ -70,12 +70,6 @@ const styles = StyleSheet.create({
   },
 });
 
-function MainDisplayText(props) {
-  return (
-    <Text style={{ ...cardItemStyle, ...props.style }}>{props.children}</Text>
-  );
-}
-
 function CurrentMatchUp(props) {
   const { matchUp } = props;
   const text = matchUp ? matchUp.string : 'no matchup';
@@ -83,7 +77,7 @@ function CurrentMatchUp(props) {
     <Card style={styles.currentMatchup}>
       <CardItem>
         <Body>
-          <MainDisplayText>{text}</MainDisplayText>
+          <Text>{text}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -115,10 +109,9 @@ function TimerDisplay(props) {
     <Card style={styles.timerDisplay}>
       <CardItem>
         <Body>
-          <MainDisplayText
-            style={{ ...styles.timerDisplayText, backgroundColor }}>
+          <Text style={{ ...styles.timerDisplayText, backgroundColor }}>
             {displayTime}
-          </MainDisplayText>
+          </Text>
         </Body>
       </CardItem>
     </Card>
@@ -131,23 +124,7 @@ function RoundCounter(props) {
     <Card style={styles.roundCounter}>
       <CardItem>
         <Body>
-          <MainDisplayText>{`${currentRound} / ${roundCount}`}</MainDisplayText>
-        </Body>
-      </CardItem>
-    </Card>
-  );
-}
-
-function TotalTimeTracker(props) {
-  const { status } = props;
-  const { elapsedTime } = useTotalElapsedTime(status);
-  return (
-    <Card style={styles.totalTimeTracker}>
-      <CardItem>
-        <Body>
-          <MainDisplayText>
-            {hourMinuteSecond(secondsToHMS(elapsedTime))}{' '}
-          </MainDisplayText>
+          <Text>{`${currentRound} / ${roundCount}`}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -161,7 +138,7 @@ function NextMatchUp(props) {
     <Card style={styles.nextMatchup}>
       <CardItem>
         <Body>
-          <MainDisplayText>{text}</MainDisplayText>
+          <Text>{text}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -170,7 +147,7 @@ function NextMatchUp(props) {
 
 function MainDisplay(props) {
   const {
-    startTimeStamp,
+    departureTime,
     roundCount,
     schedule,
     currentRound,
@@ -178,38 +155,36 @@ function MainDisplay(props) {
     onPressPause,
     onPressRestart,
     roundDuration,
-    startTimerRun,
     status,
-    endTimeStamp,
-    elapsedSeconds,
-    remainingSeconds,
+    // endTimeStamp,
+    // elapsedSeconds,
+    // remainingSeconds,
   } = props;
 
   function onPressPlay() {
-    startTimerRun();
+    // todo play disabled until departureTime data chain is in place
   }
 
   // !! danger !!
   // current round count starts at 1, schedule starts at 0
   const currentMatchUp = findMatchUpByID(matchUps, schedule[currentRound - 1]);
   const nextMatchUp =
-      currentRound + 1 === roundCount
-          ? undefined
-          : findMatchUpByID(matchUps, schedule[currentRound]);
+    currentRound + 1 === roundCount
+      ? undefined
+      : findMatchUpByID(matchUps, schedule[currentRound]);
 
   return (
     <Container>
       <Content contentContainerStyle={styles.content}>
         <CurrentMatchUp matchUp={currentMatchUp} />
-        <TimerDisplay
-          elapsedSeconds={elapsedSeconds}
-          remainingSeconds={remainingSeconds}
-          status={status}
-          startTimeStamp={startTimeStamp}
-          endTimeStamp={endTimeStamp}
-        />
+        <TimerDisplay status={status} />
         <RoundCounter currentRound={currentRound} roundCount={roundCount} />
-        <TotalTimeTracker status={status} />
+        <TotalTimeTracker
+          styles={styles}
+          status={status}
+          departureTime={departureTime}
+          runTime={4}
+        />
         <NextMatchUp matchUp={nextMatchUp} />
         <KeepAwake />
       </Content>
@@ -227,7 +202,6 @@ function MainDisplay(props) {
 const mapStateToProps = (state) => {
   const {
     basicReducer: {
-      endTimeStamp,
       status,
       participants,
       roundDuration,
@@ -236,17 +210,14 @@ const mapStateToProps = (state) => {
       roundCount,
       schedule,
       matchUps,
-      startTimeStamp,
       timerDuration,
-      elapsedSeconds,
-      remainingSeconds,
     },
+    navigation: { departureTime },
   } = state;
 
   return {
-    endTimeStamp,
+    departureTime,
     status,
-    startTimeStamp,
     schedule,
     participants,
     roundDuration,
@@ -255,13 +226,11 @@ const mapStateToProps = (state) => {
     roundCount,
     matchUps,
     timerDuration,
-    remainingSeconds,
-    elapsedSeconds,
   };
 };
 
 const mapDispatchToProps = {
-  startTimerRun,
+  setDepartureTime,
 };
 
 export default connect(

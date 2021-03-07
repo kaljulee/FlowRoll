@@ -1,15 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { Text, Button, Container, Card, CardItem } from 'native-base';
+import { Text, Button, Container, Card, CardItem, Footer } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import LegManager from '../../components/LegManager';
+import moment from 'moment';
 import TrainTracker from '../../components/TrainTracker';
-import { unscheduleLeg, addLegToSchedule, deleteLegType, editLegType } from '../../actions';
+import {
+  unscheduleLeg,
+  addLegToSchedule,
+  deleteLegType,
+  editLegType,
+  setDepartureTime,
+} from '../../actions';
+import {
+  createAndSetMap,
+  startTrain,
+  timeInLocation,
+  createAnnotatedMap,
+} from '../../actions/thunks';
+import { sumLegRunTimes } from '../../logic';
+import ControlBar from '../../components/ControlBar';
 import AddLegTypeModal from '../../components/modals/AddLegTypeModal';
-import { hourMinuteSecond, sumLegRunTimes } from '../../helpers/time';
+import { formatSecondsToDisplay } from '../../helpers/time';
 import ConfirmDeleteModal from '../../components/modals/ConfirmDeleteModal';
 import _ from 'lodash';
 import EditLegTypeModal from '../../components/modals/EditLegTypeModal';
+import { getLegTypeByID } from '../../helpers/utils';
 
 function TrainSchedule(props) {
   const {
@@ -18,15 +34,23 @@ function TrainSchedule(props) {
     unscheduleLeg,
     deleteLegType,
     addLegToSchedule,
+    createAnnotatedMap,
+    elapsedSeconds,
+    timeInLocation,
+    location,
+    createAndSetMap,
+    map,
   } = props;
 
   const [showAddLegModal, setShowAddLegModal] = useState(false);
-  const [hmsTotalTime, setHmsTotalTime] = useState(sumLegRunTimes(legs));
+  const [totalTime, setTotalTime] = useState(sumLegRunTimes(legs));
+  const [annotatedMap, setAnnotatedMap] = useState(createAnnotatedMap());
   const [displayTotalTime, setDisplayTotalTime] = useState(
-    hourMinuteSecond(hmsTotalTime),
+    formatSecondsToDisplay(totalTime),
   );
   const [idToDelete, setIDToDelete] = useState(null);
   const [editLeg, _setEditLeg] = useState(undefined);
+  const [localTime, setLocalTime] = useState(0);
 
   const unscheduleAllOfType = (id) => {
     console.log('would unschedule all of type ' + id);
@@ -37,8 +61,14 @@ function TrainSchedule(props) {
     setIDToDelete(null);
   };
 
+  const doStartTrain = () => {
+    const { startTrain, setDepartureTime } = props;
+    setDepartureTime(moment());
+    startTrain();
+  };
+
   const setEditLeg = (id) => {
-    const type = _.find(legTypes, (l) => l.id === id);
+    const type = getLegTypeByID(legTypes, id);
     _setEditLeg(type);
   };
 
@@ -49,11 +79,25 @@ function TrainSchedule(props) {
     addLegToSchedule({ legs: [{ legType: id }] });
   };
 
+  // creates a map for navigation
+  const onUpdatePress = useCallback(() => {
+    createAndSetMap(legs);
+  }, [legs, createAndSetMap]);
+
   useEffect(() => {
     const newSum = sumLegRunTimes(legs);
-    setHmsTotalTime(newSum);
-    setDisplayTotalTime(hourMinuteSecond(newSum));
+    setTotalTime(newSum);
+    setDisplayTotalTime(formatSecondsToDisplay(newSum));
   }, [legs]);
+
+  // updates local time when relavant info changes
+  useEffect(() => {
+    setLocalTime(timeInLocation());
+  }, [elapsedSeconds, localTime, location, timeInLocation]);
+
+  useEffect(() => {
+    setAnnotatedMap(createAnnotatedMap());
+  }, [createAnnotatedMap, map]);
 
   return (
     <Container>
@@ -69,9 +113,14 @@ function TrainSchedule(props) {
               available={legTypes}
             />
           </Row>
-          <Row size={1}>
+          <Row
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+            size={1}>
             <Button onPress={() => setShowAddLegModal(true)}>
               <Text>Add New Type</Text>
+            </Button>
+            <Button success onPress={(legs) => onUpdatePress(legs)}>
+              <Text>Update</Text>
             </Button>
           </Row>
           <Row>
@@ -83,8 +132,12 @@ function TrainSchedule(props) {
             </Card>
           </Row>
         </Col>
-        <Col size={1} style={{ borderWidth: 5 }}>
-          <TrainTracker />
+        <Col size={1} style={{ borderWidth: 1 }}>
+          <TrainTracker
+            annotatedMap={annotatedMap}
+            location={location}
+            localTime={localTime}
+          />
         </Col>
       </Grid>
       <AddLegTypeModal
@@ -102,15 +155,25 @@ function TrainSchedule(props) {
         }}
         closeModal={() => setIDToDelete(null)}
       />
+      <Footer>
+        <ControlBar
+          onPressPlay={doStartTrain}
+          onPressPause={() => console.log('press pause')}
+          onPressRestart={() => {
+            console.log('press restart');
+          }}
+        />
+      </Footer>
     </Container>
   );
 }
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: { legTypes, trainSchedule },
+    trainSchedule: { legs, legTypes },
+    navigation: { location, elapsedSeconds, map },
   } = state;
-  return { legTypes, legs: trainSchedule.legs };
+  return { legTypes, legs, elapsedSeconds, location, map };
 };
 
 const mapDispatchToProps = {
@@ -118,6 +181,11 @@ const mapDispatchToProps = {
   unscheduleLeg,
   deleteLegType,
   editLegType,
+  createAndSetMap,
+  startTrain,
+  setDepartureTime,
+  timeInLocation,
+  createAnnotatedMap,
 };
 
 export default connect(

@@ -21,7 +21,6 @@ export const types = {
   LEG_SCHEDULE: 'LEG_SCHEDULE',
   LEG_UNSCHEDULE: 'LEG_UNSCHEDULE',
 
-  SET_TRAIN_ROUTE: 'SET_TRAIN_ROUTE',
   SET_LOCATION: 'SET_LOCATION',
   SET_SCOPE_ID: 'SET_SCOPE_ID',
   SET_ENGINE_ID: 'SET_ENGINE_ID',
@@ -32,29 +31,10 @@ export const types = {
 
 export const resetDB = () => ({ type: types.RESET });
 
-// export const setSchedule = (schedule) => ({
-//   type: types.SET_SCHEDULE,
-//   payload: schedule,
-// });
-
-export const setTrainRoute = (payload) => ({
-  type: types.SET_TRAIN_ROUTE,
-  payload,
-});
-
 export const setLocation = (payload) => ({
   type: types.SET_LOCATION,
   payload,
 });
-
-// export const timerRollover = () => ({ type: types.TIMER_ROLLOVER });
-//
-// export const resetTimer = () => ({ type: types.TIMER_RESET });
-
-// export const setCurrentRound = (round) => ({
-//   type: types.SET_CURRENT_ROUND,
-//   payload: round,
-// });
 
 export const addParticipants = (participants) => ({
   type: types.ADD_PARTICIPANTS,

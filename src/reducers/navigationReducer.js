@@ -32,9 +32,6 @@ const navigation = (state = getInitialState(), action) => {
     case types.RESET:
       console.log('reseting navigation DB');
       return getInitialState();
-    case types.SET_TRAIN_ROUTE:
-      update.route = payload.route;
-      return { ...state, ...update };
     case types.SET_DEPARTURE_TIME:
       update.departureTime = payload;
       return { ...state, ...update };

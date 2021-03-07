@@ -36,7 +36,7 @@ export function startTrain() {
     //////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////
-    // setting engine cutoff time, will be calculated from total route
+    // setting engine cutoff time, will be calculated from map total run time
     const buffer = 1;
     const engine = setTimeout(() => {
       console.log('TIMEOUT shutting down nav sensors');

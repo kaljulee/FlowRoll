@@ -76,9 +76,9 @@ export function createLocations(segments, offset = 0) {
   return { totalRunTime, locations };
 }
 
-export function createMap(route) {
+export function createMap(routes) {
 
-  const segmentData = flattenLegsIntoSegments(route);
+  const segmentData = flattenLegsIntoSegments(routes);
   const locationData = createLocations(segmentData.segments);
   return locationData;
 }

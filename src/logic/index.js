@@ -1,5 +1,7 @@
 import moment from 'moment';
 import { HMSToSeconds } from '../helpers/time';
+import _ from 'lodash';
+import { NOWHERE } from '../models/Location';
 
 export function getElapsedSeconds(startTime) {
   return moment().diff(startTime, 'seconds');
@@ -103,6 +105,16 @@ export function getLocation(elapsedSeconds, map) {
       return location.id;
     }
   }
+}
+
+export function getLocationByID(locations, id) {
+  const currentLocation = _.find(locations, function(l) {
+    return id === l.id;
+  });
+  if (!currentLocation) {
+    return NOWHERE;
+  }
+  return currentLocation;
 }
 
 export function getTimeInLocation(elaspedSeconds, locationData) {

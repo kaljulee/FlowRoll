@@ -8,12 +8,14 @@ import {
   setBreakTime,
   setRoundTime,
 } from '../../actions';
+import { Grid, Col } from 'react-native-easy-grid';
 import SetTimeModal from '../../components/modals/SetTimeModal';
 import SettingsButton from '../../components/SettingsButton';
 import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
 import ManageParticipantsModal from '../../components/modals/ManageParticipantsModal';
 import AddParticipantModal from '../../components/modals/AddParticipantModal';
 import DeleteParticipantModal from '../../components/modals/DeleteParticipantModal';
+import TrainTracker from '../../components/TrainTracker';
 
 function TimerSetup(props) {
   const { resetDB, participants, changeTab, activeParticipants } = props;
@@ -30,37 +32,42 @@ function TimerSetup(props) {
   const [showAddParticipant, setShowAddParticipant] = useState(false);
   const [showDeleteParticipant, setShowDeleteParticipant] = useState(false);
 
-  function onStartPress() {
-    startTimerRun();
-    changeTab(1);
+  function onSavePress() {
+    console.log('put some map making logic here');
+    // changeTab(1);
   }
 
   return (
     <Container>
-      <Content>
-        <SettingsButton
-          label={'Set Players'}
-          info={activeParticipants.length}
-          onPress={() => setShowParticipantInput(true)}
-        />
-        <SettingsButton
-          onPress={() => setShowRoundTimeInput(true)}
-          info={hourMinuteSecond(roundDuration)}
-          label={'Set Round Time'}
-        />
-        <SettingsButton
-          onPress={() => setShowBreakTimeInput(true)}
-          label={'Set Break Time'}
-          info={hourMinuteSecond(breakDuration)}
-        />
-        <SettingsButton
-          onPress={() => setShowRoundCountInput(true)}
-          info={roundCount}
-          label={'Set Round Count'}
-        />
-        <Button onPress={onStartPress}>
-          <Text>Start</Text>
-        </Button>
+      <Grid style={{ borderWidth: 5 }}>
+        <Col size={5}>
+          <SettingsButton
+            label={'Set Players'}
+            info={activeParticipants.length}
+            onPress={() => setShowParticipantInput(true)}
+          />
+          <SettingsButton
+            onPress={() => setShowRoundTimeInput(true)}
+            info={hourMinuteSecond(roundDuration)}
+            label={'Set Round Time'}
+          />
+          <SettingsButton
+            onPress={() => setShowBreakTimeInput(true)}
+            label={'Set Break Time'}
+            info={hourMinuteSecond(breakDuration)}
+          />
+          <SettingsButton
+            onPress={() => setShowRoundCountInput(true)}
+            info={roundCount}
+            label={'Set Round Count'}
+          />
+          <Button onPress={onSavePress}>
+            <Text>Save</Text>
+          </Button>
+        </Col>
+        <Col size={1} style={{ borderWidth: 5 }}>
+          <TrainTracker />
+        </Col>
         <SetTimeModal
           label={'round length'}
           isVisible={showRoundTimeInput}
@@ -99,7 +106,7 @@ function TimerSetup(props) {
           deletableParticipant={showDeleteParticipant}
           closeModal={() => setShowDeleteParticipant(null)}
         />
-      </Content>
+      </Grid>
       <Footer>
         <Button
           danger
@@ -123,6 +130,7 @@ const mapStateToProps = (state) => {
       roundCount,
       roundDuration,
     },
+    navigation: { map, elapsedSeconds },
   } = state;
   return {
     activeParticipants,
@@ -132,6 +140,8 @@ const mapStateToProps = (state) => {
     participants,
     roundDuration,
     roundCount,
+    map,
+    elapsedSeconds,
   };
 };
 

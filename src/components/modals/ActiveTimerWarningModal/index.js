@@ -2,15 +2,14 @@ import React from 'react';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import { Card, CardItem, Button, Text } from 'native-base';
-import { STATUS } from '../../../helpers/utils';
 
 function onCancelPress(args) {
   console.log('pressed cancel');
 }
 
 function ActiveTimerWarningModal(props) {
-  const { currentTab, status, onReturnToTimerPress } = props;
-  const isVisible = currentTab !== 1 && status !== STATUS.IDLE;
+  const { currentTab, onReturnToTimerPress } = props;
+  const isVisible = false;//currentTab !== 1 && status !== STATUS.IDLE;
   return (
     <Modal isVisible={isVisible}>
       <Card>
@@ -30,7 +29,7 @@ function ActiveTimerWarningModal(props) {
   );
 }
 
-const mapStateToProps = (state) => ({ status: state.basicReducer.status });
+const mapStateToProps = (state) => ({ });
 
 const mapDispatchToProps = {};
 

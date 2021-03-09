@@ -17,12 +17,12 @@ import SecondSlider from '../../SecondSlider';
 import { hourMinuteSecond, secondsToHMS } from '../../../helpers/time';
 import ColorPicker from '../../ColorPicker';
 import { COLORS } from '../../../constants/styleValues';
-
+// todo this needs to be reworked to deal with int runTimes
+// todo also the color picker is broken either here or in edit
 function AddRouteTypeModal(props) {
   const { isVisible, closeModal, addRouteType } = props;
   const [name, setName] = useState(null);
   const [durationInSeconds, _setDurationInSeconds] = useState(0);
-  const [hmsDuration, _setHmsDuration] = useState({ h: 0, m: 0, s: 0 });
   const [displayDuration, setDisplayDuration] = useState('no duration');
   const [editDuration, setEditDuration] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -38,18 +38,10 @@ function AddRouteTypeModal(props) {
 
   const setHmsDuration = (seconds) => {
     const hms = secondsToHMS(seconds);
-    _setHmsDuration(hms);
     setDisplayDuration(hourMinuteSecond(hms));
   };
 
   const setDurationInSeconds = (value) => {
-    // const minp = 0;
-    // const maxp = 300;
-    // const minv = Math.log(1);
-    // const maxv = Math.log(3600);
-    // const scale = (maxv - minv) / (maxp - minp);
-    // const output = Math.exp(minv + scale * (value - minp));
-    // console.log(output);
     _setDurationInSeconds(value);
   };
 
@@ -73,7 +65,7 @@ function AddRouteTypeModal(props) {
     console.log('onAddPress - maybe validate here?');
     if (isValid(name)) {
       addRouteType({
-        routeType: { name, color: color, runTime: hmsDuration },
+        routeType: { name, color: color, runTime: durationInSeconds },
       });
       setName(null);
       closeModal();

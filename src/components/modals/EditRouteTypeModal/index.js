@@ -35,7 +35,7 @@ function EditRouteTypeModal(props) {
   const [showEditRunTimeModal, setShowEditRunTimeModal] = useState(false);
   const [showEditColorModal, setShowEditColorModal] = useState(false);
   const [runTimeInSeconds, _setRunTimeInSeconds] = useState(
-    HMSToSeconds(runTime),
+    runTime,
   );
 
   function onColorPress() {}
@@ -96,12 +96,12 @@ function EditRouteTypeModal(props) {
       setNewName(editRoute.name);
       setNewRunTime(editRoute.runTime);
       setNewColor(editRoute.color);
-      setRunTimeInSeconds(HMSToSeconds(editRoute.runTime));
+      setRunTimeInSeconds(editRoute.runTime);
     }
   }, [editRoute]);
 
   useEffect(() => {
-    setNewRunTime(secondsToHMS(runTimeInSeconds));
+    setNewRunTime(runTimeInSeconds);
   }, [runTimeInSeconds]);
 
   return (
@@ -116,7 +116,7 @@ function EditRouteTypeModal(props) {
             <Item stackedLabel>
               <Label>Run Time</Label>
               <Button transparent onPress={toggleEditRunTime}>
-                <Text>{hourMinuteSecond(newRunTime)}</Text>
+                <Text>{newRunTime}</Text>
               </Button>
             </Item>
             <Item stackedLabel>
@@ -153,7 +153,7 @@ function EditRouteTypeModal(props) {
   );
 }
 
-EditRouteTypeModal.defaultProps = { editRoute: { id: false, runTime: ZERO_TIME } };
+EditRouteTypeModal.defaultProps = { editRoute: { id: false, runTime: 0 } };
 
 const mapStateToProps = () => {
   return {};

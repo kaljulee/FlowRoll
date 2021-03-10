@@ -131,12 +131,6 @@ export function createCompleteRRCycle(matchUps, participants) {
 export function createDefaultOrdering(participants) {
   const matchUps = createMatchUps(participants);
   const completeRRCycle = createCompleteRRCycle(matchUps, participants);
-  // console.group('complete cycle');
-  // completeRRCycle.forEach((c) => {
-  //   const match = findMatchUpByID(matchUps, c);
-  //   console.log(match.toString());
-  // });
-  // console.groupEnd();
   return completeRRCycle;
 }
 

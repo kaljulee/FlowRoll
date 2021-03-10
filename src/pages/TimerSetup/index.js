@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { hourMinuteSecond, ZERO_TIME } from '../../helpers/time';
 import { Container, Content, Footer, Button, Text } from 'native-base';
-import {
-  resetDB,
-  setBreakTime,
-  setRoundTime,
-} from '../../actions';
+import { resetDB, setBreakTime, setRoundTime } from '../../actions';
 import { createAndSetEngine } from '../../actions/thunks';
 import { Grid, Col } from 'react-native-easy-grid';
 import SetTimeModal from '../../components/modals/SetTimeModal';
@@ -26,13 +22,14 @@ function TimerSetup(props) {
     location,
     map,
     localTime,
-      createAndSetEngine,
+    createAndSetEngine,
+    roundTime,
+    warmUp,
+    coolDown,
   } = props;
 
   // todo do something with these anti-crash hard codes
   const roundCount = 0;
-  const roundDuration = ZERO_TIME;
-  const breakDuration = ZERO_TIME;
 
   const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
@@ -41,16 +38,11 @@ function TimerSetup(props) {
   const [showAddParticipant, setShowAddParticipant] = useState(false);
   const [showDeleteParticipant, setShowDeleteParticipant] = useState(false);
 
-  function onSavePress() {
-    console.log('put some map making logic here');
-    // changeTab(1);
-  }
-
   function onStoreEnginePress() {
     createAndSetEngine();
     console.log('on store engine press');
   }
-
+// todo needs to be annotated map to display
   return (
     <Container>
       <Grid style={{ borderWidth: 5 }}>
@@ -62,13 +54,13 @@ function TimerSetup(props) {
           />
           <SettingsButton
             onPress={() => setShowRoundTimeInput(true)}
-            info={hourMinuteSecond(roundDuration)}
+            info={roundTime}
             label={'Set Round Time'}
           />
           <SettingsButton
             onPress={() => setShowBreakTimeInput(true)}
             label={'Set Break Time'}
-            info={hourMinuteSecond(breakDuration)}
+            info={coolDown}
           />
           <SettingsButton
             onPress={() => setShowRoundCountInput(true)}
@@ -85,14 +77,14 @@ function TimerSetup(props) {
         <SetTimeModal
           label={'round length'}
           isVisible={showRoundTimeInput}
-          value={roundDuration}
+          value={roundTime}
           onSelectedChange={setRoundTime}
           onClosePress={() => setShowRoundTimeInput(false)}
         />
         <SetTimeModal
           label={'break length'}
           isVisible={showBreakTimeInput}
-          value={breakDuration}
+          value={coolDown}
           onSelectedChange={setBreakTime}
           onClosePress={() => setShowBreakTimeInput(false)}
         />
@@ -137,22 +129,24 @@ const mapStateToProps = (state) => {
   const {
     groundRobin: {
       activeParticipants,
-      breakDuration,
+      warmUp,
+      coolDown,
+      roundTime,
       currentRound,
       estimatedTime,
       participants,
       roundCount,
-      roundDuration,
     },
     navigation: { map, elapsedSeconds },
   } = state;
   return {
     activeParticipants,
-    breakDuration,
+    warmUp,
+    coolDown,
     currentRound,
     estimatedTime,
     participants,
-    roundDuration,
+    roundTime,
     roundCount,
     map,
     elapsedSeconds,

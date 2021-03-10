@@ -203,8 +203,9 @@ const mapStateToProps = (state) => {
   const {
     groundRobin: {
       participants,
-      roundDuration,
-      breakDuration,
+      warmUp,
+      roundTime,
+      coolDown,
       currentRound,
       roundCount,
       schedule,
@@ -218,12 +219,13 @@ const mapStateToProps = (state) => {
     departureTime,
     schedule,
     participants,
-    roundDuration,
-    breakDuration,
     currentRound,
     roundCount,
     matchUps,
     timerDuration,
+    warmUp,
+    coolDown,
+    roundTime,
   };
 };
 

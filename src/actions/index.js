@@ -6,6 +6,11 @@ export const types = {
   DEACTIVATE_PARTICIPANTS: 'DEACTIVATE_PARTICIPANTS',
   MUTE_TOGGLE: 'MUTE_TOGGLE',
 
+  SET_ROUND_TIME: 'SET_ROUND_TIME',
+  SET_COOLDOWN: 'SET_COOLDOWN',
+  SET_WARMUP: 'SET_WARMUP',
+  SET_ROUND_COUNT: 'SET_ROUND_COUNT',
+
   // these converted from route to route while commented out
   // ROUTE_TYPE_ADD_SAVED: 'ROUTE_TYPE_ADD_SAVED',
   // ROUTE_TYsPE_DELETE_SAVED: 'ROUTE_TYPE_DELETE_SAVED',
@@ -24,10 +29,12 @@ export const types = {
 
   SET_LOCATION: 'SET_LOCATION',
   SET_SCOPE_ID: 'SET_SCOPE_ID',
+  // todo danger on this engine namespace
   SET_ENGINE_ID: 'SET_ENGINE_ID',
   SET_DEPARTURE_TIME: 'SET_DEPARTURE_TIME',
   SET_MAP: 'SET_MAP',
   SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
+  SET_ENGINE: 'SET_ENGINE',
 };
 
 export const resetDB = () => ({ type: types.RESET });
@@ -146,3 +153,10 @@ export const setElapsedSeconds = (payload) => {
     payload,
   };
 };
+
+export const setEngine = (payload) => {
+  return {
+    type: types.SET_ENGINE,
+    payload
+  }
+}

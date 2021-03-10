@@ -5,10 +5,20 @@ import {
   createMap,
   getLocation,
   getTimeInLocation,
+  getLocationByID,
+  createEngine,
+  createEngineCycle,
 } from '../logic';
 import moment from 'moment';
-import { setScopeID, setEngineID, setMap, setElapsedSeconds } from '../actions';
+import {
+  setScopeID,
+  setEngineID,
+  setMap,
+  setElapsedSeconds,
+  setEngine,
+} from '../actions';
 import { getRouteTypeByID } from '../helpers/utils';
+import { getPhaseColor, PHASES } from '../models/Gears';
 
 // this will store interval id in state, call updates to position and current start time
 
@@ -91,7 +101,7 @@ export function timeInLocation() {
     const {
       navigation: { elapsedSeconds, map, location },
     } = getState();
-    const locationData = map.locations[location];
+    const locationData = getLocationByID(map.locations, location);
     return getTimeInLocation(elapsedSeconds, locationData);
   };
 }
@@ -100,8 +110,10 @@ export function createAndSetMap() {
   return function(dispatch, getState) {
     const {
       trainSchedule: { routes },
+      groundRobin: { engine },
     } = getState();
-    dispatch(setMap(createMap(routes)));
+    const theEngine = engine;
+    dispatch(setMap(createMap(routes, theEngine)));
   };
 }
 
@@ -114,8 +126,20 @@ export function createAnnotatedMap() {
     return {
       ...map,
       locations: map.locations.map((m) => {
-        const type = getRouteTypeByID(routeTypes, m.routeType);
-        const { color, name, label } = type;
+        const locationData = { ...getRouteTypeByID(routeTypes, m.routeType) };
+        const phase = {
+          color: getPhaseColor(m.phase),
+          name: PHASES[m.phase],
+          label: PHASES[m.phase],
+        };
+        if (!locationData.color && phase.color) {
+          locationData.color = phase.color;
+        }
+        // todo only doing name right now, not label.  need to revisit this
+        if (!locationData.name) {
+          locationData.name = phase.name;
+        }
+        const { color, name, label } = locationData;
         return {
           ...m,
           color,
@@ -124,5 +148,35 @@ export function createAnnotatedMap() {
         };
       }),
     };
+  };
+}
+
+// todo seems like a duplicate
+// function generateEngineCycle() {
+//   return function(dispatch, getState) {
+//     console.log('in generateEngineCycle');
+//     // console.log(getState().groundRobin);
+//     console.log('groundrobin from store looking for crrc');
+//     console.log(getState().groundRobin);
+//     console.log('lllll');
+//     return getState().groundRobin.completeRRCycle;
+//   };
+// }
+
+export function createAndSetEngine() {
+  return function(dispatch, getState) {
+    const {
+      groundRobin: { warmUp, coolDown, completeRRCycle, roundTime },
+    } = getState();
+
+    const createdEngine = createEngine({
+      engineCycle: createEngineCycle({
+        floorStates: completeRRCycle,
+        warmUp,
+        coolDown,
+        roundTime,
+      }),
+    });
+    dispatch(setEngine(createdEngine));
   };
 }

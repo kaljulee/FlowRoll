@@ -89,21 +89,21 @@ function TimerDisplay(props) {
   const displayTime = hourMinuteSecond(secondsToHMS(remainingSeconds));
   const [backgroundColor, setBackgroundColor] = useState('white');
 
-  useEffect(() => {
-    switch (status) {
-      case STATUS.ROUND:
-        setBackgroundColor('green');
-        break;
-      case STATUS.BREAK:
-        setBackgroundColor('red');
-        break;
-      case STATUS.IDLE:
-        setBackgroundColor('white');
-        break;
-      default:
-        setBackgroundColor('white');
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   switch (status) {
+  //     case STATUS.ROUND:
+  //       setBackgroundColor('green');
+  //       break;
+  //     case STATUS.BREAK:
+  //       setBackgroundColor('red');
+  //       break;
+  //     case STATUS.IDLE:
+  //       setBackgroundColor('white');
+  //       break;
+  //     default:
+  //       setBackgroundColor('white');
+  //   }
+  // }, [status]);
 
   return (
     <Card style={styles.timerDisplay}>
@@ -163,6 +163,7 @@ function MainDisplay(props) {
 
   function onPressPlay() {
     // todo play disabled until departureTime data chain is in place
+    console.log('play does nothing');
   }
 
   // !! danger !!
@@ -177,11 +178,10 @@ function MainDisplay(props) {
     <Container>
       <Content contentContainerStyle={styles.content}>
         <CurrentMatchUp matchUp={currentMatchUp} />
-        <TimerDisplay status={status} />
+        <TimerDisplay />
         <RoundCounter currentRound={currentRound} roundCount={roundCount} />
         <TotalTimeTracker
           styles={styles}
-          status={status}
           departureTime={departureTime}
           runTime={4}
         />
@@ -190,7 +190,7 @@ function MainDisplay(props) {
       </Content>
       <Footer>
         <ControlBar
-          onPressPlay={status === STATUS.IDLE ? onPressPlay : onPressRestart}
+          onPressPlay={onPressPlay}
           onPressPause={onPressPause}
           onPressRestart={onPressRestart}
         />
@@ -201,11 +201,11 @@ function MainDisplay(props) {
 
 const mapStateToProps = (state) => {
   const {
-    basicReducer: {
-      status,
+    groundRobin: {
       participants,
-      roundDuration,
-      breakDuration,
+      warmUp,
+      roundTime,
+      coolDown,
       currentRound,
       roundCount,
       schedule,
@@ -217,15 +217,15 @@ const mapStateToProps = (state) => {
 
   return {
     departureTime,
-    status,
     schedule,
     participants,
-    roundDuration,
-    breakDuration,
     currentRound,
     roundCount,
     matchUps,
     timerDuration,
+    warmUp,
+    coolDown,
+    roundTime,
   };
 };
 

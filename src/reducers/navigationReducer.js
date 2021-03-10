@@ -8,7 +8,6 @@ import {
   participantsByActive,
 } from '../helpers/ordering';
 import moment from 'moment';
-import { STATUS } from '../helpers/utils';
 import { getEndTime, HMSToSeconds, hourMinuteSecond } from '../helpers/time';
 import { createRouteType } from '../models/Route';
 import { COLORS } from '../constants/styleValues';

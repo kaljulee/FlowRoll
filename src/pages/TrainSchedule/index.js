@@ -18,7 +18,7 @@ import {
   timeInLocation,
   createAnnotatedMap,
 } from '../../actions/thunks';
-import { sumRouteRunTimes } from '../../logic';
+import { sumRouteRunTimes, ZERO_ENGINE } from '../../logic';
 import ControlBar from '../../components/ControlBar';
 import AddRouteTypeModal from '../../components/modals/AddRouteTypeModal';
 import { formatSecondsToDisplay } from '../../helpers/time';
@@ -40,10 +40,11 @@ function TrainSchedule(props) {
     location,
     createAndSetMap,
     map,
+    engine,
   } = props;
 
   const [showAddRouteModal, setShowAddRouteModal] = useState(false);
-  const [totalTime, setTotalTime] = useState(sumRouteRunTimes(routes));
+  const [totalTime, setTotalTime] = useState(sumRouteRunTimes(routes, engine));
   const [annotatedMap, setAnnotatedMap] = useState(createAnnotatedMap());
   const [displayTotalTime, setDisplayTotalTime] = useState(
     formatSecondsToDisplay(totalTime),
@@ -85,10 +86,10 @@ function TrainSchedule(props) {
   }, [routes, createAndSetMap]);
 
   useEffect(() => {
-    const newSum = sumRouteRunTimes(routes);
+    const newSum = sumRouteRunTimes(routes, engine);
     setTotalTime(newSum);
     setDisplayTotalTime(formatSecondsToDisplay(newSum));
-  }, [routes]);
+  }, [routes, engine]);
 
   // updates local time when relavant info changes
   useEffect(() => {
@@ -134,7 +135,7 @@ function TrainSchedule(props) {
         </Col>
         <Col size={1} style={{ borderWidth: 1 }}>
           <TrainTracker
-            annotatedMap={annotatedMap}
+            map={annotatedMap}
             location={location}
             localTime={localTime}
           />
@@ -172,8 +173,14 @@ const mapStateToProps = (state) => {
   const {
     trainSchedule: { routes, routeTypes },
     navigation: { location, elapsedSeconds, map },
+    groundRobin,
   } = state;
-  return { routeTypes, routes, elapsedSeconds, location, map };
+  let engine = groundRobin.engine;
+  return { routeTypes, routes, elapsedSeconds, location, map, engine };
+};
+
+TrainSchedule.defaultProps = {
+  engine: ZERO_ENGINE,
 };
 
 const mapDispatchToProps = {

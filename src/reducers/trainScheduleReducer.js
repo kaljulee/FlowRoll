@@ -38,7 +38,7 @@ const getInitialState = () => {
   const defaultRouteTypes = [];
   defaultRouteTypes.push(
     createRouteType({
-      name: 'break',
+      name: 'roll',
       id: 1,
       runTime: 3,
       color: COLORS.RED,
@@ -46,7 +46,7 @@ const getInitialState = () => {
   );
   defaultRouteTypes.push(
     createRouteType({
-      name: 'round',
+      name: 'warmup',
       id: 2,
       runTime: 5,
       color: COLORS.LIGHTBLUE,

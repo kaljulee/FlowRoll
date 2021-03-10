@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { hourMinuteSecond, ZERO_TIME } from '../../helpers/time';
 import { Container, Content, Footer, Button, Text } from 'native-base';
 import {
-  startTimerRun,
   resetDB,
   setBreakTime,
   setRoundTime,
 } from '../../actions';
+import { createAndSetEngine } from '../../actions/thunks';
 import { Grid, Col } from 'react-native-easy-grid';
 import SetTimeModal from '../../components/modals/SetTimeModal';
 import SettingsButton from '../../components/SettingsButton';
@@ -18,7 +18,16 @@ import DeleteParticipantModal from '../../components/modals/DeleteParticipantMod
 import TrainTracker from '../../components/TrainTracker';
 
 function TimerSetup(props) {
-  const { resetDB, participants, changeTab, activeParticipants, location, map, localTime, } = props;
+  const {
+    resetDB,
+    participants,
+    changeTab,
+    activeParticipants,
+    location,
+    map,
+    localTime,
+      createAndSetEngine,
+  } = props;
 
   // todo do something with these anti-crash hard codes
   const roundCount = 0;
@@ -35,6 +44,11 @@ function TimerSetup(props) {
   function onSavePress() {
     console.log('put some map making logic here');
     // changeTab(1);
+  }
+
+  function onStoreEnginePress() {
+    createAndSetEngine();
+    console.log('on store engine press');
   }
 
   return (
@@ -61,8 +75,8 @@ function TimerSetup(props) {
             info={roundCount}
             label={'Set Round Count'}
           />
-          <Button onPress={onSavePress}>
-            <Text>Save</Text>
+          <Button onPress={onStoreEnginePress}>
+            <Text>create engine</Text>
           </Button>
         </Col>
         <Col size={1} style={{ borderWidth: 5 }}>
@@ -149,7 +163,7 @@ const mapDispatchToProps = {
   resetDB,
   setRoundTime,
   setBreakTime,
-  startTimerRun,
+  createAndSetEngine,
 };
 
 export default connect(

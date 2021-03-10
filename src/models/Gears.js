@@ -1,0 +1,6 @@
+export const Gears = {
+  NEUTRAL: 'NEUTRAL',
+  FULL_CYCLE: 'FULL_CYCLE',
+  TRUNCATE: 'TRUNCATE',
+  SHRINK_TO_FIT: 'SHRINK_TO_FIT',
+};

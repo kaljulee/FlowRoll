@@ -36,7 +36,8 @@ const getInitialState = () => {
     completeRRCycle,
     secondSliderConverter: createSecondSliderConversion(),
     engine: ZERO_ENGINE,
-    breakTime: 3,
+    warmUp: 3,
+    coolDown: 4,
     roundTime: 5,
   };
 };
@@ -146,11 +147,12 @@ const groundRobin = (state = getInitialState(), action) => {
         ...update,
       };
     case types.SET_ENGINE:
-      console.log('in reducer setting engine to ');
-      console.log(payload);
       return { ...state, engine: payload };
-    case types.SET_BREAK_TIME:
-      update.breakTime = payload;
+    case types.SET_WARMUP:
+      update.warmUp = payload;
+      return { ...state, ...update };
+    case types.SET_COOLDOWN:
+      update.coolDown = payload;
       return { ...state, ...update };
     case types.SET_ROUND_COUNT:
       // todo this can be complicated

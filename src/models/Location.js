@@ -1,6 +1,8 @@
-function createLocation(segment) {
+export function createLocation(segment, offset) {
   console.log('in createLocation');
   console.log(segment);
+  const newOffset = offset + segment.runTime;
+  return { location: { ...segment, offset }, totalRunTime: newOffset };
 }
 
 export const NOWHERE = {
@@ -11,4 +13,4 @@ export const NOWHERE = {
 export const EMPTY_MAP = {
   locations: [],
   runTime: 0,
-}
+};

@@ -1,6 +1,4 @@
 export function createLocation(segment, offset) {
-  console.log('in createLocation');
-  console.log(segment);
   const newOffset = offset + segment.runTime;
   return { location: { ...segment, offset }, totalRunTime: newOffset };
 }

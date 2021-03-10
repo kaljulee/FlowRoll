@@ -2,7 +2,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import { createSegment } from '../models/Segment';
 import { PHASE_COLORS, PHASES } from '../models/Gears';
-import { NOWHERE } from '../models/Location';
+import { createLocation, NOWHERE } from '../models/Location';
 import { Gears } from '../models/Gears';
 export function getElapsedSeconds(startTime) {
   return moment().diff(startTime, 'seconds');
@@ -151,12 +151,9 @@ export function createLocations(segments, offset = 0) {
   let totalRunTime = offset;
   const locations = [];
   segments.forEach((s) => {
-    const newLocation = {
-      ...s,
-      offset: totalRunTime,
-    };
-    locations.push(newLocation);
-    totalRunTime = totalRunTime + s.runTime;
+    const newLocationData = createLocation(s, totalRunTime);
+    locations.push(newLocationData.location);
+    totalRunTime = newLocationData.totalRunTime;
   });
   return { totalRunTime, locations };
 }

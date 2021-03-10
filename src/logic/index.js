@@ -1,8 +1,9 @@
 import moment from 'moment';
-import { HMSToSeconds } from '../helpers/time';
 import _ from 'lodash';
+import { createSegment } from '../models/Segment';
+import { PHASE_COLORS, PHASES } from '../models/Gears';
 import { NOWHERE } from '../models/Location';
-
+import { Gears } from '../models/Gears';
 export function getElapsedSeconds(startTime) {
   return moment().diff(startTime, 'seconds');
 }
@@ -21,24 +22,107 @@ export function freshStartTime(startTime, endTime) {
   return moment(startTime).isAfter(endTime);
 }
 
-// convert a route into an array of segments
-export function extractSegments(route, id) {
-  // assumes the incoming id is valid
-  let tempID = id;
-  // if the route has a runtime, treat it as a segment
-  if (route.runTime) {
-    return {
-      segments: [{ runTime: route.runTime, routeType: route.routeType, id }],
-      nextID: id + 1,
-    };
+const ZERO_PROCESS = (route, id) => {
+  return {
+    segments: [
+      createSegment({ runTime: route.runTime, routeType: route.routeType, id }),
+    ],
+    nextID: id + 1,
+  };
+};
+
+export const ZERO_ENGINE = {
+  runEngine: (route, id) => ZERO_PROCESS(route, id),
+};
+
+function segmentsFromEngineCycle(engineCycle, id) {
+  // todo do this
+  const { floorStates, roundTime, warmUp, coolDown } = engineCycle;
+  const { WARMUP, COOLDOWN, ROUND } = PHASES;
+  let nextID = id;
+  const segments = floorStates.reduce((acc, s) => {
+    const phaseColors = PHASE_COLORS();
+    if (warmUp > 0) {
+      acc.push(
+        createSegment({
+          label: 'warmup',
+          name: 'warmup',
+          phase: WARMUP,
+          color: phaseColors[WARMUP],
+          runTime: warmUp,
+          id: nextID,
+          floorState: s,
+        }),
+      );
+      nextID += 1;
+    }
+    acc.push(
+      createSegment({
+        phase: ROUND,
+        label: 'round',
+        name: 'round',
+        runTime: roundTime,
+        color: phaseColors[ROUND],
+        id: nextID,
+        floorState: s,
+      }),
+    );
+    nextID += 1;
+    if (coolDown > 0) {
+      acc.push(
+        createSegment({
+          phase: COOLDOWN,
+          color: phaseColors[COOLDOWN],
+          name: 'cool down',
+          label: 'cooldown',
+          runTime: coolDown,
+          id: nextID,
+          floorState: s,
+        }),
+      );
+      nextID += 1;
+    }
+    return acc;
+  }, []);
+  return { segments, nextID };
+}
+
+const _runEngine = (engineCycle, route, id) => {
+  switch (route.gear) {
+    case Gears.NEUTRAL:
+      return ZERO_PROCESS(route, id);
+    case Gears.FULL_CYCLE:
+      const cycleSegments = segmentsFromEngineCycle(engineCycle, id);
+      return cycleSegments;
+    case Gears.TRUNCATE:
+      //todo logic to fill out segements based on matchups up until time is called
+      // todo this is here to prevent crashes, remove later
+      return ZERO_PROCESS(route, id);
+    case Gears.SHRINK_TO_FIT:
+      // todo this is here to prevent crashes, remove later
+      return ZERO_PROCESS(route, id);
+    default:
+      // console.log('no gear detected, going netural');
+      return ZERO_PROCESS(route, id);
   }
-  // if a route has segments, use the array of segments
-  if (route.segments) {
-    return route.segments.map((s) => {
-      const newSegment = { ...s, routeType: route.RouteType, id: tempID };
-      tempID = tempID + 1;
-      return newSegment;
-    });
+};
+
+export const createEngine = (settings = { engineCycle }) => {
+  const { engineCycle } = settings;
+  const engine = {
+    runEngine: (route, id) => {
+      const runResult = _runEngine(engineCycle, route, id);
+      return runResult;
+    },
+  };
+  return engine;
+};
+
+// convert a route into an array of segments
+export function extractSegments(engine, route, id) {
+  if (engine) {
+    const segmentData = engine.runEngine(route, id);
+    return segmentData;
   }
   // otherwise return empty segment array, original id
   return { segments: [], nextID: id };
@@ -46,14 +130,14 @@ export function extractSegments(route, id) {
 
 // takes an array of routes and runTime (defaults to zero)
 // provides ids to the segments
-export function flattenRoutesIntoSegments(routes, incomingRunTime = 0) {
+export function flattenRoutesIntoSegments(routes, engine = ZERO_ENGINE) {
   const flattened = [];
-  let totalRunTime = incomingRunTime;
+  let totalRunTime = 0;
   // this is where segmentID gets defined
   let segmentID = 1;
   // for each route, convert to segments and update runTime
   routes.forEach((l) => {
-    const segmentData = extractSegments(l, segmentID);
+    const segmentData = extractSegments(engine, l, segmentID);
     segmentData.segments.forEach((s) => {
       totalRunTime += s.runTime;
       flattened.push(s);
@@ -67,17 +151,18 @@ export function createLocations(segments, offset = 0) {
   let totalRunTime = offset;
   const locations = [];
   segments.forEach((s) => {
-    locations.push({
+    const newLocation = {
       ...s,
       offset: totalRunTime,
-    });
+    };
+    locations.push(newLocation);
     totalRunTime = totalRunTime + s.runTime;
   });
   return { totalRunTime, locations };
 }
 
-export function createMap(routes) {
-  const segmentData = flattenRoutesIntoSegments(routes);
+export function createMap(routes, engine) {
+  const segmentData = flattenRoutesIntoSegments(routes, engine);
   const locationData = createLocations(segmentData.segments);
   return locationData;
 }
@@ -129,8 +214,8 @@ export function getTimeInLocation(elaspedSeconds, locationData) {
   return elaspedSeconds - locationData.offset;
 }
 
-export function sumRouteRunTimes(routes) {
-  return flattenRoutesIntoSegments(routes).totalRunTime;
+export function sumRouteRunTimes(routes, engine) {
+  return flattenRoutesIntoSegments(routes, engine).totalRunTime;
 }
 
 export function createSecondSliderConversion() {
@@ -154,4 +239,27 @@ export function createSecondSliderConversion() {
     secondsByValue.push(seconds);
   }
   return { secondsByValue };
+}
+
+function formatTime(time) {
+  if (isNaN(time)) {
+    return 0;
+  }
+  return parseInt(time);
+}
+
+export function createEngineCycle({
+  floorStates,
+  roundTime,
+  warmUp,
+  coolDown,
+  roundCount,
+}) {
+  return {
+    roundCount,
+    floorStates,
+    roundTime,
+    warmUp: formatTime(warmUp),
+    coolDown: formatTime(coolDown),
+  };
 }

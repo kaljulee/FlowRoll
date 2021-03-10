@@ -5,7 +5,7 @@ import {
   createMatchUps,
   participantsByActive,
 } from '../helpers/ordering';
-import { createSecondSliderConversion } from '../logic';
+import { createSecondSliderConversion, ZERO_ENGINE } from '../logic';
 import { types } from '../actions';
 
 const getInitialState = () => {
@@ -35,6 +35,9 @@ const getInitialState = () => {
     matchUps,
     completeRRCycle,
     secondSliderConverter: createSecondSliderConversion(),
+    engine: ZERO_ENGINE,
+    breakTime: 3,
+    roundTime: 5,
   };
 };
 
@@ -142,6 +145,18 @@ const groundRobin = (state = getInitialState(), action) => {
         ...state,
         ...update,
       };
+    case types.SET_ENGINE:
+      console.log('in reducer setting engine to ');
+      console.log(payload);
+      return { ...state, engine: payload };
+    case types.SET_BREAK_TIME:
+      update.breakTime = payload;
+      return { ...state, ...update };
+    case types.SET_ROUND_COUNT:
+      // todo this can be complicated
+      return { ...state, ...update };
+    case types.SET_ROUND_TIME:
+      return { ...state, ...update };
     default:
       return state;
   }

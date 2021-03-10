@@ -4,6 +4,7 @@ import { hourMinuteSecond } from '../helpers/time';
 import { COLORS } from '../constants/styleValues';
 import _ from 'lodash';
 import { getRouteTypeByID } from '../helpers/utils';
+import { Gears } from '../models/Gears';
 
 // route related
 const createRoute = (routeID, routeType, settings) => {
@@ -42,6 +43,7 @@ const getInitialState = () => {
       id: 1,
       runTime: 3,
       color: COLORS.RED,
+      gear: Gears.FULL_CYCLE,
     }),
   );
   defaultRouteTypes.push(
@@ -73,20 +75,12 @@ const trainSchedule = (state = getInitialState(), action) => {
       return getInitialState();
     case types.ROUTE_SCHEDULE:
       let newNextRouteID = state.nextRouteID;
-      console.log('in reducer, payload');
-      console.log(payload);
-      payload.routes.forEach((l) => console.log('route'));
       const newRoutes = payload.routes.map((l) => {
-        // console.log('el');
-        // console.log(l);
-        // state.routeTypes.forEach(t => console.log(t.id));
 
-        const selectedRouteType = getRouteTypeByID(state.routeTypes, l.routeType);
-        //     _.find(state.routeTypes, function(t) {
-        //    console.log('looking for routetype ' + l.routeType);
-        //   return l.routeType === t.id;
-        // });
-        // return l;
+        const selectedRouteType = getRouteTypeByID(
+          state.routeTypes,
+          l.routeType,
+        );
 
         const { newRoute } = createRoute(newNextRouteID, selectedRouteType);
         newNextRouteID = newNextRouteID + 1;
@@ -94,18 +88,6 @@ const trainSchedule = (state = getInitialState(), action) => {
       });
       update = {
         routes: [...state.routes, ...newRoutes],
-        //   ...state.routes,
-        //   ...payload.routes.map((l) => {
-        //     console.log('mapping route');
-        //     console.log(l);
-        //     const selectedRouteType = _.find(state.routeTypes, function(t) {
-        //       return l.routeType === t.id;
-        //     });
-        //     const { newRoute } = createRoute(newNextRouteID, selectedRouteType);
-        //     newNextRouteID = newNextRouteID + 1;
-        //     return newRoute;
-        //   }),
-        // ],
       };
       update.nextRouteID = newNextRouteID;
       return {

@@ -6,8 +6,9 @@ export const types = {
   DEACTIVATE_PARTICIPANTS: 'DEACTIVATE_PARTICIPANTS',
   MUTE_TOGGLE: 'MUTE_TOGGLE',
 
-  SET_BREAK_TIME: 'SET_BREAK_TIME',
   SET_ROUND_TIME: 'SET_ROUND_TIME',
+  SET_COOLDOWN: 'SET_COOLDOWN',
+  SET_WARMUP: 'SET_WARMUP',
   SET_ROUND_COUNT: 'SET_ROUND_COUNT',
 
   // these converted from route to route while commented out
@@ -154,8 +155,6 @@ export const setElapsedSeconds = (payload) => {
 };
 
 export const setEngine = (payload) => {
-  console.log('setting engine');
-  console.log(payload);
   return {
     type: types.SET_ENGINE,
     payload

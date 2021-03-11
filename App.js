@@ -19,7 +19,7 @@ import {
 import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './src/store/configureStore';
 import { Provider } from 'react-redux';
-import GroundRobin from './src/pages/GroundRobin';
+import TimerSetup from './src/pages/TimerSetup';
 import MainDisplay from './src/pages/MainDisplay';
 import {
   Header,
@@ -71,7 +71,7 @@ const App: () => React$Node = () => {
                 page={currentTab}
                 onChangeTab={(page) => setCurrentTab(page.i)}>
                 <Tab heading={'setup'}>
-                  <GroundRobin
+                  <TimerSetup
                     currentTab={currentTab}
                     changeTab={(page) => setCurrentTab(page)}
                   />

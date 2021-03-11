@@ -13,7 +13,7 @@ import AddParticipantModal from '../../components/modals/AddParticipantModal';
 import DeleteParticipantModal from '../../components/modals/DeleteParticipantModal';
 import TrainTracker from '../../components/TrainTracker';
 
-function GroundRobin(props) {
+function TimerSetup(props) {
   const {
     resetDB,
     participants,
@@ -163,4 +163,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(GroundRobin);
+)(TimerSetup);

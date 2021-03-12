@@ -19,7 +19,7 @@ import {
 import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './src/store/configureStore';
 import { Provider } from 'react-redux';
-import TimerSetup from './src/pages/TimerSetup';
+import GroundRobin from './src/pages/GroundRobin';
 import MainDisplay from './src/pages/MainDisplay';
 import {
   Header,
@@ -34,7 +34,6 @@ import {
 } from 'native-base';
 import ActiveTimerWarningModal from './src/components/modals/ActiveTimerWarningModal';
 import TrainSchedule from './src/pages/TrainSchedule';
-
 const { store, persistor } = configureStore();
 
 const App: () => React$Node = () => {
@@ -70,11 +69,8 @@ const App: () => React$Node = () => {
               <Tabs
                 page={currentTab}
                 onChangeTab={(page) => setCurrentTab(page.i)}>
-                <Tab heading={'setup'}>
-                  <TimerSetup
-                    currentTab={currentTab}
-                    changeTab={(page) => setCurrentTab(page)}
-                  />
+                <Tab heading={'GroundRobin'}>
+                  <GroundRobin />
                 </Tab>
                 <Tab heading={'timer'}>
                   <MainDisplay

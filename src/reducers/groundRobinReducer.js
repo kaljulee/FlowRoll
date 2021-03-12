@@ -39,6 +39,7 @@ const getInitialState = () => {
     warmUp: 3,
     coolDown: 4,
     roundTime: 5,
+    chamberCount: 1,
   };
 };
 
@@ -71,7 +72,7 @@ const groundRobin = (state = getInitialState(), action) => {
   let update = {};
   switch (type) {
     case types.RESET:
-      console.log('reseting groundRobin DB');
+      console.warn('reseting groundRobin DB');
       return getInitialState();
     case types.ADD_PARTICIPANTS:
       let update = {};
@@ -159,6 +160,9 @@ const groundRobin = (state = getInitialState(), action) => {
       return { ...state, ...update };
     case types.SET_ROUND_TIME:
       return { ...state, ...update };
+    case types.SET_CHAMBER_COUNT:
+      console.warn('not actually setting chamber count till algorithm imporved');
+      return {...state, chamberCount: 1};
     default:
       return state;
   }

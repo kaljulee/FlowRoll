@@ -174,7 +174,7 @@ export function getLocation(elapsedSeconds, map) {
     location = map.locations[i];
     // NOWHERE location if location can't be found
     if (!location) {
-      console.log('error - missing location');
+      console.warn('error - missing location');
       return 0;
     }
     // if this is the last location, return it
@@ -200,11 +200,11 @@ export function getLocationByID(locations, id) {
 
 export function getTimeInLocation(elaspedSeconds, locationData) {
   if (!locationData) {
-    console.log('no location data, returning NaN');
+    console.warn('no location data, returning NaN');
     return Number.NaN;
   }
   if (elaspedSeconds < locationData.offset) {
-    console.log('should not have arrived at location, returning NaN');
+    console.warn('should not have arrived at location, returning NaN');
     return Number.NaN;
   }
   // offset adjusts the elapsedSeconds in this location to start at zero

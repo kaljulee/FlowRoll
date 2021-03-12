@@ -29,7 +29,7 @@ const navigation = (state = getInitialState(), action) => {
   let update = {};
   switch (type) {
     case types.RESET:
-      console.log('reseting navigation DB');
+      console.warn('reseting navigation DB');
       return getInitialState();
     case types.SET_DEPARTURE_TIME:
       update.departureTime = payload;

@@ -71,7 +71,7 @@ const trainSchedule = (state = getInitialState(), action) => {
   let update = {};
   switch (type) {
     case types.RESET:
-      console.log('reseting trainschedule DB');
+      console.warn('reseting trainschedule DB');
       return getInitialState();
     case types.ROUTE_SCHEDULE:
       let newNextRouteID = state.nextRouteID;

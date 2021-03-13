@@ -55,6 +55,7 @@ function AddRouteTypeModal(props) {
 
   const onColorPress = (c) => {
     setColor(c);
+    setShowColorPicker(false);
   };
 
   function isValid() {

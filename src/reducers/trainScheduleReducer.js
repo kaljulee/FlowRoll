@@ -1,5 +1,5 @@
 import { types } from '../actions';
-import { createRouteType } from '../models/Route';
+import { createRouteLabel, createRouteType } from '../models/Route';
 import { hourMinuteSecond } from '../helpers/time';
 import { COLORS } from '../constants/styleValues';
 import _ from 'lodash';
@@ -150,9 +150,10 @@ const trainSchedule = (state = getInitialState(), action) => {
         return { ...state };
       }
       editedRoute = { ...editedRoute, ...payload.data };
-      editedRoute.label = `${editedRoute.name} ${hourMinuteSecond(
-        editedRoute.runTime,
-      )}`;
+      editedRoute.label = createRouteLabel({
+        name: editedRoute.name,
+        runTime: editedRoute.runTime,
+      });
       update.routeTypes = state.routeTypes.reduce((acc, t) => {
         if (t.id === editedRoute.id) {
           acc.push(editedRoute);

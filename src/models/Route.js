@@ -6,20 +6,24 @@ export function isEditableRouteType(id) {
 //   return true;
 //
 //
-  // the reason for making this has gone away, but might be useful later
+// the reason for making this has gone away, but might be useful later
 
-  // return routeTypes.reduce((acc, r) => {
-  //   console.log('checking if route is editable ' + r.id);
-  //   if (isEditableRouteType(r.id)) {
-  //     console.log('yes, editable');
-  //     acc.push(r);
-  //   } else {
-  //     console.log('no not editagle ' + r.id);
-  //   }
-  //
-  //   return acc;
-  // }, []);
+// return routeTypes.reduce((acc, r) => {
+//   console.log('checking if route is editable ' + r.id);
+//   if (isEditableRouteType(r.id)) {
+//     console.log('yes, editable');
+//     acc.push(r);
+//   } else {
+//     console.log('no not editagle ' + r.id);
+//   }
+//
+//   return acc;
+// }, []);
 // }
+
+export function createRouteLabel(route) {
+  return `${route.name} ${route.runTime}`;
+}
 
 export function createRouteType({ name, id, runTime, color, settings, gear }) {
   if (!name || isNaN(id)) {
@@ -35,7 +39,7 @@ export function createRouteType({ name, id, runTime, color, settings, gear }) {
     color,
     runTime,
     segments: [],
-    label: `${name} ${runTime}`,
+    label: createRouteLabel({ name, runTime }),
     gear,
   };
 }

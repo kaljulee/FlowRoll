@@ -33,12 +33,13 @@ function EditRouteTypeModal(props) {
   const [newRunTime, setNewRunTime] = useState(runTime);
   const [newColor, setNewColor] = useState(color);
   const [showEditRunTimeModal, setShowEditRunTimeModal] = useState(false);
-  const [showEditColorModal, setShowEditColorModal] = useState(false);
-  const [runTimeInSeconds, _setRunTimeInSeconds] = useState(
-    runTime,
-  );
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [runTimeInSeconds, _setRunTimeInSeconds] = useState(runTime);
 
-  function onColorPress() {}
+  function onColorPress(c) {
+    setNewColor(c);
+    setShowColorPicker(false);
+  }
 
   function setRunTimeInSeconds(arg) {
     _setRunTimeInSeconds(arg);
@@ -49,7 +50,7 @@ function EditRouteTypeModal(props) {
   }
 
   function toggleEditColor() {
-    setShowEditColorModal(!showEditColorModal);
+    setShowColorPicker(!showColorPicker);
   }
 
   function saveAndClose() {
@@ -79,6 +80,7 @@ function EditRouteTypeModal(props) {
       name: newName,
     };
     editRouteType(payload);
+    setShowColorPicker(false);
     closeModal();
   }
 
@@ -136,7 +138,7 @@ function EditRouteTypeModal(props) {
             }}
           />
           <ColorPicker
-            isVisible={showEditColorModal}
+            isVisible={showColorPicker}
             onColorPress={onColorPress}
           />
         </CardItem>

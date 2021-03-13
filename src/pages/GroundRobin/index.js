@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { hourMinuteSecond, ZERO_TIME } from '../../helpers/time';
 import { Container, Content, Footer, Button, Text } from 'native-base';
-import { resetDB, setBreakTime, setRoundTime } from '../../actions';
+import { resetDB, setWorkTime } from '../../actions';
 import { createAndSetEngine } from '../../actions/thunks';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import SetTimeModal from '../../components/modals/SetTimeModal';
@@ -25,7 +25,7 @@ function GroundRobin(props) {
     map,
     localTime,
     createAndSetEngine,
-    roundTime,
+    workTime,
     warmUp,
     coolDown,
     completeRRCycle,
@@ -35,7 +35,7 @@ function GroundRobin(props) {
   // todo do something with these anti-crash hard codes
   const roundCount = 0;
 
-  const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
+  const [showWorkTimeInput, setShowWorkTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
   const [showRoundCountInput, setShowRoundCountInput] = useState(false);
@@ -50,11 +50,16 @@ function GroundRobin(props) {
   return (
     <Container>
       <Grid style={{ borderWidth: 5 }}>
-        <Row style={{ borderWidth: 3, borderColor: 'red' }}>
+        <Row size={3} style={{ borderWidth: 3, borderColor: 'red' }}>
           <EngineSettings />
         </Row>
-        <Row style={{ borderWidth: 3, borderColor: 'green' }}>
+        <Row size={3} style={{ borderWidth: 3, borderColor: 'green' }}>
           <EngineStateList cycle={completeRRCycle} />
+        </Row>
+        <Row size={1} style={{ justifyContent: 'flex-end' }}>
+          <Button onPress={onStoreEnginePress}>
+            <Text>Save Engine</Text>
+          </Button>
         </Row>
       </Grid>
       <Footer>
@@ -75,7 +80,7 @@ const mapStateToProps = (state) => {
       activeParticipants,
       warmUp,
       coolDown,
-      roundTime,
+      workTime,
       currentRound,
       estimatedTime,
       participants,
@@ -93,7 +98,7 @@ const mapStateToProps = (state) => {
     currentRound,
     estimatedTime,
     participants,
-    roundTime,
+    workTime,
     roundCount,
     map,
     elapsedSeconds,
@@ -103,8 +108,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   resetDB,
-  setRoundTime,
-  setBreakTime,
+  setWorkTime,
   createAndSetEngine,
 };
 

@@ -25,7 +25,7 @@ function EngineSettings(props) {
     map,
     localTime,
     createAndSetEngine,
-    roundTime,
+    workTime,
     warmUp,
     coolDown,
     setChamberCount,
@@ -47,17 +47,19 @@ function EngineSettings(props) {
           info={activeParticipants.length}
           onPress={() => setShowParticipantInput(true)}
         />
-        <SettingsButton
-          label={'Set Slots'}
-          info={chamberCount}
-          onPress={() => {
-            setShowChamberCountInput(true);
-          }}
-        />
+        {false && (
+          <SettingsButton
+            label={'Set Slots'}
+            info={chamberCount}
+            onPress={() => {
+              setShowChamberCountInput(true);
+            }}
+          />
+        )}
       </Row>
       <Row>
         <GroundTimeInput
-          roundTime={roundTime}
+          workTime={workTime}
           warmUp={warmUp}
           coolDown={coolDown}
         />
@@ -91,7 +93,7 @@ const mapStateToProps = (state) => {
       activeParticipants,
       warmUp,
       coolDown,
-      roundTime,
+      workTime,
       currentRound,
       estimatedTime,
       participants,
@@ -107,7 +109,7 @@ const mapStateToProps = (state) => {
     currentRound,
     estimatedTime,
     participants,
-    roundTime,
+    workTime,
     roundCount,
     map,
     elapsedSeconds,

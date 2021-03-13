@@ -37,7 +37,7 @@ const getInitialState = () => {
     secondSliderConverter: createSecondSliderConversion(),
     engine: ZERO_ENGINE,
     warmUp: 3,
-    roundTime: 4,
+    workTime: 4,
     coolDown: 5,
     chamberCount: 1,
   };
@@ -158,7 +158,7 @@ const groundRobin = (state = getInitialState(), action) => {
     case types.SET_ROUND_COUNT:
       // todo this can be complicated
       return { ...state, ...update };
-    case types.SET_ROUND_TIME:
+    case types.SET_WORK_TIME:
       return { ...state, ...update };
     case types.SET_CHAMBER_COUNT:
       console.warn('not actually setting chamber count till algorithm imporved');

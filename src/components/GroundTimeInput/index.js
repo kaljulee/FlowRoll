@@ -32,40 +32,40 @@ function PhaseInput(props) {
 }
 
 function GroundTimeInput(props) {
-  const { roundTime, warmUp, coolDown } = props;
+  const { workTime, warmUp, coolDown } = props;
 
   const [totalTime, setTotalTime] = useState(
-    calculateGroundTime(warmUp, roundTime, coolDown),
+    calculateGroundTime(warmUp, workTime, coolDown),
   );
   const [warmUpValue, setWarmUpValue] = useState(warmUp);
   const [coolDownValue, setCoolDownValue] = useState(coolDown);
-  const [roundTimeValue, setRoundTimeValue] = useState(roundTime);
+  const [workTimeValue, setWorkTimeValue] = useState(workTime);
 
   useEffect(() => {
-    const newTotalTime = calculateGroundTime(warmUp, roundTime, coolDown);
+    const newTotalTime = calculateGroundTime(warmUp, workTime, coolDown);
     setCoolDownValue(coolDown);
-    setRoundTimeValue(roundTime);
+    setWorkTimeValue(workTime);
     setWarmUpValue(warmUp);
     setTotalTime(newTotalTime);
-  }, [warmUp, roundTime, coolDown]);
+  }, [warmUp, workTime, coolDown]);
 
   const onSliderChange = (newValues) => {
     const newWarmUpValue = newValues[0];
 
-    let newRoundTime = roundTimeValue;
-    newRoundTime = newRoundTime + (warmUpValue - newWarmUpValue);
+    let newWorkTime = workTimeValue;
+    newWorkTime = newWorkTime + (warmUpValue - newWarmUpValue);
     const newCoolDownValue = Math.abs(totalTime - newValues[1]);
-    newRoundTime = newRoundTime + (coolDownValue - newCoolDownValue);
+    newWorkTime = newWorkTime + (coolDownValue - newCoolDownValue);
     setWarmUpValue(newWarmUpValue);
     setCoolDownValue(newCoolDownValue);
-    setRoundTimeValue(newRoundTime);
+    setWorkTimeValue(newWorkTime);
   };
 
   return (
     <Grid>
       <Row>
         <PhaseColumn title={'warmup'} value={warmUpValue} />
-        <PhaseColumn title={'work'} value={roundTimeValue} />
+        <PhaseColumn title={'work'} value={workTimeValue} />
         <PhaseColumn title={'cooldown'} value={coolDownValue} />
       </Row>
       <Row style={{ justifyContent: 'center' }}>
@@ -86,6 +86,6 @@ function GroundTimeInput(props) {
   );
 }
 
-GroundTimeInput.defaultProps = { roundTime: 10, warmUp: 0, coolDown: 0 };
+GroundTimeInput.defaultProps = { workTime: 10, warmUp: 0, coolDown: 0 };
 
 export default GroundTimeInput;

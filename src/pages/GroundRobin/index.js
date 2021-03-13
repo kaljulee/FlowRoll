@@ -4,7 +4,7 @@ import { hourMinuteSecond, ZERO_TIME } from '../../helpers/time';
 import { Container, Content, Footer, Button, Text } from 'native-base';
 import { resetDB, setWorkTime } from '../../actions';
 import { createAndSetEngine } from '../../actions/thunks';
-import { Grid, Col } from 'react-native-easy-grid';
+import { Grid, Col, Row } from 'react-native-easy-grid';
 import SetTimeModal from '../../components/modals/SetTimeModal';
 import SettingsButton from '../../components/SettingsButton';
 import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
@@ -12,8 +12,10 @@ import ManageParticipantsModal from '../../components/modals/ManageParticipantsM
 import AddParticipantModal from '../../components/modals/AddParticipantModal';
 import DeleteParticipantModal from '../../components/modals/DeleteParticipantModal';
 import TrainTracker from '../../components/TrainTracker';
+import EngineStateList from '../../components/EngineStateList';
+import EngineSettings from '../../components/EngineSettings';
 
-function TimerSetup(props) {
+function GroundRobin(props) {
   const {
     resetDB,
     participants,
@@ -23,15 +25,17 @@ function TimerSetup(props) {
     map,
     localTime,
     createAndSetEngine,
-    roundTime,
+    workTime,
     warmUp,
     coolDown,
+    completeRRCycle,
+    schedule,
   } = props;
 
   // todo do something with these anti-crash hard codes
   const roundCount = 0;
 
-  const [showRoundTimeInput, setShowRoundTimeInput] = useState(false);
+  const [showWorkTimeInput, setShowWorkTimeInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
   const [showRoundCountInput, setShowRoundCountInput] = useState(false);
@@ -42,69 +46,21 @@ function TimerSetup(props) {
     createAndSetEngine();
     console.log('on store engine press');
   }
-// todo needs to be annotated map to display
+  // todo needs to be annotated map to display
   return (
     <Container>
       <Grid style={{ borderWidth: 5 }}>
-        <Col size={5}>
-          <SettingsButton
-            label={'Set Players'}
-            info={activeParticipants.length}
-            onPress={() => setShowParticipantInput(true)}
-          />
-          <SettingsButton
-            onPress={() => setShowRoundTimeInput(true)}
-            info={roundTime}
-            label={'Set Round Time'}
-          />
-          <SettingsButton
-            onPress={() => setShowBreakTimeInput(true)}
-            label={'Set Break Time'}
-            info={coolDown}
-          />
-          <SettingsButton
-            onPress={() => setShowRoundCountInput(true)}
-            info={roundCount}
-            label={'Set Round Count'}
-          />
+        <Row size={3} style={{ borderWidth: 3, borderColor: 'red' }}>
+          <EngineSettings />
+        </Row>
+        <Row size={3} style={{ borderWidth: 3, borderColor: 'green' }}>
+          <EngineStateList cycle={completeRRCycle} />
+        </Row>
+        <Row size={1} style={{ justifyContent: 'flex-end' }}>
           <Button onPress={onStoreEnginePress}>
-            <Text>create engine</Text>
+            <Text>Save Engine</Text>
           </Button>
-        </Col>
-        <Col size={1} style={{ borderWidth: 5 }}>
-          <TrainTracker location={location} map={map} localTime={localTime} />
-        </Col>
-        <SetTimeModal
-          label={'round length'}
-          isVisible={showRoundTimeInput}
-          value={roundTime}
-          onSelectedChange={setWorkTime}
-          onClosePress={() => setShowRoundTimeInput(false)}
-        />
-        <SetRoundCountModal
-          isVisible={showRoundCountInput}
-          value={roundCount}
-          onClosePress={() => setShowRoundCountInput(false)}
-        />
-        <ManageParticipantsModal
-          onLongPressParticipant={setShowDeleteParticipant}
-          participants={participants}
-          isVisible={showParticipantInput}
-          onClosePress={() => setShowParticipantInput(false)}
-          onAddParticipantPress={() => {
-            console.log('partic? ' + !showAddParticipant);
-            setShowAddParticipant(true);
-          }}
-        />
-        <AddParticipantModal
-          isVisible={showAddParticipant}
-          closeModal={() => setShowAddParticipant(false)}
-        />
-        <DeleteParticipantModal
-          setShowDeleteParticipant={setShowDeleteParticipant}
-          deletableParticipant={showDeleteParticipant}
-          closeModal={() => setShowDeleteParticipant(null)}
-        />
+        </Row>
       </Grid>
       <Footer>
         <Button
@@ -129,31 +85,34 @@ const mapStateToProps = (state) => {
       estimatedTime,
       participants,
       roundCount,
+      completeRRCycle,
+      schedule,
     },
     navigation: { map, elapsedSeconds },
   } = state;
   return {
+    completeRRCycle,
     activeParticipants,
     warmUp,
     coolDown,
     currentRound,
     estimatedTime,
     participants,
-    roundTime,
+    workTime,
     roundCount,
     map,
     elapsedSeconds,
+    schedule,
   };
 };
 
 const mapDispatchToProps = {
   resetDB,
-  setRoundTime,
-  setBreakTime,
+  setWorkTime,
   createAndSetEngine,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(TimerSetup);
+)(GroundRobin);

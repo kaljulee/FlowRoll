@@ -37,7 +37,7 @@ export const ZERO_ENGINE = {
 
 function segmentsFromEngineCycle(engineCycle, id) {
   // todo do this
-  const { floorStates, roundTime, warmUp, coolDown } = engineCycle;
+  const { floorStates, workTime, warmUp, coolDown } = engineCycle;
   const { WARMUP, COOLDOWN, ROUND } = PHASES;
   let nextID = id;
   const segments = floorStates.reduce((acc, s) => {
@@ -61,7 +61,7 @@ function segmentsFromEngineCycle(engineCycle, id) {
         phase: ROUND,
         label: 'round',
         name: 'round',
-        runTime: roundTime,
+        runTime: workTime,
         color: phaseColors[ROUND],
         id: nextID,
         floorState: s,
@@ -174,7 +174,7 @@ export function getLocation(elapsedSeconds, map) {
     location = map.locations[i];
     // NOWHERE location if location can't be found
     if (!location) {
-      console.log('error - missing location');
+      console.warn('error - missing location');
       return 0;
     }
     // if this is the last location, return it
@@ -200,11 +200,11 @@ export function getLocationByID(locations, id) {
 
 export function getTimeInLocation(elaspedSeconds, locationData) {
   if (!locationData) {
-    console.log('no location data, returning NaN');
+    console.warn('no location data, returning NaN');
     return Number.NaN;
   }
   if (elaspedSeconds < locationData.offset) {
-    console.log('should not have arrived at location, returning NaN');
+    console.warn('should not have arrived at location, returning NaN');
     return Number.NaN;
   }
   // offset adjusts the elapsedSeconds in this location to start at zero
@@ -247,7 +247,7 @@ function formatTime(time) {
 
 export function createEngineCycle({
   floorStates,
-  roundTime,
+  workTime,
   warmUp,
   coolDown,
   roundCount,
@@ -255,8 +255,16 @@ export function createEngineCycle({
   return {
     roundCount,
     floorStates,
-    roundTime,
+    workTime,
     warmUp: formatTime(warmUp),
     coolDown: formatTime(coolDown),
   };
+}
+
+
+export function cleanPhaseTime(time) {
+  if (isNaN(time)) {
+    return 0;
+  }
+  return parseInt(time);
 }

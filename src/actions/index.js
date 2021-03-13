@@ -1,3 +1,5 @@
+import { cleanPhaseTime } from '../logic';
+
 export const types = {
   RESET: 'RESET',
   ADD_PARTICIPANTS: 'ADD_PARTICIPANTS',
@@ -6,10 +8,11 @@ export const types = {
   DEACTIVATE_PARTICIPANTS: 'DEACTIVATE_PARTICIPANTS',
   MUTE_TOGGLE: 'MUTE_TOGGLE',
 
-  SET_ROUND_TIME: 'SET_ROUND_TIME',
+  SET_WORK_TIME: 'SET_WORK_TIME',
   SET_COOLDOWN: 'SET_COOLDOWN',
   SET_WARMUP: 'SET_WARMUP',
   SET_ROUND_COUNT: 'SET_ROUND_COUNT',
+  SET_CHAMBER_COUNT: 'SET_CHAMBER_COUNT',
 
   // these converted from route to route while commented out
   // ROUTE_TYPE_ADD_SAVED: 'ROUTE_TYPE_ADD_SAVED',
@@ -35,6 +38,8 @@ export const types = {
   SET_MAP: 'SET_MAP',
   SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
   SET_ENGINE: 'SET_ENGINE',
+  SET_PHASE_TIMES: 'SET_PHASE_TIMES',
+  SET_ZERO_ENGINE: 'SET_ZERO_ENGINE',
 };
 
 export const resetDB = () => ({ type: types.RESET });
@@ -64,10 +69,24 @@ export const deactivateParticipants = (participants) => ({
   payload: participants,
 });
 
-export const setBreakTime = (time) => ({
-  type: types.SET_BREAK_TIME,
-  payload: time,
-});
+export const setChamberCount = (payload) => {
+  return {
+    type: types.SET_CHAMBER_COUNT,
+    payload,
+  };
+};
+// todo workTime should be changed to just 'work'
+export const setPhaseTimes = ({ warmUp, coolDown, workTime }) => {
+  const payload = {
+    warmUp: cleanPhaseTime(warmUp),
+    coolDown: cleanPhaseTime(coolDown),
+    workTime: cleanPhaseTime(workTime),
+  };
+  return {
+    type: types.SET_PHASE_TIMES,
+    payload,
+  };
+};
 
 export const setRoundTime = (time) => ({
   type: types.SET_ROUND_TIME,
@@ -85,6 +104,12 @@ export const setDepartureTime = (payload) => {
     payload,
   };
 };
+
+export const setZeroEngine = () => {
+  return {
+    type: types.SET_ZERO_ENGINE,
+  }
+}
 
 export const setEngineID = ({ id }) => {
   return {
@@ -157,6 +182,6 @@ export const setElapsedSeconds = (payload) => {
 export const setEngine = (payload) => {
   return {
     type: types.SET_ENGINE,
-    payload
-  }
-}
+    payload,
+  };
+};

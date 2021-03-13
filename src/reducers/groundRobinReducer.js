@@ -37,8 +37,8 @@ const getInitialState = () => {
     secondSliderConverter: createSecondSliderConversion(),
     engine: ZERO_ENGINE,
     warmUp: 3,
-    workTime: 4,
-    coolDown: 5,
+    workTime: 5,
+    coolDown: 2,
     chamberCount: 1,
   };
 };
@@ -159,6 +159,12 @@ const groundRobin = (state = getInitialState(), action) => {
       // todo this can be complicated
       return { ...state, ...update };
     case types.SET_WORK_TIME:
+        // todo this validation should go somewhere else
+      if (isNaN(payload) || payload === 0) {
+        update.workTime = 1;
+      } else {
+        update.workTime = payload;
+      }
       return { ...state, ...update };
     case types.SET_CHAMBER_COUNT:
       console.warn(

@@ -56,7 +56,11 @@ function EngineSettings(props) {
         />
       </Row>
       <Row>
-        <GroundTimeInput />
+        <GroundTimeInput
+          roundTime={roundTime}
+          warmUp={warmUp}
+          coolDown={coolDown}
+        />
       </Row>
       <ManageParticipantsModal
         onLongPressParticipant={setShowDeleteParticipant}

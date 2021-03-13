@@ -1,3 +1,5 @@
+import { cleanPhaseTime } from '../logic';
+
 export const types = {
   RESET: 'RESET',
   ADD_PARTICIPANTS: 'ADD_PARTICIPANTS',
@@ -36,6 +38,8 @@ export const types = {
   SET_MAP: 'SET_MAP',
   SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
   SET_ENGINE: 'SET_ENGINE',
+  SET_PHASE_TIMES: 'SET_PHASE_TIMES',
+  SET_ZERO_ENGINE: 'SET_ZERO_ENGINE',
 };
 
 export const resetDB = () => ({ type: types.RESET });
@@ -68,9 +72,21 @@ export const deactivateParticipants = (participants) => ({
 export const setChamberCount = (payload) => {
   return {
     type: types.SET_CHAMBER_COUNT,
-    payload
-  }
-}
+    payload,
+  };
+};
+// todo workTime should be changed to just 'work'
+export const setPhaseTimes = ({ warmUp, coolDown, workTime }) => {
+  const payload = {
+    warmUp: cleanPhaseTime(warmUp),
+    coolDown: cleanPhaseTime(coolDown),
+    workTime: cleanPhaseTime(workTime),
+  };
+  return {
+    type: types.SET_PHASE_TIMES,
+    payload,
+  };
+};
 
 export const setRoundTime = (time) => ({
   type: types.SET_ROUND_TIME,
@@ -88,6 +104,12 @@ export const setDepartureTime = (payload) => {
     payload,
   };
 };
+
+export const setZeroEngine = () => {
+  return {
+    type: types.SET_ZERO_ENGINE,
+  }
+}
 
 export const setEngineID = ({ id }) => {
   return {
@@ -160,6 +182,6 @@ export const setElapsedSeconds = (payload) => {
 export const setEngine = (payload) => {
   return {
     type: types.SET_ENGINE,
-    payload
-  }
-}
+    payload,
+  };
+};

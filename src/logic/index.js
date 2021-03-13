@@ -260,3 +260,11 @@ export function createEngineCycle({
     coolDown: formatTime(coolDown),
   };
 }
+
+
+export function cleanPhaseTime(time) {
+  if (isNaN(time)) {
+    return 0;
+  }
+  return parseInt(time);
+}

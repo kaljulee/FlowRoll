@@ -7,7 +7,7 @@ import AddParticipantModal from '../modals/AddParticipantModal';
 import DeleteParticipantModal from '../modals/DeleteParticipantModal';
 import {
   resetDB,
-  setBreakTime,
+  setPhaseTimes,
   setChamberCount,
   setRoundTime,
 } from '../../actions';
@@ -30,6 +30,7 @@ function EngineSettings(props) {
     coolDown,
     setChamberCount,
     chamberCount,
+    setPhaseTimes,
   } = props;
 
   const [showParticipantInput, setShowParticipantInput] = useState(false);
@@ -59,6 +60,7 @@ function EngineSettings(props) {
       </Row>
       <Row>
         <GroundTimeInput
+          setPhaseTimes={setPhaseTimes}
           workTime={workTime}
           warmUp={warmUp}
           coolDown={coolDown}
@@ -120,7 +122,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   resetDB,
   setRoundTime,
-  setBreakTime,
+  setPhaseTimes,
   createAndSetEngine,
   setChamberCount,
 };

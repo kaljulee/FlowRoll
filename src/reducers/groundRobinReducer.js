@@ -161,8 +161,12 @@ const groundRobin = (state = getInitialState(), action) => {
     case types.SET_WORK_TIME:
       return { ...state, ...update };
     case types.SET_CHAMBER_COUNT:
-      console.warn('not actually setting chamber count till algorithm imporved');
-      return {...state, chamberCount: 1};
+      console.warn(
+        'not actually setting chamber count till algorithm imporved',
+      );
+      return { ...state, chamberCount: 1 };
+    case types.SET_PHASE_TIMES:
+      return { ...state, ...payload };
     default:
       return state;
   }

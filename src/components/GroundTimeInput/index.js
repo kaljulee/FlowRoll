@@ -32,7 +32,7 @@ function PhaseInput(props) {
 }
 
 function GroundTimeInput(props) {
-  const { workTime, warmUp, coolDown } = props;
+  const { workTime, warmUp, coolDown, setPhaseTimes } = props;
 
   const [totalTime, setTotalTime] = useState(
     calculateGroundTime(warmUp, workTime, coolDown),
@@ -56,9 +56,32 @@ function GroundTimeInput(props) {
     newWorkTime = newWorkTime + (warmUpValue - newWarmUpValue);
     const newCoolDownValue = Math.abs(totalTime - newValues[1]);
     newWorkTime = newWorkTime + (coolDownValue - newCoolDownValue);
+
+    return {
+      newWorkTime,
+      newCoolDownValue,
+      newWarmUpValue,
+    };
+  };
+
+  const onValuesChange = (newValues) => {
+    const { newWorkTime, newCoolDownValue, newWarmUpValue } = onSliderChange(
+      newValues,
+    );
     setWarmUpValue(newWarmUpValue);
     setCoolDownValue(newCoolDownValue);
     setWorkTimeValue(newWorkTime);
+  };
+
+  const onValuesChangeFinish = (newValues) => {
+    const { newWorkTime, newCoolDownValue, newWarmUpValue } = onSliderChange(
+      newValues,
+    );
+    setPhaseTimes({
+      warmUp: newWarmUpValue,
+      coolDown: newCoolDownValue,
+      workTime: newWorkTime,
+    });
   };
 
   return (
@@ -75,7 +98,8 @@ function GroundTimeInput(props) {
           enabledTwo={true}
           min={0}
           max={totalTime}
-          onValuesChange={onSliderChange}
+          onValuesChange={onValuesChange}
+          onValuesChangeFinish={onValuesChangeFinish}
         />
       </Row>
       <Row style={{ display: 'flex', justifyContent: 'center' }}>

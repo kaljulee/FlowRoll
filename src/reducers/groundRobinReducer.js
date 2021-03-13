@@ -37,8 +37,8 @@ const getInitialState = () => {
     secondSliderConverter: createSecondSliderConversion(),
     engine: ZERO_ENGINE,
     warmUp: 3,
-    coolDown: 4,
-    roundTime: 5,
+    roundTime: 4,
+    coolDown: 5,
     chamberCount: 1,
   };
 };

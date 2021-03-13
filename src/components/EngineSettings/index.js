@@ -42,7 +42,7 @@ function EngineSettings(props) {
 
   return (
     <Grid>
-      <Row>
+      <Row size={1}>
         <SettingsButton
           label={'Set Players'}
           info={activeParticipants.length}
@@ -58,7 +58,7 @@ function EngineSettings(props) {
           />
         )}
       </Row>
-      <Row>
+      <Row size={3}>
         <GroundTimeInput
           setPhaseTimes={setPhaseTimes}
           workTime={workTime}

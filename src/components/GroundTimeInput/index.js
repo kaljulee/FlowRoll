@@ -3,6 +3,7 @@ import { Grid, Row, Col } from 'react-native-easy-grid';
 import { Text } from 'native-base';
 import { TextInput } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import SecondSlider from '../SecondSlider';
 
 function calculateGroundTime(w, r, c) {
   return w + r + c;
@@ -84,14 +85,37 @@ function GroundTimeInput(props) {
     });
   };
 
+  const onChangeTotalTime = (time) => {
+    const timeDiff = time - totalTime;
+    let newWorkTime;
+
+    // default is to take time out of work time
+    // if there is not enough work time to cover the change, remove cooldown and warmup.
+    // not ideal, but simple.
+    // todo make this ideal
+    if (timeDiff * -1 <= workTime) {
+      newWorkTime = workTime + timeDiff;
+      setTotalTime(time);
+      setWorkTimeValue(newWorkTime);
+      setPhaseTimes({ workTime: newWorkTime, coolDown, warmUp });
+    } else {
+      setTotalTime(time);
+      setPhaseTimes({ workTime: time });
+    }
+  };
+
+  const onSecondSliderChange = (arg) => {
+    onChangeTotalTime(arg);
+  };
+
   return (
     <Grid>
-      <Row>
+      <Row size={1}>
         <PhaseColumn title={'warmup'} value={warmUpValue} />
         <PhaseColumn title={'work'} value={workTimeValue} />
         <PhaseColumn title={'cooldown'} value={coolDownValue} />
       </Row>
-      <Row style={{ justifyContent: 'center' }}>
+      <Row size={1} style={{ justifyContent: 'center' }}>
         <MultiSlider
           values={[warmUpValue, Math.abs(totalTime - coolDownValue)]}
           enabledOne={true}
@@ -102,9 +126,21 @@ function GroundTimeInput(props) {
           onValuesChangeFinish={onValuesChangeFinish}
         />
       </Row>
-      <Row style={{ display: 'flex', justifyContent: 'center' }}>
-        <Text>Total Round Time</Text>
-        <TextInput textAlign={'center'} value={totalTime.toString()} />
+      <Row size={2} style={{ display: 'flex', justifyContent: 'center' }}>
+        <Text>{`Total Round Time ${totalTime}`}</Text>
+        <SecondSlider
+          isVisible={true}
+          seconds={totalTime}
+          onValueChange={onSecondSliderChange}
+        />
+        {false && (
+          <TextInput
+            keyboardType={'number-pad'}
+            onChangeText={onChangeTotalTime}
+            textAlign={'center'}>
+            <Text>{totalTime.toString()}</Text>
+          </TextInput>
+        )}
       </Row>
     </Grid>
   );

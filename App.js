@@ -67,6 +67,7 @@ const App: () => React$Node = () => {
                 </Header>
               )}
               <Tabs
+                locked={true}
                 page={currentTab}
                 onChangeTab={(page) => setCurrentTab(page.i)}>
                 <Tab heading={'GroundRobin'}>

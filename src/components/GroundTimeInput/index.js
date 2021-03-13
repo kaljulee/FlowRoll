@@ -8,6 +8,29 @@ function calculateGroundTime(w, r, c) {
   return w + r + c;
 }
 
+function PhaseColumn(props) {
+  const { value, title } = props;
+  return (
+    <Col
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center',
+      }}>
+      <PhaseTitle title={title} />
+      <PhaseInput value={value} />
+    </Col>
+  );
+}
+
+function PhaseTitle(props) {
+  return <Text textAlign={'center'}>{props.title}</Text>;
+}
+
+function PhaseInput(props) {
+  return <TextInput textAlign={'center'} value={props.value.toString()} />;
+}
+
 function GroundTimeInput(props) {
   const { roundTime, warmUp, coolDown } = props;
 
@@ -41,15 +64,9 @@ function GroundTimeInput(props) {
   return (
     <Grid>
       <Row>
-        <Col>
-          <TextInput textAlign={'center'} value={warmUpValue.toString()} />
-        </Col>
-        <Col>
-          <TextInput textAlign={'center'} value={roundTimeValue.toString()} />
-        </Col>
-        <Col>
-          <TextInput textAlign={'center'} value={coolDownValue.toString()} />
-        </Col>
+        <PhaseColumn title={'warmup'} value={warmUpValue} />
+        <PhaseColumn title={'work'} value={roundTimeValue} />
+        <PhaseColumn title={'cooldown'} value={coolDownValue} />
       </Row>
       <Row style={{ justifyContent: 'center' }}>
         <MultiSlider
@@ -61,7 +78,8 @@ function GroundTimeInput(props) {
           onValuesChange={onSliderChange}
         />
       </Row>
-      <Row style={{ display: 'flex', justifyContent: 'space-around' }}>
+      <Row style={{ display: 'flex', justifyContent: 'center' }}>
+        <Text>Total Round Time</Text>
         <TextInput textAlign={'center'} value={totalTime.toString()} />
       </Row>
     </Grid>

@@ -78,7 +78,7 @@ const groundRobin = (state = getInitialState(), action) => {
       let update = {};
       let newNextParticipantID = state.nextParticipantID;
       const newParticipants = payload.participants.map((p) => {
-        const newP = { ...p, id: newNextParticipantID };
+        const newP = createParticipant(p.name, newNextParticipantID);
         newNextParticipantID = newNextParticipantID + 1;
         return newP;
       });

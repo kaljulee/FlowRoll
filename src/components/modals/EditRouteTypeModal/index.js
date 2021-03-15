@@ -11,6 +11,7 @@ import {
   Button,
   Text,
 } from 'native-base';
+import { Grid, Col } from 'react-native-easy-grid';
 import {
   HMSToSeconds,
   hourMinuteSecond,
@@ -21,11 +22,11 @@ import { COLORS } from '../../../constants/styleValues';
 import { connect } from 'react-redux';
 import SecondSlider from '../../SecondSlider';
 import ColorPicker from '../../ColorPicker';
-import { editRouteType } from '../../../actions';
+import { deleteRouteType, editRouteType } from '../../../actions';
 import GearSelector from '../../GearSelector';
 //todo find a way to combine editRoute and addRoute modals
 function EditRouteTypeModal(props) {
-  const { closeModal, editRouteType, editRoute } = props;
+  const { closeModal, editRouteType, editRoute, deleteRouteType } = props;
 
   const { name, runTime, color, id, gear } = editRoute;
   const [routeID, setRouteID] = useState(id);
@@ -84,6 +85,11 @@ function EditRouteTypeModal(props) {
     editRouteType(payload);
     setShowColorPicker(false);
     closeModal();
+  }
+
+  function onPressDeleteRouteType() {
+      deleteRouteType({id: routeID});
+      closeModal();
   }
 
   function onNameChange(text) {
@@ -150,12 +156,24 @@ function EditRouteTypeModal(props) {
           />
         </CardItem>
         <CardItem>
-          <Button onPress={saveAndClose}>
-            <Text>Save</Text>
-          </Button>
-          <Button onPress={closeModal}>
-            <Text>Cancel</Text>
-          </Button>
+          <Grid>
+            <Col>
+              <Button onPress={saveAndClose}>
+                <Text>Save</Text>
+              </Button>
+              <Button onPress={closeModal}>
+                <Text>Cancel</Text>
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                warning={true}
+                style={{ marginLeft: 0, justifySelf: 'flex-end' }}
+                onPress={onPressDeleteRouteType}>
+                <Text style={{ color: 'black' }}>Delete</Text>
+              </Button>
+            </Col>
+          </Grid>
         </CardItem>
       </Card>
     </Modal>
@@ -168,7 +186,7 @@ const mapStateToProps = () => {
   return {};
 };
 
-const mapDispatchToProps = { editRouteType };
+const mapDispatchToProps = { editRouteType, deleteRouteType };
 
 export default connect(
   mapStateToProps,

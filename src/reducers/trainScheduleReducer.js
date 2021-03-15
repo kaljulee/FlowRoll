@@ -127,14 +127,13 @@ const trainSchedule = (state = getInitialState(), action) => {
         }
         return acc;
       }, []);
-      update = {
-        routes: state.routes.reduce((acc, l) => {
-          if (l.routeType !== payload.id) {
-            acc.push(l);
-          }
-          return acc;
-        }, []),
-      };
+
+      update.routes = state.routes.reduce((acc, l) => {
+        if (l.routeType !== payload.id) {
+          acc.push(l);
+        }
+        return acc;
+      }, []);
       return {
         ...state,
         ...update,

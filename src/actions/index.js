@@ -32,8 +32,7 @@ export const types = {
 
   SET_LOCATION: 'SET_LOCATION',
   SET_SCOPE_ID: 'SET_SCOPE_ID',
-  // todo danger on this engine namespace
-  SET_ENGINE_ID: 'SET_ENGINE_ID',
+  SET_SHUTOFF_ID: 'SET_SHUTOFF_ID',
   SET_DEPARTURE_TIME: 'SET_DEPARTURE_TIME',
   SET_MAP: 'SET_MAP',
   SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
@@ -111,9 +110,9 @@ export const setZeroEngine = () => {
   }
 }
 
-export const setEngineID = ({ id }) => {
+export const setShutOffID = ({ id }) => {
   return {
-    type: types.SET_ENGINE_ID,
+    type: types.SET_SHUTOFF_ID,
     payload: { id },
   };
 };

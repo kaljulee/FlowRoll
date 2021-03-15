@@ -12,7 +12,7 @@ import {
 import moment from 'moment';
 import {
   setScopeID,
-  setEngineID,
+  setShutOffID,
   setMap,
   setElapsedSeconds,
   setEngine,
@@ -48,7 +48,7 @@ export function startTrain() {
     /////////////////////////////////////////////////////
     // setting engine cutoff time, will be calculated from map total run time
     const buffer = 1;
-    const engine = setTimeout(() => {
+    const shutOff = setTimeout(() => {
       console.log('TIMEOUT shutting down nav sensors');
       clearInterval(scope);
       dispatch(resetNavData());
@@ -56,7 +56,7 @@ export function startTrain() {
     // clear old data
     dispatch(resetNavData());
     // record engine and scope id's
-    dispatch(setEngineID({ id: engine }));
+    dispatch(setShutOffID({ id: shutOff }));
     dispatch(setScopeID({ id: scope }));
   };
 }

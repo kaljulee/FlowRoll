@@ -3,10 +3,9 @@ import { createRouteLabel, createRouteType, spoutRoute } from '../models/Route';
 import { hourMinuteSecond } from '../helpers/time';
 import { COLORS } from '../constants/styleValues';
 import _ from 'lodash';
-import { getRouteTypeByID } from '../helpers/utils';
+import { getRouteByID, getRouteTypeByID } from '../helpers/utils';
 import { Gears } from '../models/Gears';
 
-// todo this looks like the main place
 const updateScheduleWithRouteEdits = (updatedRoute, routes, nextRouteID) => {
   let newNextRouteID = nextRouteID;
   const newRoutes = routes.map((l) => {
@@ -91,9 +90,8 @@ const trainSchedule = (state = getInitialState(), action) => {
       };
     case types.ROUTE_UNSCHEDULE:
       update = {
-        // trainSchedule: {
         routes: state.routes.reduce((acc, l) => {
-          if (!_.find(payload.routes, (e) => parseInt(e) === l.id)) {
+          if (!getRouteByID(payload.routes, l.id)) {
             acc.push(l);
           }
           return acc;

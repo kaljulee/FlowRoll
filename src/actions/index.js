@@ -8,7 +8,7 @@ export const types = {
   DEACTIVATE_PARTICIPANTS: 'DEACTIVATE_PARTICIPANTS',
   MUTE_TOGGLE: 'MUTE_TOGGLE',
 
-  SET_WORK_TIME: 'SET_WORK_TIME',
+  SET_WORK: 'SET_WORK',
   SET_COOLDOWN: 'SET_COOLDOWN',
   SET_WARMUP: 'SET_WARMUP',
   SET_ROUND_COUNT: 'SET_ROUND_COUNT',
@@ -32,8 +32,7 @@ export const types = {
 
   SET_LOCATION: 'SET_LOCATION',
   SET_SCOPE_ID: 'SET_SCOPE_ID',
-  // todo danger on this engine namespace
-  SET_ENGINE_ID: 'SET_ENGINE_ID',
+  SET_SHUTOFF_ID: 'SET_SHUTOFF_ID',
   SET_DEPARTURE_TIME: 'SET_DEPARTURE_TIME',
   SET_MAP: 'SET_MAP',
   SET_ELAPSED_SECONDS: 'SET_ELAPSED_SECONDS',
@@ -75,12 +74,11 @@ export const setChamberCount = (payload) => {
     payload,
   };
 };
-// todo workTime should be changed to just 'work'
-export const setPhaseTimes = ({ warmUp, coolDown, workTime }) => {
+export const setPhaseTimes = ({ warmUp, coolDown, work }) => {
   const payload = {
     warmUp: cleanPhaseTime(warmUp),
     coolDown: cleanPhaseTime(coolDown),
-    workTime: cleanPhaseTime(workTime),
+    work: cleanPhaseTime(work),
   };
   return {
     type: types.SET_PHASE_TIMES,
@@ -111,9 +109,9 @@ export const setZeroEngine = () => {
   }
 }
 
-export const setEngineID = ({ id }) => {
+export const setShutOffID = ({ id }) => {
   return {
-    type: types.SET_ENGINE_ID,
+    type: types.SET_SHUTOFF_ID,
     payload: { id },
   };
 };

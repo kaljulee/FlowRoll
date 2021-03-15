@@ -85,7 +85,7 @@ function filterOnRecentParticipants(
 
 export function createCompleteRRCycle(matchUps, participants) {
   // return value
-  const schedule = [];
+  const cycle = [];
 
   // track what matchups have not been included
   let remainingMatchUps = [...matchUps];
@@ -112,7 +112,7 @@ export function createCompleteRRCycle(matchUps, participants) {
 
     //////////////////////////////
     // update data trackers
-    schedule.push(nextMatchUpID);
+    cycle.push(nextMatchUpID);
     lastMatchUp = { ...findMatchUpByID(matchUps, nextMatchUpID) };
     // update frequency maps
     matchUpFrequency[nextMatchUpID] += 1;
@@ -125,7 +125,7 @@ export function createCompleteRRCycle(matchUps, participants) {
       (m) => m.id !== nextMatchUpID,
     );
   }
-  return schedule;
+  return cycle;
 }
 
 export function createDefaultOrdering(participants) {

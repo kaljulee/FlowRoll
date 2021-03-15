@@ -88,8 +88,8 @@ function EditRouteTypeModal(props) {
   }
 
   function onPressDeleteRouteType() {
-      deleteRouteType({id: routeID});
-      closeModal();
+    deleteRouteType({ id: routeID });
+    closeModal();
   }
 
   function onNameChange(text) {

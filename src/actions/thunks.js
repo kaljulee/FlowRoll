@@ -12,7 +12,7 @@ import {
 import moment from 'moment';
 import {
   setScopeID,
-  setEngineID,
+  setShutOffID,
   setMap,
   setElapsedSeconds,
   setEngine,
@@ -48,7 +48,7 @@ export function startTrain() {
     /////////////////////////////////////////////////////
     // setting engine cutoff time, will be calculated from map total run time
     const buffer = 1;
-    const engine = setTimeout(() => {
+    const shutOff = setTimeout(() => {
       console.log('TIMEOUT shutting down nav sensors');
       clearInterval(scope);
       dispatch(resetNavData());
@@ -56,22 +56,11 @@ export function startTrain() {
     // clear old data
     dispatch(resetNavData());
     // record engine and scope id's
-    dispatch(setEngineID({ id: engine }));
+    dispatch(setShutOffID({ id: shutOff }));
     dispatch(setScopeID({ id: scope }));
   };
 }
-// todo hasn't been tested
-// export function stopTrain() {
-//   return function(dispatch, getState) {
-//     const {
-//       navigation: { scopeID, engineID },
-//     } = getState();
-//     clearInterval(scopeID);
-//     clearTimeout(engineID);
-//     console.log('thunk clearning id and dispatching to store ' + scopeID);
-//     dispatch(setScopeID(undefined));
-//   };
-// }
+
 
 function updatePosition(elapsedSeconds) {
   return function(dispatch, getState) {
@@ -151,29 +140,17 @@ export function createAnnotatedMap() {
   };
 }
 
-// todo seems like a duplicate
-// function generateEngineCycle() {
-//   return function(dispatch, getState) {
-//     console.log('in generateEngineCycle');
-//     // console.log(getState().groundRobin);
-//     console.log('groundrobin from store looking for crrc');
-//     console.log(getState().groundRobin);
-//     console.log('lllll');
-//     return getState().groundRobin.completeRRCycle;
-//   };
-// }
-
 export function createAndSetEngine() {
   return function(dispatch, getState) {
     const {
-      groundRobin: { warmUp, coolDown, completeRRCycle, workTime },
+      groundRobin: { warmUp, coolDown, completeRRCycle, work },
     } = getState();
     const createdEngine = createEngine({
       engineCycle: createEngineCycle({
         floorStates: completeRRCycle,
         warmUp,
         coolDown,
-        workTime,
+        work,
       }),
     });
     dispatch(setEngine(createdEngine));

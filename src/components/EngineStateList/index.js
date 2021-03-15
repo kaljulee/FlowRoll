@@ -34,7 +34,7 @@ const mapStateToProps = (state) => {
       matchUps,
       warmUp,
       coolDown,
-      workTime,
+      work,
       currentRound,
       estimatedTime,
       participants,

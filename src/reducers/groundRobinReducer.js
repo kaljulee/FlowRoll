@@ -5,7 +5,7 @@ import {
   createMatchUps,
   participantsByActive,
 } from '../helpers/ordering';
-import { createSecondSliderConversion, ZERO_ENGINE } from '../logic';
+import { cleanWorkValue, createSecondSliderConversion, ZERO_ENGINE} from '../logic';
 import { types } from '../actions';
 
 const getInitialState = () => {
@@ -29,15 +29,13 @@ const getInitialState = () => {
     participants,
     nextParticipantID: 5,
     activeParticipants,
-    // todo figure out if schedule should still be part of this
-    schedule: completeRRCycle,
-    // matchUps is currently the same as schedule
+    cycle: completeRRCycle,
     matchUps,
     completeRRCycle,
     secondSliderConverter: createSecondSliderConversion(),
     engine: ZERO_ENGINE,
     warmUp: 3,
-    workTime: 5,
+    work: 5,
     coolDown: 2,
     chamberCount: 1,
   };
@@ -58,8 +56,8 @@ const updateParticipantMatchUps = (participants, activeParticipants) => {
     update.matchUps,
     sortedParticipants.active,
   );
-  // schedule defaults to same as rr cycle
-  update.schedule = update.completeRRCycle;
+  // cycle defaults to same as rr cycle
+  update.cycle = update.completeRRCycle;
   // defaults round count to complete cycle
   update.roundCount = update.completeRRCycle.length;
   return update;
@@ -158,13 +156,8 @@ const groundRobin = (state = getInitialState(), action) => {
     case types.SET_ROUND_COUNT:
       // todo this can be complicated
       return { ...state, ...update };
-    case types.SET_WORK_TIME:
-        // todo this validation should go somewhere else
-      if (isNaN(payload) || payload === 0) {
-        update.workTime = 1;
-      } else {
-        update.workTime = payload;
-      }
+    case types.SET_WORK:
+      update.work = cleanWorkValue(payload);
       return { ...state, ...update };
     case types.SET_CHAMBER_COUNT:
       console.warn(

@@ -149,7 +149,7 @@ function MainDisplay(props) {
   const {
     departureTime,
     roundCount,
-    schedule,
+    cycle,
     currentRound,
     matchUps,
     onPressPause,
@@ -168,11 +168,11 @@ function MainDisplay(props) {
 
   // !! danger !!
   // current round count starts at 1, schedule starts at 0
-  const currentMatchUp = findMatchUpByID(matchUps, schedule[currentRound - 1]);
+  const currentMatchUp = findMatchUpByID(matchUps, cycle[currentRound - 1]);
   const nextMatchUp =
     currentRound + 1 === roundCount
       ? undefined
-      : findMatchUpByID(matchUps, schedule[currentRound]);
+      : findMatchUpByID(matchUps, cycle[currentRound]);
 
   return (
     <Container>
@@ -208,7 +208,7 @@ const mapStateToProps = (state) => {
       coolDown,
       currentRound,
       roundCount,
-      schedule,
+      cycle,
       matchUps,
       timerDuration,
     },
@@ -217,7 +217,7 @@ const mapStateToProps = (state) => {
 
   return {
     departureTime,
-    schedule,
+    cycle,
     participants,
     currentRound,
     roundCount,

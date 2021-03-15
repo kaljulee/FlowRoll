@@ -143,14 +143,14 @@ export function createAnnotatedMap() {
 export function createAndSetEngine() {
   return function(dispatch, getState) {
     const {
-      groundRobin: { warmUp, coolDown, completeRRCycle, workTime },
+      groundRobin: { warmUp, coolDown, completeRRCycle, work },
     } = getState();
     const createdEngine = createEngine({
       engineCycle: createEngineCycle({
         floorStates: completeRRCycle,
         warmUp,
         coolDown,
-        workTime,
+        work,
       }),
     });
     dispatch(setEngine(createdEngine));

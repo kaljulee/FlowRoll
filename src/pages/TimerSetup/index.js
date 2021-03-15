@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { hourMinuteSecond, ZERO_TIME } from '../../helpers/time';
 import { Container, Content, Footer, Button, Text } from 'native-base';
-import { resetDB, setWorkTime } from '../../actions';
+import { resetDB, setWork } from '../../actions';
 import { createAndSetEngine } from '../../actions/thunks';
 import { Grid, Col } from 'react-native-easy-grid';
 import SetTimeModal from '../../components/modals/SetTimeModal';
@@ -78,7 +78,7 @@ function TimerSetup(props) {
           label={'round length'}
           isVisible={showRoundTimeInput}
           value={roundTime}
-          onSelectedChange={setWorkTime}
+          onSelectedChange={setWork}
           onClosePress={() => setShowRoundTimeInput(false)}
         />
         <SetRoundCountModal
@@ -123,7 +123,7 @@ const mapStateToProps = (state) => {
       activeParticipants,
       warmUp,
       coolDown,
-      workTime,
+      work,
       currentRound,
       estimatedTime,
       participants,

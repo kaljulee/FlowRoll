@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { hourMinuteSecond, ZERO_TIME } from '../../helpers/time';
 import { Container, Content, Footer, Button, Text } from 'native-base';
-import { resetDB, setWorkTime } from '../../actions';
+import { resetDB, setWork } from '../../actions';
 import { createAndSetEngine } from '../../actions/thunks';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import SetTimeModal from '../../components/modals/SetTimeModal';
@@ -25,7 +25,7 @@ function GroundRobin(props) {
     map,
     localTime,
     createAndSetEngine,
-    workTime,
+    work,
     warmUp,
     coolDown,
     completeRRCycle,
@@ -35,7 +35,7 @@ function GroundRobin(props) {
   // todo do something with these anti-crash hard codes
   const roundCount = 0;
 
-  const [showWorkTimeInput, setShowWorkTimeInput] = useState(false);
+  const [showWorkInput, setShowWorkInput] = useState(false);
   const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
   const [showParticipantInput, setShowParticipantInput] = useState(false);
   const [showRoundCountInput, setShowRoundCountInput] = useState(false);
@@ -80,7 +80,7 @@ const mapStateToProps = (state) => {
       activeParticipants,
       warmUp,
       coolDown,
-      workTime,
+      work,
       currentRound,
       estimatedTime,
       participants,
@@ -98,7 +98,7 @@ const mapStateToProps = (state) => {
     currentRound,
     estimatedTime,
     participants,
-    workTime,
+    work,
     roundCount,
     map,
     elapsedSeconds,
@@ -108,7 +108,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   resetDB,
-  setWorkTime,
+  setWork,
   createAndSetEngine,
 };
 

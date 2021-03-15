@@ -33,27 +33,27 @@ function PhaseInput(props) {
 }
 
 function GroundTimeInput(props) {
-  const { workTime, warmUp, coolDown, setPhaseTimes } = props;
+  const { work, warmUp, coolDown, setPhaseTimes } = props;
 
   const [totalTime, setTotalTime] = useState(
-    calculateGroundTime(warmUp, workTime, coolDown),
+    calculateGroundTime(warmUp, work, coolDown),
   );
   const [warmUpValue, setWarmUpValue] = useState(warmUp);
   const [coolDownValue, setCoolDownValue] = useState(coolDown);
-  const [workTimeValue, setWorkTimeValue] = useState(workTime);
+  const [workValue, setWorkTimeValue] = useState(work);
 
   useEffect(() => {
-    const newTotalTime = calculateGroundTime(warmUp, workTime, coolDown);
+    const newTotalTime = calculateGroundTime(warmUp, work, coolDown);
     setCoolDownValue(coolDown);
-    setWorkTimeValue(workTime);
+    setWorkTimeValue(work);
     setWarmUpValue(warmUp);
     setTotalTime(newTotalTime);
-  }, [warmUp, workTime, coolDown]);
+  }, [warmUp, work, coolDown]);
 
   const onSliderChange = (newValues) => {
     const newWarmUpValue = newValues[0];
 
-    let newWorkTime = workTimeValue;
+    let newWorkTime = workValue;
     newWorkTime = newWorkTime + (warmUpValue - newWarmUpValue);
     const newCoolDownValue = Math.abs(totalTime - newValues[1]);
     newWorkTime = newWorkTime + (coolDownValue - newCoolDownValue);
@@ -81,7 +81,7 @@ function GroundTimeInput(props) {
     setPhaseTimes({
       warmUp: newWarmUpValue,
       coolDown: newCoolDownValue,
-      workTime: newWorkTime,
+      work: newWorkTime,
     });
   };
 
@@ -93,14 +93,14 @@ function GroundTimeInput(props) {
     // if there is not enough work time to cover the change, remove cooldown and warmup.
     // not ideal, but simple.
     // todo make this ideal
-    if (timeDiff * -1 <= workTime) {
-      newWorkTime = workTime + timeDiff;
+    if (timeDiff * -1 <= work) {
+      newWorkTime = work + timeDiff;
       setTotalTime(time);
       setWorkTimeValue(newWorkTime);
-      setPhaseTimes({ workTime: newWorkTime, coolDown, warmUp });
+      setPhaseTimes({ work: newWorkTime, coolDown, warmUp });
     } else {
       setTotalTime(time);
-      setPhaseTimes({ workTime: time });
+      setPhaseTimes({ work: time });
     }
   };
 
@@ -112,7 +112,7 @@ function GroundTimeInput(props) {
     <Grid>
       <Row size={1}>
         <PhaseColumn title={'warmup'} value={warmUpValue} />
-        <PhaseColumn title={'work'} value={workTimeValue} />
+        <PhaseColumn title={'work'} value={workValue} />
         <PhaseColumn title={'cooldown'} value={coolDownValue} />
       </Row>
       <Row size={1} style={{ justifyContent: 'center' }}>
@@ -146,6 +146,6 @@ function GroundTimeInput(props) {
   );
 }
 
-GroundTimeInput.defaultProps = { workTime: 10, warmUp: 0, coolDown: 0 };
+GroundTimeInput.defaultProps = { work: 10, warmUp: 0, coolDown: 0 };
 
 export default GroundTimeInput;

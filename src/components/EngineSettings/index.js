@@ -25,7 +25,7 @@ function EngineSettings(props) {
     map,
     localTime,
     createAndSetEngine,
-    workTime,
+    work,
     warmUp,
     coolDown,
     setChamberCount,
@@ -61,7 +61,7 @@ function EngineSettings(props) {
       <Row size={3}>
         <GroundTimeInput
           setPhaseTimes={setPhaseTimes}
-          workTime={workTime}
+          work={work}
           warmUp={warmUp}
           coolDown={coolDown}
         />
@@ -95,7 +95,7 @@ const mapStateToProps = (state) => {
       activeParticipants,
       warmUp,
       coolDown,
-      workTime,
+      work,
       currentRound,
       estimatedTime,
       participants,
@@ -111,7 +111,7 @@ const mapStateToProps = (state) => {
     currentRound,
     estimatedTime,
     participants,
-    workTime,
+    work,
     roundCount,
     map,
     elapsedSeconds,

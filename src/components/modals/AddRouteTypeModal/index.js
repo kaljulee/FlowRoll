@@ -17,6 +17,8 @@ import SecondSlider from '../../SecondSlider';
 import { hourMinuteSecond, secondsToHMS } from '../../../helpers/time';
 import ColorPicker from '../../ColorPicker';
 import { COLORS } from '../../../constants/styleValues';
+import GearSelector from '../../GearSelector';
+import { Gears } from '../../../models/Gears';
 // todo this needs to be reworked to deal with int runTimes
 // todo also the color picker is broken either here or in edit
 function AddRouteTypeModal(props) {
@@ -27,6 +29,7 @@ function AddRouteTypeModal(props) {
   const [editDuration, setEditDuration] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [color, setColor] = useState(COLORS.MINT);
+  const [newGear, setNewGear] = useState(Gears.NEUTRAL);
 
   const toggleEditDuration = () => {
     setEditDuration(!editDuration);
@@ -66,7 +69,12 @@ function AddRouteTypeModal(props) {
     console.log('onAddPress - maybe validate here?');
     if (isValid(name)) {
       addRouteType({
-        routeType: { name, color: color, runTime: durationInSeconds },
+        routeType: {
+          name,
+          color: color,
+          runTime: durationInSeconds,
+          gear: newGear,
+        },
       });
       setName(null);
       closeModal();
@@ -99,6 +107,10 @@ function AddRouteTypeModal(props) {
                 onPress={toggleColorPicker}>
                 <Text>color picker</Text>
               </Button>
+            </Item>
+            <Item stackedLabel>
+              <Label>Gear</Label>
+              <GearSelector setGear={setNewGear} gear={newGear} />
             </Item>
           </Form>
           <SecondSlider

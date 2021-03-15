@@ -11,6 +11,7 @@ import {
   Button,
   Text,
 } from 'native-base';
+import { Grid, Col } from 'react-native-easy-grid';
 import {
   HMSToSeconds,
   hourMinuteSecond,
@@ -21,24 +22,26 @@ import { COLORS } from '../../../constants/styleValues';
 import { connect } from 'react-redux';
 import SecondSlider from '../../SecondSlider';
 import ColorPicker from '../../ColorPicker';
-import { editRouteType } from '../../../actions';
-
+import { deleteRouteType, editRouteType } from '../../../actions';
+import GearSelector from '../../GearSelector';
+//todo find a way to combine editRoute and addRoute modals
 function EditRouteTypeModal(props) {
-  const { closeModal, editRouteType, editRoute } = props;
+  const { closeModal, editRouteType, editRoute, deleteRouteType } = props;
 
-  const { name, runTime, color, iid } = editRoute;
-
-  const [routeID, setRouteID] = useState(iid);
+  const { name, runTime, color, id, gear } = editRoute;
+  const [routeID, setRouteID] = useState(id);
   const [newName, setNewName] = useState(name);
   const [newRunTime, setNewRunTime] = useState(runTime);
   const [newColor, setNewColor] = useState(color);
   const [showEditRunTimeModal, setShowEditRunTimeModal] = useState(false);
-  const [showEditColorModal, setShowEditColorModal] = useState(false);
-  const [runTimeInSeconds, _setRunTimeInSeconds] = useState(
-    runTime,
-  );
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [runTimeInSeconds, _setRunTimeInSeconds] = useState(runTime);
+  const [newGear, setNewGear] = useState(gear);
 
-  function onColorPress() {}
+  function onColorPress(c) {
+    setNewColor(c);
+    setShowColorPicker(false);
+  }
 
   function setRunTimeInSeconds(arg) {
     _setRunTimeInSeconds(arg);
@@ -49,7 +52,7 @@ function EditRouteTypeModal(props) {
   }
 
   function toggleEditColor() {
-    setShowEditColorModal(!showEditColorModal);
+    setShowColorPicker(!showColorPicker);
   }
 
   function saveAndClose() {
@@ -77,9 +80,16 @@ function EditRouteTypeModal(props) {
       runTime: newRunTime,
       color: newColor,
       name: newName,
+      gear: newGear,
     };
     editRouteType(payload);
+    setShowColorPicker(false);
     closeModal();
+  }
+
+  function onPressDeleteRouteType() {
+      deleteRouteType({id: routeID});
+      closeModal();
   }
 
   function onNameChange(text) {
@@ -96,6 +106,7 @@ function EditRouteTypeModal(props) {
       setNewName(editRoute.name);
       setNewRunTime(editRoute.runTime);
       setNewColor(editRoute.color);
+      setNewGear(editRoute.gear);
       setRunTimeInSeconds(editRoute.runTime);
     }
   }, [editRoute]);
@@ -106,9 +117,9 @@ function EditRouteTypeModal(props) {
 
   return (
     <Modal isVisible={!!routeID}>
-      <Card>
+      <Card style={{ width: '100%' }}>
         <CardItem>
-          <Form>
+          <Form style={{ width: '100%' }}>
             <Item stackedLabel>
               <Label>Name</Label>
               <Input onChangeText={onNameChange} value={newName} />
@@ -127,6 +138,10 @@ function EditRouteTypeModal(props) {
                 <Text>Color</Text>
               </Button>
             </Item>
+            <Item stackedLabel>
+              <Label>Gear</Label>
+              <GearSelector setGear={setNewGear} gear={newGear} />
+            </Item>
           </Form>
           <SecondSlider
             isVisible={setShowEditRunTimeModal}
@@ -136,17 +151,29 @@ function EditRouteTypeModal(props) {
             }}
           />
           <ColorPicker
-            isVisible={showEditColorModal}
+            isVisible={showColorPicker}
             onColorPress={onColorPress}
           />
         </CardItem>
         <CardItem>
-          <Button onPress={saveAndClose}>
-            <Text>Save</Text>
-          </Button>
-          <Button onPress={closeModal}>
-            <Text>Cancel</Text>
-          </Button>
+          <Grid>
+            <Col>
+              <Button onPress={saveAndClose}>
+                <Text>Save</Text>
+              </Button>
+              <Button onPress={closeModal}>
+                <Text>Cancel</Text>
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                warning={true}
+                style={{ marginLeft: 0, justifySelf: 'flex-end' }}
+                onPress={onPressDeleteRouteType}>
+                <Text style={{ color: 'black' }}>Delete</Text>
+              </Button>
+            </Col>
+          </Grid>
         </CardItem>
       </Card>
     </Modal>
@@ -159,7 +186,7 @@ const mapStateToProps = () => {
   return {};
 };
 
-const mapDispatchToProps = { editRouteType };
+const mapDispatchToProps = { editRouteType, deleteRouteType };
 
 export default connect(
   mapStateToProps,

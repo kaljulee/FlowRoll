@@ -11,7 +11,6 @@ function RouteList(props) {
   const onPress = () => {
     console.log('onPress');
   };
-
   return (
     <SchedulingList data={routes} onPress={onPress} onLongPress={onLongPress} />
   );

@@ -1,30 +1,22 @@
 import { types } from '../actions';
-import { createRouteType } from '../models/Route';
+import { createRouteLabel, createRouteType, spoutRoute } from '../models/Route';
 import { hourMinuteSecond } from '../helpers/time';
 import { COLORS } from '../constants/styleValues';
 import _ from 'lodash';
 import { getRouteTypeByID } from '../helpers/utils';
 import { Gears } from '../models/Gears';
 
-// route related
-const createRoute = (routeID, routeType, settings) => {
-  const newRoute = {
-    ...routeType,
-    routeType: routeType.id,
-    ...settings,
-    id: routeID,
-  };
-  const newNextRouteID = routeID + 1;
-  return { newRoute, newNextRouteID };
-};
-
+// todo this looks like the main place
 const updateScheduleWithRouteEdits = (updatedRoute, routes, nextRouteID) => {
   let newNextRouteID = nextRouteID;
   const newRoutes = routes.map((l) => {
     if (l.routeType === updatedRoute.id) {
-      const result = createRoute(newNextRouteID, updatedRoute);
-      newNextRouteID = result.newNextRouteID;
-      return result.newRoute;
+      const result = spoutRoute({
+        id: newNextRouteID,
+        routeType: updatedRoute,
+      });
+      newNextRouteID = newNextRouteID + 1;
+      return result;
     } else {
       return l;
     }
@@ -52,6 +44,7 @@ const getInitialState = () => {
       id: 2,
       runTime: 5,
       color: COLORS.LIGHTBLUE,
+      gear: Gears.NEUTRAL,
     }),
   );
   const nextRouteTypeID = 3;
@@ -76,13 +69,15 @@ const trainSchedule = (state = getInitialState(), action) => {
     case types.ROUTE_SCHEDULE:
       let newNextRouteID = state.nextRouteID;
       const newRoutes = payload.routes.map((l) => {
-
         const selectedRouteType = getRouteTypeByID(
           state.routeTypes,
           l.routeType,
         );
 
-        const { newRoute } = createRoute(newNextRouteID, selectedRouteType);
+        const newRoute = spoutRoute({
+          routeType: selectedRouteType,
+          id: newNextRouteID,
+        });
         newNextRouteID = newNextRouteID + 1;
         return newRoute;
       });
@@ -131,14 +126,13 @@ const trainSchedule = (state = getInitialState(), action) => {
         }
         return acc;
       }, []);
-      update = {
-        routes: state.routes.reduce((acc, l) => {
-          if (l.routeType !== payload.id) {
-            acc.push(l);
-          }
-          return acc;
-        }, []),
-      };
+
+      update.routes = state.routes.reduce((acc, l) => {
+        if (l.routeType !== payload.id) {
+          acc.push(l);
+        }
+        return acc;
+      }, []);
       return {
         ...state,
         ...update,
@@ -150,9 +144,10 @@ const trainSchedule = (state = getInitialState(), action) => {
         return { ...state };
       }
       editedRoute = { ...editedRoute, ...payload.data };
-      editedRoute.label = `${editedRoute.name} ${hourMinuteSecond(
-        editedRoute.runTime,
-      )}`;
+      editedRoute.label = createRouteLabel({
+        name: editedRoute.name,
+        runTime: editedRoute.runTime,
+      });
       update.routeTypes = state.routeTypes.reduce((acc, t) => {
         if (t.id === editedRoute.id) {
           acc.push(editedRoute);

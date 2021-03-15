@@ -92,7 +92,6 @@ function TimerSetup(props) {
           isVisible={showParticipantInput}
           onClosePress={() => setShowParticipantInput(false)}
           onAddParticipantPress={() => {
-            console.log('partic? ' + !showAddParticipant);
             setShowAddParticipant(true);
           }}
         />

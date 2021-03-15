@@ -1,3 +1,5 @@
+import { Gears } from './Gears';
+
 export function isEditableRouteType(id) {
   return id !== 1 && id !== 2;
 }
@@ -6,22 +8,39 @@ export function isEditableRouteType(id) {
 //   return true;
 //
 //
-  // the reason for making this has gone away, but might be useful later
+// the reason for making this has gone away, but might be useful later
 
-  // return routeTypes.reduce((acc, r) => {
-  //   console.log('checking if route is editable ' + r.id);
-  //   if (isEditableRouteType(r.id)) {
-  //     console.log('yes, editable');
-  //     acc.push(r);
-  //   } else {
-  //     console.log('no not editagle ' + r.id);
-  //   }
-  //
-  //   return acc;
-  // }, []);
+// return routeTypes.reduce((acc, r) => {
+//   console.log('checking if route is editable ' + r.id);
+//   if (isEditableRouteType(r.id)) {
+//     console.log('yes, editable');
+//     acc.push(r);
+//   } else {
+//     console.log('no not editagle ' + r.id);
+//   }
+//
+//   return acc;
+// }, []);
 // }
 
-export function createRouteType({ name, id, runTime, color, settings, gear }) {
+export function spoutRoute({ routeType = {}, id, custom = {} }) {
+  const routeTypeID = routeType ? routeType.id : undefined;
+  const routeData = { ...routeType, routeType: routeTypeID, ...custom, id };
+  routeData.label = createRouteLabel(routeData);
+  return routeData;
+}
+
+export function createRouteLabel(route) {
+  return `${route.name} ${route.runTime}`;
+}
+
+export function createRouteType({
+  name,
+  id,
+  runTime,
+  color,
+  gear = Gears.NEUTRAL,
+}) {
   if (!name || isNaN(id)) {
     console.log('bad routeType data');
     console.log(name);
@@ -35,7 +54,7 @@ export function createRouteType({ name, id, runTime, color, settings, gear }) {
     color,
     runTime,
     segments: [],
-    label: `${name} ${runTime}`,
+    label: createRouteLabel({ name, runTime }),
     gear,
   };
 }

@@ -12,6 +12,7 @@ function ColorPicker(props) {
       {Object.values(COLORS).map((c, i) => {
         return (
           <Row
+            key={c}
             onPress={() => onColorPress(c)}
             style={{
               width: '100%',

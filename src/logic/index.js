@@ -36,7 +36,6 @@ export const ZERO_ENGINE = {
 };
 
 function segmentsFromEngineCycle(engineCycle, id) {
-  // todo do this
   const { floorStates, workTime, warmUp, coolDown } = engineCycle;
   const { WARMUP, COOLDOWN, ROUND } = PHASES;
   let nextID = id;

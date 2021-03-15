@@ -6,7 +6,6 @@ import _ from 'lodash';
 import { getRouteTypeByID } from '../helpers/utils';
 import { Gears } from '../models/Gears';
 
-// todo this looks like the main place
 const updateScheduleWithRouteEdits = (updatedRoute, routes, nextRouteID) => {
   let newNextRouteID = nextRouteID;
   const newRoutes = routes.map((l) => {

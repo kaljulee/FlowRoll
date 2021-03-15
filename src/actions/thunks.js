@@ -60,18 +60,7 @@ export function startTrain() {
     dispatch(setScopeID({ id: scope }));
   };
 }
-// todo hasn't been tested
-// export function stopTrain() {
-//   return function(dispatch, getState) {
-//     const {
-//       navigation: { scopeID, engineID },
-//     } = getState();
-//     clearInterval(scopeID);
-//     clearTimeout(engineID);
-//     console.log('thunk clearning id and dispatching to store ' + scopeID);
-//     dispatch(setScopeID(undefined));
-//   };
-// }
+
 
 function updatePosition(elapsedSeconds) {
   return function(dispatch, getState) {
@@ -150,18 +139,6 @@ export function createAnnotatedMap() {
     };
   };
 }
-
-// todo seems like a duplicate
-// function generateEngineCycle() {
-//   return function(dispatch, getState) {
-//     console.log('in generateEngineCycle');
-//     // console.log(getState().groundRobin);
-//     console.log('groundrobin from store looking for crrc');
-//     console.log(getState().groundRobin);
-//     console.log('lllll');
-//     return getState().groundRobin.completeRRCycle;
-//   };
-// }
 
 export function createAndSetEngine() {
   return function(dispatch, getState) {

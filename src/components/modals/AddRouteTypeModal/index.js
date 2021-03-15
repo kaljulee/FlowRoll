@@ -19,8 +19,7 @@ import ColorPicker from '../../ColorPicker';
 import { COLORS } from '../../../constants/styleValues';
 import GearSelector from '../../GearSelector';
 import { Gears } from '../../../models/Gears';
-// todo this needs to be reworked to deal with int runTimes
-// todo also the color picker is broken either here or in edit
+
 function AddRouteTypeModal(props) {
   const { isVisible, closeModal, addRouteType } = props;
   const [name, setName] = useState(null);

@@ -44,6 +44,7 @@ const getInitialState = () => {
       id: 2,
       runTime: 5,
       color: COLORS.LIGHTBLUE,
+      gear: Gears.NEUTRAL,
     }),
   );
   const nextRouteTypeID = 3;

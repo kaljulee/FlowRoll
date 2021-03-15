@@ -6,9 +6,7 @@ import { Gears } from '../../models/Gears';
 function GearSelector(props) {
   const { gear, setGear } = props;
   const { NEUTRAL, FULL_CYCLE } = Gears;
-  // const [selectedGear, setSelectedGear] = useState(incomingGear);
   function onPressRadio(newGear) {
-    console.log('pressed radio');
     setGear(newGear);
   }
   return (

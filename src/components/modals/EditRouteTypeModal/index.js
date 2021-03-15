@@ -22,19 +22,20 @@ import { connect } from 'react-redux';
 import SecondSlider from '../../SecondSlider';
 import ColorPicker from '../../ColorPicker';
 import { editRouteType } from '../../../actions';
-
+import GearSelector from '../../GearSelector';
+//todo find a way to combine editRoute and addRoute modals
 function EditRouteTypeModal(props) {
   const { closeModal, editRouteType, editRoute } = props;
 
-  const { name, runTime, color, iid } = editRoute;
-
-  const [routeID, setRouteID] = useState(iid);
+  const { name, runTime, color, id, gear } = editRoute;
+  const [routeID, setRouteID] = useState(id);
   const [newName, setNewName] = useState(name);
   const [newRunTime, setNewRunTime] = useState(runTime);
   const [newColor, setNewColor] = useState(color);
   const [showEditRunTimeModal, setShowEditRunTimeModal] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [runTimeInSeconds, _setRunTimeInSeconds] = useState(runTime);
+  const [newGear, setNewGear] = useState(gear);
 
   function onColorPress(c) {
     setNewColor(c);
@@ -78,6 +79,7 @@ function EditRouteTypeModal(props) {
       runTime: newRunTime,
       color: newColor,
       name: newName,
+      gear: newGear,
     };
     editRouteType(payload);
     setShowColorPicker(false);
@@ -98,6 +100,7 @@ function EditRouteTypeModal(props) {
       setNewName(editRoute.name);
       setNewRunTime(editRoute.runTime);
       setNewColor(editRoute.color);
+      setNewGear(editRoute.gear);
       setRunTimeInSeconds(editRoute.runTime);
     }
   }, [editRoute]);
@@ -108,9 +111,9 @@ function EditRouteTypeModal(props) {
 
   return (
     <Modal isVisible={!!routeID}>
-      <Card>
+      <Card style={{ width: '100%' }}>
         <CardItem>
-          <Form>
+          <Form style={{ width: '100%' }}>
             <Item stackedLabel>
               <Label>Name</Label>
               <Input onChangeText={onNameChange} value={newName} />
@@ -128,6 +131,10 @@ function EditRouteTypeModal(props) {
                 onPress={toggleEditColor}>
                 <Text>Color</Text>
               </Button>
+            </Item>
+            <Item stackedLabel>
+              <Label>Gear</Label>
+              <GearSelector setGear={setNewGear} gear={newGear} />
             </Item>
           </Form>
           <SecondSlider

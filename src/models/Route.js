@@ -1,3 +1,5 @@
+import { Gears } from './Gears';
+
 export function isEditableRouteType(id) {
   return id !== 1 && id !== 2;
 }
@@ -21,11 +23,24 @@ export function isEditableRouteType(id) {
 // }, []);
 // }
 
+export function spoutRoute({ routeType = {}, id, custom = {} }) {
+  const routeTypeID = routeType ? routeType.id : undefined;
+  const routeData = { ...routeType, routeType: routeTypeID, ...custom, id };
+  routeData.label = createRouteLabel(routeData);
+  return routeData;
+}
+
 export function createRouteLabel(route) {
   return `${route.name} ${route.runTime}`;
 }
 
-export function createRouteType({ name, id, runTime, color, settings, gear }) {
+export function createRouteType({
+  name,
+  id,
+  runTime,
+  color,
+  gear = Gears.NEUTRAL,
+}) {
   if (!name || isNaN(id)) {
     console.log('bad routeType data');
     console.log(name);

@@ -1,30 +1,22 @@
 import { types } from '../actions';
-import { createRouteLabel, createRouteType } from '../models/Route';
+import { createRouteLabel, createRouteType, spoutRoute } from '../models/Route';
 import { hourMinuteSecond } from '../helpers/time';
 import { COLORS } from '../constants/styleValues';
 import _ from 'lodash';
 import { getRouteTypeByID } from '../helpers/utils';
 import { Gears } from '../models/Gears';
 
-// route related
-const createRoute = (routeID, routeType, settings) => {
-  const newRoute = {
-    ...routeType,
-    routeType: routeType.id,
-    ...settings,
-    id: routeID,
-  };
-  const newNextRouteID = routeID + 1;
-  return { newRoute, newNextRouteID };
-};
-
+// todo this looks like the main place
 const updateScheduleWithRouteEdits = (updatedRoute, routes, nextRouteID) => {
   let newNextRouteID = nextRouteID;
   const newRoutes = routes.map((l) => {
     if (l.routeType === updatedRoute.id) {
-      const result = createRoute(newNextRouteID, updatedRoute);
-      newNextRouteID = result.newNextRouteID;
-      return result.newRoute;
+      const result = spoutRoute({
+        id: newNextRouteID,
+        routeType: updatedRoute,
+      });
+      newNextRouteID = newNextRouteID + 1;
+      return result;
     } else {
       return l;
     }
@@ -82,7 +74,10 @@ const trainSchedule = (state = getInitialState(), action) => {
           l.routeType,
         );
 
-        const { newRoute } = createRoute(newNextRouteID, selectedRouteType);
+        const newRoute = spoutRoute({
+          routeType: selectedRouteType,
+          id: newNextRouteID,
+        });
         newNextRouteID = newNextRouteID + 1;
         return newRoute;
       });

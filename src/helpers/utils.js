@@ -29,3 +29,7 @@ export function getRouteTypeByID(routeTypes, id) {
     return id === t.id;
   });
 }
+
+export function getRouteByID(routes, id) {
+  return _.find(routes, (e) => parseInt(e) === id);
+}

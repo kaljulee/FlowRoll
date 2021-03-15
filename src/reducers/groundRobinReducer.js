@@ -5,7 +5,7 @@ import {
   createMatchUps,
   participantsByActive,
 } from '../helpers/ordering';
-import { createSecondSliderConversion, ZERO_ENGINE } from '../logic';
+import { cleanWorkValue, createSecondSliderConversion, ZERO_ENGINE} from '../logic';
 import { types } from '../actions';
 
 const getInitialState = () => {
@@ -157,12 +157,7 @@ const groundRobin = (state = getInitialState(), action) => {
       // todo this can be complicated
       return { ...state, ...update };
     case types.SET_WORK:
-        // todo this validation should go somewhere else
-      if (isNaN(payload) || payload === 0) {
-        update.work = 1;
-      } else {
-        update.work = payload;
-      }
+      update.work = cleanWorkValue(payload);
       return { ...state, ...update };
     case types.SET_CHAMBER_COUNT:
       console.warn(

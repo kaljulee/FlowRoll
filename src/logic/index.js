@@ -267,3 +267,11 @@ export function cleanPhaseTime(time) {
   }
   return parseInt(time);
 }
+
+export function cleanWorkValue(v) {
+  if (isNaN(v) || v === 0) {
+    return 1;
+  } else {
+    return v;
+  }
+}

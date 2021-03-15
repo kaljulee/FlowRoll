@@ -158,10 +158,10 @@ export const deleteRouteType = ({ id }) => {
   };
 };
 
-export const editRouteType = ({ id, color, runTime, name }) => {
+export const editRouteType = ({ id, color, runTime, name, gear }) => {
   return {
     type: types.ROUTETYPE_EDIT,
-    payload: { id, data: { color, runTime, name } },
+    payload: { id, data: { color, runTime, name, gear } },
   };
 };
 

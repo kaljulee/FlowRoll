@@ -29,7 +29,7 @@ function GroundRobin(props) {
     warmUp,
     coolDown,
     completeRRCycle,
-    schedule,
+    cycle,
   } = props;
 
   // todo do something with these anti-crash hard codes
@@ -86,7 +86,7 @@ const mapStateToProps = (state) => {
       participants,
       roundCount,
       completeRRCycle,
-      schedule,
+      cycle,
     },
     navigation: { map, elapsedSeconds },
   } = state;
@@ -102,7 +102,7 @@ const mapStateToProps = (state) => {
     roundCount,
     map,
     elapsedSeconds,
-    schedule,
+    cycle,
   };
 };
 

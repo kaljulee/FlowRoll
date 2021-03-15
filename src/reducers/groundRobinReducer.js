@@ -29,9 +29,7 @@ const getInitialState = () => {
     participants,
     nextParticipantID: 5,
     activeParticipants,
-    // todo figure out if schedule should still be part of this
-    schedule: completeRRCycle,
-    // matchUps is currently the same as schedule
+    cycle: completeRRCycle,
     matchUps,
     completeRRCycle,
     secondSliderConverter: createSecondSliderConversion(),
@@ -58,8 +56,8 @@ const updateParticipantMatchUps = (participants, activeParticipants) => {
     update.matchUps,
     sortedParticipants.active,
   );
-  // schedule defaults to same as rr cycle
-  update.schedule = update.completeRRCycle;
+  // cycle defaults to same as rr cycle
+  update.cycle = update.completeRRCycle;
   // defaults round count to complete cycle
   update.roundCount = update.completeRRCycle.length;
   return update;

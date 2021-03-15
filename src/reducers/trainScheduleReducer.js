@@ -69,7 +69,6 @@ const trainSchedule = (state = getInitialState(), action) => {
     case types.ROUTE_SCHEDULE:
       let newNextRouteID = state.nextRouteID;
       const newRoutes = payload.routes.map((l) => {
-
         const selectedRouteType = getRouteTypeByID(
           state.routeTypes,
           l.routeType,

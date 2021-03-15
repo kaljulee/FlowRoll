@@ -119,7 +119,7 @@ export const createEngine = (settings = { engineCycle }) => {
 
 // convert a route into an array of segments
 export function extractSegments(engine, route, id) {
-  if (engine) {
+  if (engine && engine.runEngine) {
     const segmentData = engine.runEngine(route, id);
     return segmentData;
   }
@@ -203,7 +203,7 @@ export function getTimeInLocation(elaspedSeconds, locationData) {
     return Number.NaN;
   }
   if (elaspedSeconds < locationData.offset) {
-    console.warn('should not have arrived at location, returning NaN');
+    // console.warn('should not have arrived at location, returning NaN');
     return Number.NaN;
   }
   // offset adjusts the elapsedSeconds in this location to start at zero

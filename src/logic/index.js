@@ -32,6 +32,7 @@ const ZERO_PROCESS = (route, id) => {
 };
 
 export const ZERO_ENGINE = {
+  settings: { name: 'ZERO' },
   runEngine: (route, id) => ZERO_PROCESS(route, id),
 };
 
@@ -106,9 +107,14 @@ const _runEngine = (engineCycle, route, id) => {
   }
 };
 
-export const createEngine = (settings = { engineCycle }) => {
-  const { engineCycle } = settings;
+export const createEngine = (settings) => {
+  const { floorStates, warmUp, coolDown, work, name } = settings;
+
+  // const { engineCycle } = settings;
+  // console.log(engineCycle);
+  const engineCycle = createEngineCycle(settings);
   const engine = {
+    settings,
     runEngine: (route, id) => {
       const runResult = _runEngine(engineCycle, route, id);
       return runResult;
@@ -237,13 +243,6 @@ export function createSecondSliderConversion() {
   return { secondsByValue };
 }
 
-function formatTime(time) {
-  if (isNaN(time)) {
-    return 0;
-  }
-  return parseInt(time);
-}
-
 export function createEngineCycle({
   floorStates,
   work,
@@ -255,11 +254,10 @@ export function createEngineCycle({
     roundCount,
     floorStates,
     work,
-    warmUp: formatTime(warmUp),
-    coolDown: formatTime(coolDown),
+    warmUp: cleanPhaseTime(warmUp),
+    coolDown: cleanPhaseTime(coolDown),
   };
 }
-
 
 export function cleanPhaseTime(time) {
   if (isNaN(time)) {

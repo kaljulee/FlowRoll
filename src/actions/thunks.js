@@ -146,12 +146,10 @@ export function createAndSetEngine() {
       groundRobin: { warmUp, coolDown, completeRRCycle, work },
     } = getState();
     const createdEngine = createEngine({
-      engineCycle: createEngineCycle({
-        floorStates: completeRRCycle,
-        warmUp,
-        coolDown,
-        work,
-      }),
+      floorStates: completeRRCycle,
+      warmUp,
+      coolDown,
+      work,
     });
     dispatch(setEngine(createdEngine));
   };

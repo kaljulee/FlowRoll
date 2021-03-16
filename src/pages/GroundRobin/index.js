@@ -1,52 +1,30 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { hourMinuteSecond, ZERO_TIME } from '../../helpers/time';
-import { Container, Content, Footer, Button, Text } from 'native-base';
-import { resetDB, setWork } from '../../actions';
+import { Container, Footer, Button, Text } from 'native-base';
+import { resetDB,
+  // setWork
+} from '../../actions';
 import { createAndSetEngine } from '../../actions/thunks';
 import { Grid, Col, Row } from 'react-native-easy-grid';
-import SetTimeModal from '../../components/modals/SetTimeModal';
-import SettingsButton from '../../components/SettingsButton';
-import SetRoundCountModal from '../../components/modals/SetRoundCountModal';
-import ManageParticipantsModal from '../../components/modals/ManageParticipantsModal';
-import AddParticipantModal from '../../components/modals/AddParticipantModal';
-import DeleteParticipantModal from '../../components/modals/DeleteParticipantModal';
-import TrainTracker from '../../components/TrainTracker';
 import EngineStateList from '../../components/EngineStateList';
 import EngineSettings from '../../components/EngineSettings';
+import EngineDetails from '../../EngineDetails';
 
 function GroundRobin(props) {
   const {
     resetDB,
-    participants,
-    changeTab,
-    activeParticipants,
-    location,
-    map,
-    localTime,
     createAndSetEngine,
-    work,
-    warmUp,
-    coolDown,
     completeRRCycle,
-    cycle,
+    engine,
   } = props;
 
   // todo do something with these anti-crash hard codes
   const roundCount = 0;
 
-  const [showWorkInput, setShowWorkInput] = useState(false);
-  const [showBreakTimeInput, setShowBreakTimeInput] = useState(false);
-  const [showParticipantInput, setShowParticipantInput] = useState(false);
-  const [showRoundCountInput, setShowRoundCountInput] = useState(false);
-  const [showAddParticipant, setShowAddParticipant] = useState(false);
-  const [showDeleteParticipant, setShowDeleteParticipant] = useState(false);
-
   function onStoreEnginePress() {
     createAndSetEngine();
     console.log('on store engine press');
   }
-  // todo needs to be annotated map to display
   return (
     <Container>
       <Grid style={{ borderWidth: 5 }}>
@@ -57,9 +35,14 @@ function GroundRobin(props) {
           <EngineStateList cycle={completeRRCycle} />
         </Row>
         <Row size={1} style={{ justifyContent: 'flex-end' }}>
-          <Button onPress={onStoreEnginePress}>
-            <Text>Save Engine</Text>
-          </Button>
+          <Col size={3}>
+            <EngineDetails settings={engine.settings} />
+          </Col>
+          <Col size={1}>
+            <Button onPress={onStoreEnginePress}>
+              <Text>Save Engine</Text>
+            </Button>
+          </Col>
         </Row>
       </Grid>
       <Footer>
@@ -87,6 +70,7 @@ const mapStateToProps = (state) => {
       roundCount,
       completeRRCycle,
       cycle,
+      engine,
     },
     navigation: { map, elapsedSeconds },
   } = state;
@@ -103,12 +87,13 @@ const mapStateToProps = (state) => {
     map,
     elapsedSeconds,
     cycle,
+    engine,
   };
 };
 
 const mapDispatchToProps = {
   resetDB,
-  setWork,
+  // setWork,
   createAndSetEngine,
 };
 

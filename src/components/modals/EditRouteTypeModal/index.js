@@ -13,12 +13,8 @@ import {
 } from 'native-base';
 import { Grid, Col } from 'react-native-easy-grid';
 import {
-  HMSToSeconds,
-  hourMinuteSecond,
-  secondsToHMS,
-  ZERO_TIME,
+  formatSecondsToDisplay,
 } from '../../../helpers/time';
-import { COLORS } from '../../../constants/styleValues';
 import { connect } from 'react-redux';
 import SecondSlider from '../../SecondSlider';
 import ColorPicker from '../../ColorPicker';
@@ -127,7 +123,7 @@ function EditRouteTypeModal(props) {
             <Item stackedLabel>
               <Label>Run Time</Label>
               <Button transparent onPress={toggleEditRunTime}>
-                <Text>{newRunTime}</Text>
+                <Text>{formatSecondsToDisplay(newRunTime)}</Text>
               </Button>
             </Item>
             <Item stackedLabel>

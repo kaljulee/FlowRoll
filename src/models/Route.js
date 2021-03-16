@@ -31,7 +31,7 @@ export function spoutRoute({ routeType = {}, id, custom = {} }) {
 }
 
 export function createRouteLabel(route) {
-  return `${route.name} ${route.runTime}`;
+  return `${route.name}`;
 }
 
 export function createRouteType({

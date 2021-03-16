@@ -14,7 +14,11 @@ import { ToastAndroid } from 'react-native';
 import { addRouteType } from '../../../actions';
 import { connect } from 'react-redux';
 import SecondSlider from '../../SecondSlider';
-import { hourMinuteSecond, secondsToHMS } from '../../../helpers/time';
+import {
+  formatSecondsToDisplay,
+  hourMinuteSecond,
+  secondsToHMS,
+} from '../../../helpers/time';
 import ColorPicker from '../../ColorPicker';
 import { COLORS } from '../../../constants/styleValues';
 import GearSelector from '../../GearSelector';
@@ -97,7 +101,7 @@ function AddRouteTypeModal(props) {
             <Item stackedLabel>
               <Label>Time</Label>
               <Button transparent onPress={toggleEditDuration}>
-                <Text>{displayDuration}</Text>
+                <Text>{formatSecondsToDisplay(displayDuration)}</Text>
               </Button>
             </Item>
             <Item stackedLabel>

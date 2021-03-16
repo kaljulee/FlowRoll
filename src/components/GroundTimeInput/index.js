@@ -4,6 +4,7 @@ import { Text } from 'native-base';
 import { TextInput } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import SecondSlider from '../SecondSlider';
+import { formatSecondsToDisplay } from '../../helpers/time';
 
 function calculateGroundTime(w, r, c) {
   return w + r + c;
@@ -111,9 +112,15 @@ function GroundTimeInput(props) {
   return (
     <Grid>
       <Row size={1}>
-        <PhaseColumn title={'warmup'} value={warmUpValue} />
-        <PhaseColumn title={'work'} value={workValue} />
-        <PhaseColumn title={'cooldown'} value={coolDownValue} />
+        <PhaseColumn
+          title={'warmup'}
+          value={formatSecondsToDisplay(warmUpValue)}
+        />
+        <PhaseColumn title={'work'} value={formatSecondsToDisplay(workValue)} />
+        <PhaseColumn
+          title={'cooldown'}
+          value={formatSecondsToDisplay(coolDownValue)}
+        />
       </Row>
       <Row size={1} style={{ justifyContent: 'center' }}>
         <MultiSlider
@@ -127,7 +134,7 @@ function GroundTimeInput(props) {
         />
       </Row>
       <Row size={2} style={{ display: 'flex', justifyContent: 'center' }}>
-        <Text>{`Total Round Time ${totalTime}`}</Text>
+        <Text>{`Total Round Time ${formatSecondsToDisplay(totalTime)}`}</Text>
         <SecondSlider
           isVisible={true}
           seconds={totalTime}

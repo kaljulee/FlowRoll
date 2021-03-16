@@ -96,7 +96,6 @@ const trainSchedule = (state = getInitialState(), action) => {
           }
           return acc;
         }, []),
-        // },
       };
       return {
         ...state,

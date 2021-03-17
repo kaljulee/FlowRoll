@@ -38,7 +38,7 @@ export const ZERO_ENGINE = {
 
 function segmentsFromEngineCycle(engineCycle, id) {
   const { floorStates, work, warmUp, coolDown } = engineCycle;
-  const { WARMUP, COOLDOWN, ROUND } = PHASES;
+  const { WARMUP, COOLDOWN, WORK } = PHASES;
   let nextID = id;
   const segments = floorStates.reduce((acc, s) => {
     const phaseColors = PHASE_COLORS();
@@ -58,11 +58,11 @@ function segmentsFromEngineCycle(engineCycle, id) {
     }
     acc.push(
       createSegment({
-        phase: ROUND,
+        phase: WORK,
         label: 'round',
         name: 'round',
         runTime: work,
-        color: phaseColors[ROUND],
+        color: phaseColors[WORK],
         id: nextID,
         floorState: s,
       }),

@@ -30,7 +30,13 @@ function PhaseTitle(props) {
 }
 
 function PhaseInput(props) {
-  return <TextInput textAlign={'center'} value={props.value.toString()} />;
+  return (
+    <TextInput
+      keyboardType={'numeric'}
+      textAlign={'center'}
+      value={props.value.toString()}
+    />
+  );
 }
 
 function GroundTimeInput(props) {

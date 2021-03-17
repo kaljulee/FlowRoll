@@ -13,14 +13,14 @@ export function getPhaseColor(phase) {
 }
 
 export const PHASES = {
-  ROUND: 'ROUND',
+  WORK: 'WORK',
   WARMUP: 'WARMUP',
   COOLDOWN: 'COOLDOWN',
 };
 
 export const PHASE_COLORS = () => {
   const colors = {};
-  colors[PHASES.ROUND] = COLORS.RED;
+  colors[PHASES.WORK] = COLORS.RED;
   colors[PHASES.WARMUP] = COLORS.CREAM;
   colors[PHASES.COOLDOWN] = COLORS.LIGHTBLUE;
   return colors;

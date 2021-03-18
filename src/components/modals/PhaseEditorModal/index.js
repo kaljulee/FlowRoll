@@ -22,25 +22,28 @@ const styles = {
 };
 
 function PhaseEditorModal(props) {
-  const { value, onClose, showEditor } = props;
+  const { phase, phaseValues, onClose, showEditor } = props;
 
-  const valueAsHMS = secondsToHMS(value);
+  const valueAsHMS = secondsToHMS(phaseValues[phase]);
   const [hourValue, setHourValue] = useState(valueAsHMS.h);
   const [minuteValue, setMinuteValue] = useState(valueAsHMS.m);
   const [secondValue, setSecondValue] = useState(valueAsHMS.s);
 
+  // value is converted to HMS in order to present data to pickers
   useEffect(() => {
-    const newValueAsHMS = secondsToHMS(value);
+    const newValueAsHMS = secondsToHMS(phaseValues[phase]);
     setHourValue(newValueAsHMS.h);
     setMinuteValue(newValueAsHMS.m);
     setSecondValue(newValueAsHMS.s);
-  }, [value]);
+  }, [phase, phaseValues]);
 
   function createZeroToFiftyNine() {
     const zeroToFifyNine = [];
 
     for (let i = 0; i < 60; i += 1) {
-      zeroToFifyNine.push(<Picker.Item label={i.toString()} value={i} />);
+      zeroToFifyNine.push(
+        <Picker.Item key={`ztfn${i}`} label={i.toString()} value={i} />,
+      );
     }
     return zeroToFifyNine;
   }
@@ -49,20 +52,27 @@ function PhaseEditorModal(props) {
     onClose();
   }
 
+  // this is where the values new values are pushed back up to the parent
+  // for whatever the modal is being used for.
+  // only the edited phase value in seconds gets returned, not an entire set
+  // of phase values.  Some higher component controls how the other phase
+  // values are impacted, or if this value is considered valid.
   function onPressSave() {
-    const newSecondsValue = HMSToSeconds({
+    const newValueInSeconds = HMSToSeconds({
       h: hourValue,
       m: minuteValue,
       s: secondValue,
     });
-    onClose(newSecondsValue);
+    onClose(newValueInSeconds);
   }
 
   function createZeroToTwelve() {
     const zeroToTwelve = [];
 
     for (let i = 0; i < 13; i += 1) {
-      zeroToTwelve.push(<Picker.Item label={i.toString()} value={i} />);
+      zeroToTwelve.push(
+        <Picker.Item key={`ztt${i}`} label={i.toString()} value={i} />,
+      );
     }
     return zeroToTwelve;
   }

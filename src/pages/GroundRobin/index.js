@@ -23,7 +23,6 @@ function GroundRobin(props) {
 
   function onStoreEnginePress() {
     createAndSetEngine();
-    console.log('on store engine press');
   }
   return (
     <Container>

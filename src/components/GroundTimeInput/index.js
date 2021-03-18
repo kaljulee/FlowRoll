@@ -5,7 +5,7 @@ import { TextInput, View } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import SecondSlider from '../SecondSlider';
 import { formatSecondsToDisplay } from '../../helpers/time';
-import { PHASES } from '../../models/Gears';
+import { createPhaseValues, PHASES } from '../../models/Gears';
 import PhaseEditorModal from '../modals/PhaseEditorModal';
 
 function calculateGroundTime(w, r, c) {
@@ -47,13 +47,15 @@ function GroundTimeInput(props) {
   const [totalTime, setTotalTime] = useState(
     calculateGroundTime(warmUp, work, coolDown),
   );
+  // todo create usePhaseValues hook
   const [warmUpValue, setWarmUpValue] = useState(warmUp);
   const [coolDownValue, setCoolDownValue] = useState(coolDown);
   const [workValue, setWorkValue] = useState(work);
   const [phaseToEdit, setPhaseToEdit] = useState(undefined);
-  const [editValue, setEditValue] = useState(undefined);
   const [showEditor, setShowEditor] = useState(false);
 
+  //////////////////////////////////
+  // updates total time to adjust for changes to phase times
   useEffect(() => {
     const newTotalTime = calculateGroundTime(warmUp, work, coolDown);
     setCoolDownValue(coolDown);
@@ -63,7 +65,9 @@ function GroundTimeInput(props) {
     setTotalTime(newTotalTime);
   }, [warmUp, work, coolDown]);
 
-  const onSliderChange = (newValues) => {
+  // converts multislider to phase values
+  // todo convert this to createPhaseValues
+  const convertMultiSliderToPhase = (newValues) => {
     const newWarmUpValue = newValues[0];
 
     let newWorkTime = workValue;
@@ -78,44 +82,8 @@ function GroundTimeInput(props) {
     };
   };
 
-  const onValuesChange = (newValues) => {
-    const { newWorkTime, newCoolDownValue, newWarmUpValue } = onSliderChange(
-      newValues,
-    );
-    setWarmUpValue(newWarmUpValue);
-    setCoolDownValue(newCoolDownValue);
-    setWorkTimeValue(newWorkTime);
-  };
-
-  const onValuesChangeFinish = (newValues) => {
-    const { newWorkTime, newCoolDownValue, newWarmUpValue } = onSliderChange(
-      newValues,
-    );
-    setPhaseTimes({
-      warmUp: newWarmUpValue,
-      coolDown: newCoolDownValue,
-      work: newWorkTime,
-    });
-  };
-
-  function onChangeWarmUp(arg) {
-    console.log('warmup');
-    console.log(arg);
-    setWarmUpValue(arg);
-  }
-
-  function onChangeWork(arg) {
-    console.log('work');
-    console.log(arg);
-    setWorkValue(arg);
-  }
-
-  function onChangeCoolDown(arg) {
-    console.log('cool');
-    console.log(arg);
-    setCoolDownValue(arg);
-  }
-
+  /////////////////////////////////
+  // generic change functions
   const onChangeTotalTime = (time) => {
     const timeDiff = time - totalTime;
     let newWorkTime;
@@ -127,33 +95,57 @@ function GroundTimeInput(props) {
     if (timeDiff * -1 <= work) {
       newWorkTime = work + timeDiff;
       setTotalTime(time);
-      setWorkTime(newWorkTime);
+      setWorkValue(newWorkTime);
+      // todo these should use createPhaseValues
       setPhaseTimes({ work: newWorkTime, coolDown, warmUp });
     } else {
       setTotalTime(time);
       setPhaseTimes({ work: time });
     }
   };
-
-  const onSecondSliderChange = (arg) => {
-    onChangeTotalTime(arg);
-  };
-
   function setPhaseToChange({ phase, value }) {
-    console.log('in SPTC');
-    console.log(value);
-    setEditValue(value);
     setPhaseToEdit(phase);
     setShowEditor(true);
   }
 
+  ////////////////////////////////
+  // picker functions
+
+  ///////////////////////////////
+  // slider functions
+  // phase slider
+  // todo convert to createPhaseValues
+  const onPhaseSliderChangeFinish = (newValues) => {
+    const {
+      newWorkTime,
+      newCoolDownValue,
+      newWarmUpValue,
+    } = convertMultiSliderToPhase(newValues);
+    setPhaseTimes({
+      warmUp: newWarmUpValue,
+      coolDown: newCoolDownValue,
+      work: newWorkTime,
+    });
+  };
+  const onPhaseSliderChange = (newValues) => {
+    const {
+      newWorkTime,
+      newCoolDownValue,
+      newWarmUpValue,
+    } = convertMultiSliderToPhase(newValues);
+    setWarmUpValue(newWarmUpValue);
+    setCoolDownValue(newCoolDownValue);
+    setWorkValue(newWorkTime);
+  };
+  // total slider
+  const onTotalSliderChange = (arg) => {
+    onChangeTotalTime(arg);
+  };
+
   const onCloseTimeModal = useCallback(
     (newTime) => {
-      console.log('in onClose with time ' + newTime);
-      console.log('phasetoedit is');
-      console.log(phaseToEdit);
       if (newTime) {
-        switch(phaseToEdit) {
+        switch (phaseToEdit) {
           case PHASES.COOLDOWN:
             setCoolDownValue(newTime);
             break;
@@ -167,19 +159,25 @@ function GroundTimeInput(props) {
             break;
         }
       }
-      setEditValue(undefined);
+      // setEditValue(undefined);
+      const newPhaseTimes = createPhaseValues({ warmUp, coolDown, work });
+      newPhaseTimes[phaseToEdit] = newTime;
+      // todo this is hideous.  action should take a phaseValue object
+      setPhaseTimes({
+        work: newPhaseTimes[PHASES.WORK],
+        warmUp: newPhaseTimes[PHASES.WARMUP],
+        coolDown: newPhaseTimes[PHASES.COOLDOWN],
+      });
       setPhaseToEdit(undefined);
       setShowEditor(false);
     },
-    [setEditValue, setShowEditor, phaseToEdit],
+    [phaseToEdit, warmUp, coolDown, work, setPhaseTimes],
   );
 
   const openEditor = useCallback(
     (phase) => {
-      console.log('open editor phase');
       console.log(phase);
       if (phase === PHASES.WARMUP) {
-        console.log('phase is warmup');
         setPhaseToChange({
           phase,
           value: warmUpValue,
@@ -229,8 +227,8 @@ function GroundTimeInput(props) {
             enabledTwo={true}
             min={0}
             max={totalTime}
-            onValuesChange={onValuesChange}
-            onValuesChangeFinish={onValuesChangeFinish}
+            onValuesChange={onPhaseSliderChange}
+            onValuesChangeFinish={onPhaseSliderChangeFinish}
           />
         </Row>
         <Row size={2} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -238,7 +236,7 @@ function GroundTimeInput(props) {
           <SecondSlider
             isVisible={true}
             seconds={totalTime}
-            onValueChange={onSecondSliderChange}
+            onValueChange={onTotalSliderChange}
           />
           {false && (
             <TextInput
@@ -252,7 +250,12 @@ function GroundTimeInput(props) {
       </Grid>
       <PhaseEditorModal
         showEditor={showEditor}
-        value={editValue}
+        phase={phaseToEdit}
+        phaseValues={createPhaseValues({
+          work: workValue,
+          warmUp: warmUpValue,
+          coolDown: coolDownValue,
+        })}
         onClose={onCloseTimeModal}
       />
     </View>

@@ -2,17 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { Text } from 'native-base';
 import { View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { EMPTY_MAP } from '../../models/Location';
+import { Grid, Col } from 'react-native-easy-grid';
+
+function RailCol() {
+  return <Col size={1} style={{ backgroundColor: 'black' }} />;
+}
+
+function SpacerCol(props) {
+  const adjust = props.adjust || 0;
+  return <Col size={3 + adjust} />;
+}
+
+function TrainRails() {
+  return (
+    <Grid style={{ flexGrow: 1 }}>
+      <SpacerCol />
+      <RailCol />
+      <SpacerCol adjust={1} />
+      <RailCol />
+      <SpacerCol />
+    </Grid>
+  );
+}
 
 function TrainTracker(props) {
   const { map, location, localTime } = props;
   const [selectedID, setSelectedID] = useState(0);
-
-  const railStyle = {
-    position: 'absolute',
-    height: '100%',
-    width: 7,
-    backgroundColor: 'black',
-  };
 
   const listStyles = StyleSheet.create({
     container: {
@@ -55,11 +70,14 @@ function TrainTracker(props) {
     <SafeAreaView style={{ height: '100%', width: '100%' }}>
       <View
         style={{
-          ...railStyle,
-          right: 15,
-        }}
-      />
-      <View style={{ ...railStyle, right: 60 }} />
+          position: 'absolute',
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}>
+        <TrainRails />
+      </View>
       <FlatList
         data={map.locations}
         renderItem={renderItem}

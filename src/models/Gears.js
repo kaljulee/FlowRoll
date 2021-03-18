@@ -26,6 +26,8 @@ export const PHASE_COLORS = () => {
   return colors;
 };
 
+
+// todo make sure this is being used in reducers, etc
 export function createPhaseValues({ work, coolDown, warmUp }) {
   const returnValue = {};
   returnValue[PHASES.WARMUP] = warmUp;

@@ -25,3 +25,11 @@ export const PHASE_COLORS = () => {
   colors[PHASES.COOLDOWN] = COLORS.LIGHTBLUE;
   return colors;
 };
+
+export function createPhaseValues({ work, coolDown, warmUp }) {
+  const returnValue = {};
+  returnValue[PHASES.WARMUP] = warmUp;
+  returnValue[PHASES.WORK] = work;
+  returnValue[PHASES.COOLDOWN] = coolDown;
+  return returnValue;
+}

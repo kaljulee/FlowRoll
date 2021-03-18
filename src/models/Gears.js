@@ -13,15 +13,25 @@ export function getPhaseColor(phase) {
 }
 
 export const PHASES = {
-  ROUND: 'ROUND',
+  WORK: 'WORK',
   WARMUP: 'WARMUP',
   COOLDOWN: 'COOLDOWN',
 };
 
 export const PHASE_COLORS = () => {
   const colors = {};
-  colors[PHASES.ROUND] = COLORS.RED;
+  colors[PHASES.WORK] = COLORS.RED;
   colors[PHASES.WARMUP] = COLORS.CREAM;
   colors[PHASES.COOLDOWN] = COLORS.LIGHTBLUE;
   return colors;
 };
+
+
+// todo make sure this is being used in reducers, etc
+export function createPhaseValues({ work, coolDown, warmUp }) {
+  const returnValue = {};
+  returnValue[PHASES.WARMUP] = warmUp;
+  returnValue[PHASES.WORK] = work;
+  returnValue[PHASES.COOLDOWN] = coolDown;
+  return returnValue;
+}

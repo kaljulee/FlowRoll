@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
-
+// todo pretty crude subtitling with item.gear.  should be made into something more sane
 function SchedulingList(props) {
   const { data, onLongPress, onPress } = props;
   return (
@@ -47,8 +47,14 @@ function SchedulingList(props) {
             onPress={() => onPress(item.id)}
             onLongPress={() => onLongPress(item.id)}>
             <Card style={{ ...styles.card, backgroundColor: item.color }}>
-              <CardItem style={{ ...styles.item, backgroundColor: item.color }}>
+              <CardItem
+                style={{
+                  ...styles.item,
+                  backgroundColor: item.color,
+                  flexDirection: 'column',
+                }}>
                 <Text>{`${item.label}`}</Text>
+                {item.gear && <Text>{`${item.gear}`}</Text>}
               </CardItem>
             </Card>
           </TouchableOpacity>

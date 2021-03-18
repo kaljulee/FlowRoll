@@ -50,7 +50,7 @@ function TrainTracker(props) {
           borderColor: 'black',
           backgroundColor: checkIfSelected(item.id) ? 'green' : item.color,
           width: 70,
-          height: 28,
+          height: 10,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',

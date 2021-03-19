@@ -34,6 +34,7 @@ import {
 } from 'native-base';
 import ActiveTimerWarningModal from './src/components/modals/ActiveTimerWarningModal';
 import TrainSchedule from './src/pages/TrainSchedule';
+import NiceNav from './src/pages/NiceNav';
 const { store, persistor } = configureStore();
 
 const App: () => React$Node = () => {
@@ -73,14 +74,10 @@ const App: () => React$Node = () => {
                 <Tab heading={'GroundRobin'}>
                   <GroundRobin />
                 </Tab>
-                <Tab heading={'timer'}>
-                  <MainDisplay
-                    onPressRestart={() =>
-                      console.log('missing restart function at APP level')
-                    }
-                  />
+                <Tab heading={'NiceNav'}>
+                  <NiceNav />
                 </Tab>
-                <Tab heading={'train schedule'}>
+                <Tab heading={'Train Schedule'}>
                   <TrainSchedule />
                 </Tab>
               </Tabs>

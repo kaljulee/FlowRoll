@@ -144,6 +144,7 @@ const trainSchedule = (state = getInitialState(), action) => {
       editedRoute.label = createRouteLabel({
         name: editedRoute.name,
         runTime: editedRoute.runTime,
+        editedRoute: editedRoute.gear,
       });
       update.routeTypes = state.routeTypes.reduce((acc, t) => {
         if (t.id === editedRoute.id) {

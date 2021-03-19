@@ -54,7 +54,6 @@ function SchedulingList(props) {
                   flexDirection: 'column',
                 }}>
                 <Text>{`${item.label}`}</Text>
-                {item.gear && <Text>{`${item.gear}`}</Text>}
               </CardItem>
             </Card>
           </TouchableOpacity>

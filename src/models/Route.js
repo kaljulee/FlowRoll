@@ -31,7 +31,21 @@ export function spoutRoute({ routeType = {}, id, custom = {} }) {
 }
 
 export function createRouteLabel(route) {
-  return `${route.name}`;
+  // todo decide what todo with display time
+  let displayRunTime = '';
+  let gearLabel = '';
+  switch (route.gear) {
+    case Gears.NEUTRAL:
+      gearLabel = 'N';
+      break;
+    case Gears.FULL_CYCLE:
+      gearLabel = 'F';
+      break;
+    default:
+      gearLabel = 'N';
+      break;
+  }
+  return `${route.name} ${displayRunTime}\n${gearLabel}`;
 }
 
 export function createRouteType({
@@ -54,7 +68,7 @@ export function createRouteType({
     color,
     runTime,
     segments: [],
-    label: createRouteLabel({ name, runTime }),
+    label: createRouteLabel({ name, runTime, gear }),
     gear,
   };
 }

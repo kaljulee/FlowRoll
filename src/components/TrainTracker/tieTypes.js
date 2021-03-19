@@ -2,7 +2,14 @@ import { View } from 'react-native';
 import { Text } from 'native-base';
 import { formatSecondsToDisplay } from '../../helpers/time';
 import React from 'react';
-import {Grid, Row, Col} from 'react-native-easy-grid';
+import { Grid, Row, Col } from 'react-native-easy-grid';
+
+export const TIE_TYPES = {
+  TIME: 'TIME',
+  LOCATION: 'LOCATION',
+  ROUTE: 'ROUTE',
+  NAV: 'NAV',
+};
 
 const tieStyling = {
   borderWidth: 1,
@@ -47,7 +54,15 @@ export function TimeTie(props) {
 export function NavTie(props) {
   const { id, color, isSelected } = props;
   return (
-    <View style={{ ...tieStyling, height: 40, backgroundColor: color }}>
+    <View
+      style={{
+        ...tieStyling,
+        margin: 0,
+        marginVertical: 0,
+        width: 340,
+        height: 130,
+        backgroundColor: color,
+      }}>
       <Grid>
         <Col>
           <Text>activity label</Text>

@@ -4,26 +4,9 @@ import Icon from 'react-native-vector-icons/Entypo';
 import { View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { EMPTY_MAP } from '../../models/Location';
 import { Grid, Col } from 'react-native-easy-grid';
-import { formatSecondsToDisplay } from '../../helpers/time';
-
+import { LocationTie, TimeTie, NavTie, TIE_TYPES } from './tieTypes';
 ////////////////////////////
 // constants
-const DISPLAY_TYPES = {
-  TIME: 'TIME',
-  LOCATION: 'LOCATION',
-  ROUTE: 'ROUTE',
-};
-const tieStyling = {
-  borderWidth: 1,
-  borderColor: 'grey',
-  width: 70,
-  height: 8,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginTop: 2,
-  marginBottom: 2,
-};
 
 ///////////////////////////
 // supporting components
@@ -57,10 +40,10 @@ function TrackDisplaySwitch(props) {
   };
   const timeStyle = { ...iconStyle };
   const locationStyle = { ...iconStyle };
-  if (trackDisplay === DISPLAY_TYPES.TIME) {
+  if (trackDisplay === TIE_TYPES.TIME) {
     timeStyle.color = 'white';
   }
-  if (trackDisplay === DISPLAY_TYPES.LOCATION) {
+  if (trackDisplay === TIE_TYPES.LOCATION) {
     locationStyle.color = 'white';
   }
   return (
@@ -71,46 +54,20 @@ function TrackDisplaySwitch(props) {
   );
 }
 
-function LocationTie(props) {
-  const { id, name, color, localTime, isSelected, runTime } = props;
-  return (
-    <View
-      style={{
-        ...tieStyling,
-        backgroundColor: isSelected ? 'green' : color,
-        height: 28,
-        marginTop: 5,
-        marginBottom: 5,
-      }}>
-      <Text>{formatSecondsToDisplay(runTime)}</Text>
-    </View>
-  );
-}
-
-function TimeTie(props) {
-  const { id, color, isSelected } = props;
-  return (
-    <View
-      style={{
-        ...tieStyling,
-        backgroundColor: isSelected ? 'green' : color,
-      }}
-    />
-  );
-}
-
 //////////////////////////////
 // export component
 function TrainTracker(props) {
-  const { map, location, localTime } = props;
+  const { map, location, localTime, defaultTieType } = props;
   const [selectedID, setSelectedID] = useState(0);
-  const [trackDisplay, setTrackDisplay] = useState(DISPLAY_TYPES.TIME);
+  const [trackDisplay, setTrackDisplay] = useState(
+    defaultTieType || TIE_TYPES.TIME,
+  );
 
   function toggleTrackDisplay() {
-    if (trackDisplay === DISPLAY_TYPES.TIME) {
-      setTrackDisplay(DISPLAY_TYPES.LOCATION);
+    if (trackDisplay === TIE_TYPES.TIME) {
+      setTrackDisplay(TIE_TYPES.LOCATION);
     } else {
-      setTrackDisplay(DISPLAY_TYPES.TIME);
+      setTrackDisplay(TIE_TYPES.TIME);
     }
   }
 
@@ -128,32 +85,56 @@ function TrainTracker(props) {
   };
 
   const renderItem = ({ item }) => {
-    if (trackDisplay === DISPLAY_TYPES.TIME) {
-      const tracks = [];
-      for (let i = 0; i < item.runTime; i += 300) {
-        tracks.push(
-          <TimeTie
-            key={`${item.id}_${i}`}
+    switch (trackDisplay) {
+      case TIE_TYPES.TIME:
+        const tracks = [];
+        for (let i = 0; i < item.runTime; i += 300) {
+          tracks.push(
+            <TimeTie
+              key={`${item.id}_${i}`}
+              isSelected={checkIfSelected(item.id)}
+              id={item.id}
+              name={item.name}
+              color={item.color}
+            />,
+          );
+        }
+        return <View>{tracks}</View>;
+      case TIE_TYPES.LOCATION:
+        return (
+          <LocationTie
+            key={`${item.id}`}
+            localTime={localTime}
             isSelected={checkIfSelected(item.id)}
             id={item.id}
             name={item.name}
             color={item.color}
-          />,
+            runTime={item.runTime}
+          />
         );
-      }
-      return <View>{tracks}</View>;
+      case TIE_TYPES.NAV:
+        return (
+          <NavTie
+            id={item.id}
+            color={item.color}
+            isSelected={checkIfSelected(item.id)}
+          />
+        );
+
+      //default is location
+      default:
+        return (
+          <LocationTie
+            key={`${item.id}`}
+            localTime={localTime}
+            isSelected={checkIfSelected(item.id)}
+            id={item.id}
+            name={item.name}
+            color={item.color}
+            runTime={item.runTime}
+          />
+        );
     }
-    return (
-      <LocationTie
-        key={`${item.id}`}
-        localTime={localTime}
-        isSelected={checkIfSelected(item.id)}
-        id={item.id}
-        name={item.name}
-        color={item.color}
-        runTime={item.runTime}
-      />
-    );
   };
 
   useEffect(() => {

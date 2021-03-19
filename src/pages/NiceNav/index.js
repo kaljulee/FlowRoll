@@ -19,6 +19,9 @@ import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
 import KeepAwake from 'react-native-keep-awake';
 import moment from 'moment';
 import { Grid, Row, Col } from 'react-native-easy-grid';
+import TrainTracker from '../../components/TrainTracker';
+import { createAnnotatedMap } from '../../actions/thunks';
+import { TIE_TYPES } from '../../components/TrainTracker/tieTypes';
 
 const cardStyle = {
   width: '90%',
@@ -72,39 +75,67 @@ const styles = StyleSheet.create({
   },
 });
 
+// todo make the text sizes grow to fill parent
 function TrainDisplay(props) {
   return (
-    <Grid>
-      <Col>
-        <Row>
-          <Text>now label</Text>
-        </Row>
-        <Row>
-          <Text>now hms</Text>
-        </Row>
-      </Col>
-      <Col>
-        <Row>
-          <Text>remaining time</Text>
-        </Row>
-        <Row>
-          <Text>filler</Text>
-        </Row>
-      </Col>
-      <Col>
-        <Row>
-          <Text>end label</Text>
-        </Row>
-        <Row>
-          <Text>end hms</Text>
-        </Row>
-      </Col>
+    <Grid
+      style={{
+        position: 'absolute',
+        // todo standardize z indicies into layers or something
+        zIndex: 2,
+        borderWidth: 3,
+        borderColor: 'yellow',
+        height: '30%',
+        width: '100%',
+        backgroundColor: 'grey',
+      }}>
+      <Row size={1} style={{ backgroundColor: 'blue' }}>
+        <Col>
+          <Row style={{ backgroundColor: 'black' }}>
+            <Text style={{ color: 'white' }}>now label</Text>
+          </Row>
+          <Row style={{ backgroundColor: 'black' }}>
+            <Text style={{ color: 'white' }}>now hms</Text>
+          </Row>
+        </Col>
+        <Col>
+          <Row style={{ backgroundColor: 'black' }}>
+            <Text style={{ color: 'white' }}>remaining time</Text>
+          </Row>
+          <Row>
+            <Text>filler</Text>
+          </Row>
+        </Col>
+        <Col>
+          <Row style={{ backgroundColor: 'black' }}>
+            <Text style={{ color: 'white' }}>end label</Text>
+          </Row>
+          <Row style={{ backgroundColor: 'black' }}>
+            <Text style={{ color: 'white' }}>end hms</Text>
+          </Row>
+        </Col>
+      </Row>
+      <Row size={3} style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Text
+          style={{
+            fontSize: 120,
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            textAlignVertical: 'center',
+          }}
+          adjustFontSizeToFit={true}>
+          00:00
+        </Text>
+      </Row>
     </Grid>
   );
 }
 
 function TrackDisplay(props) {
-  return <View />;
+  const { annotatedMap } = props;
+  return <TrainTracker map={annotatedMap} defaultTieType={TIE_TYPES.NAV} />;
 }
 
 function CowCatcher(props) {
@@ -118,21 +149,23 @@ function onPressRestart() {}
 function onPressPause() {}
 
 function NiceNav(props) {
+  const { map, location, localTime, createAnnotatedMap } = props;
+  const [annotatedMap, setAnnotatedMap] = useState(createAnnotatedMap());
+
+  useEffect(() => {
+    setAnnotatedMap(createAnnotatedMap());
+  }, [createAnnotatedMap, map]);
+
   return (
     <Container>
-      <Content contentContainerStyle={styles.content}>
-        <TrainDisplay />
-        <TrackDisplay />
-        <CowCatcher />
-        <KeepAwake />
-      </Content>
-      <Footer>
-        <ControlBar
-          onPressPlay={onPressPlay}
-          onPressPause={onPressPause}
-          onPressRestart={onPressRestart}
-        />
-      </Footer>
+      <TrainDisplay />
+      <TrackDisplay
+        annotatedMap={annotatedMap}
+        location={location}
+        localTime={localTime}
+      />
+      <CowCatcher />
+      <KeepAwake />
     </Container>
   );
 }
@@ -150,25 +183,27 @@ const mapStateToProps = (state) => {
       matchUps,
       timerDuration,
     },
-    navigation: { departureTime },
+    navigation: { departureTime, map },
   } = state;
 
   return {
-    departureTime,
-    cycle,
-    participants,
-    currentRound,
-    roundCount,
-    matchUps,
-    timerDuration,
-    warmUp,
-    coolDown,
-    roundTime,
+    map,
+    // departureTime,
+    // cycle,
+    // participants,
+    // currentRound,
+    // roundCount,
+    // matchUps,
+    // timerDuration,
+    // warmUp,
+    // coolDown,
+    // roundTime,
   };
 };
 
 const mapDispatchToProps = {
   setDepartureTime,
+  createAnnotatedMap,
 };
 
 export default connect(

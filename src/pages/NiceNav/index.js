@@ -96,34 +96,35 @@ function TrainDisplay(props) {
           height: '100%',
           width: '100%',
         }}>
-        <Row size={1} style={{ backgroundColor: 'blue' }}>
+        <Row size={1} style={{ backgroundColor: 'blue' }} />
+        <Row size={4} style={{ backgroundColor: 'blue' }}>
           <Col>
-            <Row style={{ backgroundColor: 'black' }}>
+            <Row size={2} style={{ backgroundColor: 'black' }}>
               <Text style={{ color: 'white' }}>now label</Text>
             </Row>
-            <Row style={{ backgroundColor: 'black' }}>
+            <Row size={2} style={{ backgroundColor: 'black' }}>
               <Text style={{ color: 'white' }}>now hms</Text>
             </Row>
+            <Row size={1} style={{ backgroundColor: 'blue' }} />
           </Col>
           <Col>
             <Row style={{ backgroundColor: 'black' }}>
               <Text style={{ color: 'white' }}>remaining time</Text>
             </Row>
-            <Row>
-              <Text>filler</Text>
-            </Row>
+            <Row />
           </Col>
           <Col>
-            <Row style={{ backgroundColor: 'black' }}>
+            <Row size={2} style={{ backgroundColor: 'black' }}>
               <Text style={{ color: 'white' }}>end label</Text>
             </Row>
-            <Row style={{ backgroundColor: 'black' }}>
+            <Row size={2} style={{ backgroundColor: 'black' }}>
               <Text style={{ color: 'white' }}>end hms</Text>
             </Row>
+            <Row size={1} style={{ backgroundColor: 'blue' }} />
           </Col>
         </Row>
         <Row
-          size={3}
+          size={8}
           style={{
             backgroundColor: '#b87333',
             justifyContent: 'center',

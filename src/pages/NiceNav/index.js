@@ -19,7 +19,7 @@ import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
 import KeepAwake from 'react-native-keep-awake';
 import moment from 'moment';
 import { Grid, Row, Col } from 'react-native-easy-grid';
-import TrainTracker from '../../components/TrainTracker';
+import TrainTracker, { TrainRails } from '../../components/TrainTracker';
 import { createAnnotatedMap } from '../../actions/thunks';
 import { TIE_TYPES } from '../../components/TrainTracker/tieTypes';
 
@@ -75,71 +75,103 @@ const styles = StyleSheet.create({
   },
 });
 
+
+/////////////////////////////////////
+// train area
+//// abs position tracks
+//// train grid
+///// global data windows
+/////// current time
+//// local time front
+//// cowcatcher bottom
 // todo make the text sizes grow to fill parent
 function TrainDisplay(props) {
   return (
-    <Grid
-      style={{
-        position: 'absolute',
-        // todo standardize z indicies into layers or something
-        zIndex: 2,
-        borderWidth: 3,
-        borderColor: 'yellow',
-        height: '30%',
-        width: '100%',
-        backgroundColor: 'grey',
-      }}>
-      <Row size={1} style={{ backgroundColor: 'blue' }}>
-        <Col>
-          <Row style={{ backgroundColor: 'black' }}>
-            <Text style={{ color: 'white' }}>now label</Text>
-          </Row>
-          <Row style={{ backgroundColor: 'black' }}>
-            <Text style={{ color: 'white' }}>now hms</Text>
-          </Row>
-        </Col>
-        <Col>
-          <Row style={{ backgroundColor: 'black' }}>
-            <Text style={{ color: 'white' }}>remaining time</Text>
-          </Row>
-          <Row>
-            <Text>filler</Text>
-          </Row>
-        </Col>
-        <Col>
-          <Row style={{ backgroundColor: 'black' }}>
-            <Text style={{ color: 'white' }}>end label</Text>
-          </Row>
-          <Row style={{ backgroundColor: 'black' }}>
-            <Text style={{ color: 'white' }}>end hms</Text>
-          </Row>
-        </Col>
-      </Row>
-      <Row size={3} style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Text
+    <View style={{ height: '100%' }}>
+      <View style={{ position: 'absolute', height: '100%', width: '100%' }}>
+        <TrainRails />
+      </View>
+      <Grid
+        style={{
+          height: '100%',
+          width: '100%',
+        }}>
+        <Row size={1} style={{ backgroundColor: 'blue' }}>
+          <Col>
+            <Row style={{ backgroundColor: 'black' }}>
+              <Text style={{ color: 'white' }}>now label</Text>
+            </Row>
+            <Row style={{ backgroundColor: 'black' }}>
+              <Text style={{ color: 'white' }}>now hms</Text>
+            </Row>
+          </Col>
+          <Col>
+            <Row style={{ backgroundColor: 'black' }}>
+              <Text style={{ color: 'white' }}>remaining time</Text>
+            </Row>
+            <Row>
+              <Text>filler</Text>
+            </Row>
+          </Col>
+          <Col>
+            <Row style={{ backgroundColor: 'black' }}>
+              <Text style={{ color: 'white' }}>end label</Text>
+            </Row>
+            <Row style={{ backgroundColor: 'black' }}>
+              <Text style={{ color: 'white' }}>end hms</Text>
+            </Row>
+          </Col>
+        </Row>
+        <Row
+          size={3}
           style={{
-            fontSize: 120,
-            width: '100%',
+            backgroundColor: '#b87333',
             justifyContent: 'center',
             alignItems: 'center',
-            textAlign: 'center',
-            textAlignVertical: 'center',
-          }}
-          adjustFontSizeToFit={true}>
-          00:00
-        </Text>
-      </Row>
-    </Grid>
+          }}>
+          <Text
+            style={{
+              fontSize: 120,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
+              textAlignVertical: 'center',
+            }}
+            adjustFontSizeToFit={true}>
+            00:00
+          </Text>
+        </Row>
+        <Row size={1}>
+          <CowCatcher />
+        </Row>
+      </Grid>
+    </View>
   );
 }
 
 function TrackDisplay(props) {
   const { annotatedMap } = props;
-  return <TrainTracker map={annotatedMap} defaultTieType={TIE_TYPES.NAV} />;
+  return (
+    <TrainTracker
+      enforcedPosition={0}
+      map={annotatedMap}
+      defaultTieType={TIE_TYPES.NAV}
+    />
+  );
 }
 
 function CowCatcher(props) {
-  return <View />;
+  return (
+    <View
+      style={{
+        borderRadius: 8,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'black',
+      }}
+    />
+  );
 }
 
 function onPressPlay() {}
@@ -158,13 +190,21 @@ function NiceNav(props) {
 
   return (
     <Container>
-      <TrainDisplay />
-      <TrackDisplay
-        annotatedMap={annotatedMap}
-        location={location}
-        localTime={localTime}
-      />
-      <CowCatcher />
+      <Grid>
+        <Row size={4} style={{ justifyContent: 'center' }}>
+          <View style={{ width: '95%' }}>
+            <TrainDisplay />
+          </View>
+        </Row>
+
+        <Row size={8}>
+          <TrackDisplay
+            annotatedMap={annotatedMap}
+            location={location}
+            localTime={localTime}
+          />
+        </Row>
+      </Grid>
       <KeepAwake />
     </Container>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Text, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/Entypo';
 import { View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
@@ -19,7 +19,7 @@ function SpacerCol(props) {
   return <Col size={3 + adjust} />;
 }
 
-function TrainRails() {
+export function TrainRails() {
   return (
     <Grid style={{ flexGrow: 1 }}>
       <SpacerCol />
@@ -59,9 +59,13 @@ function TrackDisplaySwitch(props) {
 function TrainTracker(props) {
   const { map, location, localTime, defaultTieType } = props;
   const [selectedID, setSelectedID] = useState(0);
+  const [enforcedPosition, setEnforcedPosition] = useState(
+    props.enforcedPosition,
+  );
   const [trackDisplay, setTrackDisplay] = useState(
     defaultTieType || TIE_TYPES.TIME,
   );
+  const refContainer = useRef(null);
 
   function toggleTrackDisplay() {
     if (trackDisplay === TIE_TYPES.TIME) {
@@ -138,6 +142,15 @@ function TrainTracker(props) {
   };
 
   useEffect(() => {
+    if (refContainer && refContainer.current && !isNaN(enforcedPosition)) {
+      refContainer.current.scrollToIndex({
+        animated: true,
+        index: enforcedPosition,
+        viewPosition: 0,
+      });
+    }
+  }, [enforcedPosition]);
+  useEffect(() => {
     setSelectedID(location);
   }, [location]);
 
@@ -154,6 +167,13 @@ function TrainTracker(props) {
         <TrainRails />
       </View>
       <FlatList
+        onScrollToIndexFailed={(arg1, arg2) => {
+          console.log('scroll index faild');
+          console.log(arg1);
+          console.log(arg2);
+        }}
+        initialScrollIndex={0}
+        ref={refContainer}
         data={map.locations}
         renderItem={renderItem}
         keyExtractor={(i) => `${i.id}`}

@@ -82,7 +82,7 @@ function TrainSchedule(props) {
 
   // creates a map for navigation
   const onUpdatePress = useCallback(() => {
-    createAndSetMap(routes);
+    createAndSetMap();
   }, [routes, createAndSetMap]);
 
   useEffect(() => {

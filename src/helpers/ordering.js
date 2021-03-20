@@ -112,7 +112,7 @@ export function createCompleteRRCycle(matchUps, participants) {
 
     //////////////////////////////
     // update data trackers
-    cycle.push(nextMatchUpID);
+    cycle.push([nextMatchUpID]);
     lastMatchUp = { ...findMatchUpByID(matchUps, nextMatchUpID) };
     // update frequency maps
     matchUpFrequency[nextMatchUpID] += 1;

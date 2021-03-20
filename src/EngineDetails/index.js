@@ -15,7 +15,7 @@ function EngineDetailRow(props) {
 
 function EngineDetails(props) {
   const {
-    settings: { coolDown, warmUp, work, floorStates, name },
+    settings: { coolDown, warmUp, work, cycleMatchUpIDs, name },
   } = props;
 
   if (name === 'ZERO') {
@@ -29,7 +29,7 @@ function EngineDetails(props) {
   const warmUpDisplay = formatSecondsToDisplay(warmUp);
   const workDisplay = formatSecondsToDisplay(work);
   const coolDownDisplay = formatSecondsToDisplay(coolDown);
-  const floorStateDisplay = floorStates ? floorStates.length : 0;
+  const floorStateDisplay = cycleMatchUpIDs ? cycleMatchUpIDs.length : 0;
 
   return (
     <Grid>

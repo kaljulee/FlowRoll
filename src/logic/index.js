@@ -38,10 +38,10 @@ export const ZERO_ENGINE = {
 };
 
 function segmentsFromEngineCycle(engineCycle, id) {
-  const { floorStates, work, warmUp, coolDown } = engineCycle;
+  const { cycleMatchUpIDs, work, warmUp, coolDown } = engineCycle;
   const { WARMUP, COOLDOWN, WORK } = PHASES;
   let nextID = id;
-  const segments = floorStates.reduce((acc, s) => {
+  const segments = cycleMatchUpIDs.reduce((acc, s) => {
     const phaseColors = PHASE_COLORS();
     if (warmUp > 0) {
       acc.push(
@@ -52,7 +52,7 @@ function segmentsFromEngineCycle(engineCycle, id) {
           color: phaseColors[WARMUP],
           runTime: warmUp,
           id: nextID,
-          floorState: s,
+          matchUpIDs: s,
         }),
       );
       nextID += 1;
@@ -65,7 +65,7 @@ function segmentsFromEngineCycle(engineCycle, id) {
         runTime: work,
         color: phaseColors[WORK],
         id: nextID,
-        floorState: s,
+        matchUpIDs: s,
       }),
     );
     nextID += 1;
@@ -78,7 +78,7 @@ function segmentsFromEngineCycle(engineCycle, id) {
           label: 'cooldown',
           runTime: coolDown,
           id: nextID,
-          floorState: s,
+          matchUpIDs: s,
         }),
       );
       nextID += 1;
@@ -109,7 +109,7 @@ const _runEngine = (engineCycle, route, id) => {
 };
 
 export const createEngine = (settings) => {
-  const { floorStates, warmUp, coolDown, work, name } = settings;
+  const { matchUpIDs, warmUp, coolDown, work, name } = settings;
 
   // const { engineCycle } = settings;
   // console.log(engineCycle);
@@ -245,7 +245,7 @@ export function createSecondSliderConversion() {
 }
 
 export function createEngineCycle({
-  floorStates,
+  cycleMatchUpIDs,
   work,
   warmUp,
   coolDown,
@@ -253,7 +253,7 @@ export function createEngineCycle({
 }) {
   return {
     roundCount,
-    floorStates,
+    cycleMatchUpIDs,
     work,
     warmUp: cleanPhaseTime(warmUp),
     coolDown: cleanPhaseTime(coolDown),

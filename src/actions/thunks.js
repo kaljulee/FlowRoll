@@ -145,8 +145,9 @@ export function createAndSetEngine() {
     const {
       groundRobin: { warmUp, coolDown, completeRRCycle, work },
     } = getState();
+    // todo this should use an editable saved engine cycle from GR, not just the completeRRCycle
     const createdEngine = createEngine({
-      floorStates: completeRRCycle,
+      cycleMatchUpIDs: completeRRCycle,
       warmUp,
       coolDown,
       work,

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import _ from 'lodash';
+// todo logic should maybe not rely on these?
 import { createSegment } from '../models/Segment';
 import { PHASE_COLORS, PHASES } from '../models/Gears';
 import { createLocation, NOWHERE } from '../models/Location';

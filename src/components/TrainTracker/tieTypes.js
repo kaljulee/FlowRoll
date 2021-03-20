@@ -51,8 +51,10 @@ export function TimeTie(props) {
   );
 }
 
+// todo uses hard coded floorState[0]
 export function NavTie(props) {
-  const { id, color, isSelected, name, phase, floorState } = props;
+  const { id, color, isSelected, name, phase, floorState, phaseColor } = props;
+
   return (
     <View
       style={{
@@ -61,14 +63,14 @@ export function NavTie(props) {
         marginVertical: 0,
         width: 340,
         height: 130,
-        backgroundColor: color,
+        backgroundColor: color || phaseColor,
       }}>
       <Grid>
-        <Col>
+        <Col style={{ backgroundColor: phaseColor }}>
           <Text>{`${name}`}</Text>
         </Col>
         <Col>
-          <Text>{`${floorState ? floorState : ''}`}</Text>
+          <Text>{`${floorState ? floorState[0].string : ''}`}</Text>
         </Col>
       </Grid>
     </View>

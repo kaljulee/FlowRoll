@@ -37,7 +37,7 @@ export const ZERO_ENGINE = {
   runEngine: (route, id) => ZERO_PROCESS(route, id),
 };
 
-function segmentsFromEngineCycle(engineCycle, id) {
+function segmentsFromEngineCycle(engineCycle, route, id) {
   const { cycleMatchUpIDs, work, warmUp, coolDown } = engineCycle;
   const { WARMUP, COOLDOWN, WORK } = PHASES;
   let nextID = id;
@@ -49,10 +49,11 @@ function segmentsFromEngineCycle(engineCycle, id) {
           label: 'warmup',
           name: 'warmup',
           phase: WARMUP,
-          color: phaseColors[WARMUP],
+          phaseColor: phaseColors[WARMUP],
           runTime: warmUp,
           id: nextID,
           matchUpIDs: s,
+          routeType: route.id,
         }),
       );
       nextID += 1;
@@ -63,9 +64,10 @@ function segmentsFromEngineCycle(engineCycle, id) {
         label: 'round',
         name: 'round',
         runTime: work,
-        color: phaseColors[WORK],
+        phaseColor: phaseColors[WORK],
         id: nextID,
         matchUpIDs: s,
+        routeType: route.id,
       }),
     );
     nextID += 1;
@@ -73,12 +75,13 @@ function segmentsFromEngineCycle(engineCycle, id) {
       acc.push(
         createSegment({
           phase: COOLDOWN,
-          color: phaseColors[COOLDOWN],
+          phaseColor: phaseColors[COOLDOWN],
           name: 'cool down',
           label: 'cooldown',
           runTime: coolDown,
           id: nextID,
           matchUpIDs: s,
+          routeType: route.id,
         }),
       );
       nextID += 1;
@@ -93,7 +96,7 @@ const _runEngine = (engineCycle, route, id) => {
     case Gears.NEUTRAL:
       return ZERO_PROCESS(route, id);
     case Gears.FULL_CYCLE:
-      const cycleSegments = segmentsFromEngineCycle(engineCycle, id);
+      const cycleSegments = segmentsFromEngineCycle(engineCycle, route, id);
       return cycleSegments;
     case Gears.TRUNCATE:
       //todo logic to fill out segements based on matchups up until time is called

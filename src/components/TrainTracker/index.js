@@ -122,6 +122,7 @@ function TrainTracker(props) {
             name={item.name}
             floorState={item.floorState}
             phase={item.phase}
+            phaseColor={item.phaseColor}
             id={item.id}
             color={item.color}
             isSelected={checkIfSelected(item.id)}

@@ -14,7 +14,7 @@ function RenderItem(props) {
 function EngineStateList(props) {
   const { cycle, matchUps } = props;
 
-  const simpleCycle = cycle.map(c => c[0]);
+  const simpleCycle = cycle.map((c) => c[0]);
   function renderItem(id) {
     return RenderItem(findMatchUpByID(matchUps, id));
   }

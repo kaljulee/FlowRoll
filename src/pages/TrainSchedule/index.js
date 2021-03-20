@@ -91,6 +91,7 @@ function TrainSchedule(props) {
     setDisplayTotalTime(formatSecondsToDisplay(newSum));
   }, [routes, engine]);
 
+  // todo make this a hook
   // updates local time when relavant info changes
   useEffect(() => {
     setLocalTime(timeInLocation());

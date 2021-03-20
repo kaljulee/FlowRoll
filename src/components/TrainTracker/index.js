@@ -54,13 +54,20 @@ function TrackDisplaySwitch(props) {
   );
 }
 
+function cleanEnforcedPosition(position, locations) {
+  if (locations.length < 1) {
+    return undefined;
+  }
+  return position;
+}
+
 //////////////////////////////
 // export component
 function TrainTracker(props) {
   const { map, location, localTime, defaultTieType } = props;
   const [selectedID, setSelectedID] = useState(0);
   const [enforcedPosition, setEnforcedPosition] = useState(
-    props.enforcedPosition,
+    cleanEnforcedPosition(props.enforcedPosition, map.locations),
   );
   const [trackDisplay, setTrackDisplay] = useState(
     defaultTieType || TIE_TYPES.TIME,
@@ -146,6 +153,11 @@ function TrainTracker(props) {
   };
 
   useEffect(() => {
+    setEnforcedPosition(
+      cleanEnforcedPosition(props.enforcedPosition, map.locations),
+    );
+  }, [props.enforcedPosition, map]);
+  useEffect(() => {
     if (refContainer && refContainer.current && !isNaN(enforcedPosition)) {
       refContainer.current.scrollToIndex({
         animated: true,
@@ -176,7 +188,7 @@ function TrainTracker(props) {
           console.log(arg1);
           console.log(arg2);
         }}
-        initialScrollIndex={0}
+        initialScrollIndex={enforcedPosition}
         ref={refContainer}
         data={map.locations}
         renderItem={renderItem}

@@ -11,16 +11,14 @@ import {
   View,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { findMatchUpByID, STATUS } from '../../helpers/utils';
 import ControlBar from '../../components/ControlBar';
-import TotalTimeTracker from '../../components/TotalTimeTracker';
 import { setDepartureTime } from '../../actions';
-import { secondsToHMS, hourMinuteSecond } from '../../helpers/time';
+import { formatSecondsToDisplay } from '../../helpers/time';
 import KeepAwake from 'react-native-keep-awake';
 import moment from 'moment';
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import TrainTracker, { TrainRails } from '../../components/TrainTracker';
-import { createAnnotatedMap } from '../../actions/thunks';
+import { createAnnotatedMap, timeInLocation } from '../../actions/thunks';
 import { TIE_TYPES } from '../../components/TrainTracker/tieTypes';
 
 const cardStyle = {
@@ -75,7 +73,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 /////////////////////////////////////
 // train area
 //// abs position tracks
@@ -86,6 +83,7 @@ const styles = StyleSheet.create({
 //// cowcatcher bottom
 // todo make the text sizes grow to fill parent
 function TrainDisplay(props) {
+  const { elapsedSeconds, localTime } = props;
   return (
     <View style={{ height: '100%' }}>
       <View style={{ position: 'absolute', height: '100%', width: '100%' }}>
@@ -132,7 +130,7 @@ function TrainDisplay(props) {
           }}>
           <Text
             style={{
-              fontSize: 120,
+              fontSize: 100,
               width: '100%',
               justifyContent: 'center',
               alignItems: 'center',
@@ -140,7 +138,7 @@ function TrainDisplay(props) {
               textAlignVertical: 'center',
             }}
             adjustFontSizeToFit={true}>
-            00:00
+            {formatSecondsToDisplay(localTime)}
           </Text>
         </Row>
         <Row size={1}>
@@ -175,26 +173,54 @@ function CowCatcher(props) {
   );
 }
 
+// //////////////////////////////////
+// control functions
 function onPressPlay() {}
 
 function onPressRestart() {}
 
 function onPressPause() {}
 
+///////////////////////////////////////
+// export component
 function NiceNav(props) {
-  const { map, location, localTime, createAnnotatedMap } = props;
+  const {
+    map,
+    location,
+    createAnnotatedMap,
+    elapsedSeconds,
+    departureTime,
+    timeInLocation,
+    startTrain,
+  } = props;
   const [annotatedMap, setAnnotatedMap] = useState(createAnnotatedMap());
+  const [localTime, setLocalTime] = useState(0);
 
   useEffect(() => {
     setAnnotatedMap(createAnnotatedMap());
   }, [createAnnotatedMap, map]);
+
+  // todo use hook
+  // updates local time when relavant info changes
+  useEffect(() => {
+    setLocalTime(timeInLocation());
+  }, [elapsedSeconds, localTime, location, timeInLocation]);
+
+  const doStartTrain = () => {
+    setDepartureTime(moment());
+    startTrain();
+  };
 
   return (
     <Container>
       <Grid>
         <Row size={4} style={{ justifyContent: 'center' }}>
           <View style={{ width: '95%' }}>
-            <TrainDisplay />
+            <TrainDisplay
+              localTime={localTime}
+              elapsedSeconds={elapsedSeconds}
+              departureTime={departureTime}
+            />
           </View>
         </Row>
 
@@ -207,6 +233,15 @@ function NiceNav(props) {
         </Row>
       </Grid>
       <KeepAwake />
+      <Footer>
+        <ControlBar
+          onPressPlay={doStartTrain}
+          onPressPause={() => console.log('press pause')}
+          onPressRestart={() => {
+            console.log('press restart');
+          }}
+        />
+      </Footer>
     </Container>
   );
 }
@@ -224,27 +259,21 @@ const mapStateToProps = (state) => {
       matchUps,
       timerDuration,
     },
-    navigation: { departureTime, map },
+    navigation: { departureTime, map, location, elapsedSeconds },
   } = state;
 
   return {
     map,
-    // departureTime,
-    // cycle,
-    // participants,
-    // currentRound,
-    // roundCount,
-    // matchUps,
-    // timerDuration,
-    // warmUp,
-    // coolDown,
-    // roundTime,
+    departureTime,
+    elapsedSeconds,
+    location,
   };
 };
 
 const mapDispatchToProps = {
   setDepartureTime,
   createAnnotatedMap,
+  timeInLocation,
 };
 
 export default connect(

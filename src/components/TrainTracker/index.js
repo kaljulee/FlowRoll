@@ -119,6 +119,9 @@ function TrainTracker(props) {
       case TIE_TYPES.NAV:
         return (
           <NavTie
+            name={item.name}
+            floorState={item.floorState}
+            phase={item.phase}
             id={item.id}
             color={item.color}
             isSelected={checkIfSelected(item.id)}

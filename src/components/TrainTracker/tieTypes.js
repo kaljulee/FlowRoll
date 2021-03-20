@@ -52,7 +52,7 @@ export function TimeTie(props) {
 }
 
 export function NavTie(props) {
-  const { id, color, isSelected } = props;
+  const { id, color, isSelected, name, phase, floorState } = props;
   return (
     <View
       style={{
@@ -65,10 +65,10 @@ export function NavTie(props) {
       }}>
       <Grid>
         <Col>
-          <Text>activity label</Text>
+          <Text>{`${name}`}</Text>
         </Col>
         <Col>
-          <Text>matchup data</Text>
+          <Text>{`${floorState ? floorState : ''}`}</Text>
         </Col>
       </Grid>
     </View>

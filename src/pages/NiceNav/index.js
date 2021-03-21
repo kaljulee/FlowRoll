@@ -18,7 +18,11 @@ import KeepAwake from 'react-native-keep-awake';
 import moment from 'moment';
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import TrainTracker, { TrainRails } from '../../components/TrainTracker';
-import { createAnnotatedMap, timeInLocation } from '../../actions/thunks';
+import {
+  createAnnotatedMap,
+  startTrain,
+  timeInLocation,
+} from '../../actions/thunks';
 import { TIE_TYPES } from '../../components/TrainTracker/tieTypes';
 
 const cardStyle = {
@@ -150,12 +154,13 @@ function TrainDisplay(props) {
 }
 
 function TrackDisplay(props) {
-  const { annotatedMap } = props;
+  const { annotatedMap, location } = props;
   return (
     <TrainTracker
       enforcedPosition={0}
       map={annotatedMap}
       defaultTieType={TIE_TYPES.NAV}
+      location={location}
     />
   );
 }
@@ -192,6 +197,7 @@ function NiceNav(props) {
     departureTime,
     timeInLocation,
     startTrain,
+    setDepartureTime,
   } = props;
   const [annotatedMap, setAnnotatedMap] = useState(createAnnotatedMap());
   const [localTime, setLocalTime] = useState(0);
@@ -274,6 +280,7 @@ const mapDispatchToProps = {
   setDepartureTime,
   createAnnotatedMap,
   timeInLocation,
+  startTrain,
 };
 
 export default connect(

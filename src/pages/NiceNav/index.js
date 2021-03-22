@@ -24,6 +24,8 @@ import {
   timeInLocation,
 } from '../../actions/thunks';
 import { TIE_TYPES } from '../../components/TrainTracker/tieTypes';
+import { getLocationByID } from '../../logic';
+import { getRouteTypeByID } from '../../helpers/utils';
 
 const cardStyle = {
   width: '90%',
@@ -86,8 +88,15 @@ const styles = StyleSheet.create({
 //// local time front
 //// cowcatcher bottom
 // todo make the text sizes grow to fill parent
+// todo this should not require routeTypes, that should get sorted out higher up
 function TrainDisplay(props) {
-  const { elapsedSeconds, localTime } = props;
+  const { localTime, locationData, routeTypes } = props;
+  const defaultLocalTimeBackgroundColor = '#b87333';
+  const { runTime } = locationData;
+  const route = getRouteTypeByID(routeTypes, locationData.routeType);
+  const localTimeBackgroundColor = route
+    ? route.color
+    : defaultLocalTimeBackgroundColor;
   return (
     <View style={{ height: '100%' }}>
       <View style={{ position: 'absolute', height: '100%', width: '100%' }}>
@@ -128,7 +137,7 @@ function TrainDisplay(props) {
         <Row
           size={8}
           style={{
-            backgroundColor: '#b87333',
+            backgroundColor: localTimeBackgroundColor,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -142,7 +151,7 @@ function TrainDisplay(props) {
               textAlignVertical: 'center',
             }}
             adjustFontSizeToFit={true}>
-            {formatSecondsToDisplay(localTime)}
+            {formatSecondsToDisplay(runTime - localTime)}
           </Text>
         </Row>
         <Row size={1}>
@@ -198,6 +207,7 @@ function NiceNav(props) {
     timeInLocation,
     startTrain,
     setDepartureTime,
+    routeTypes,
   } = props;
   const [annotatedMap, setAnnotatedMap] = useState(createAnnotatedMap());
   const [localTime, setLocalTime] = useState(0);
@@ -223,13 +233,14 @@ function NiceNav(props) {
         <Row size={4} style={{ justifyContent: 'center' }}>
           <View style={{ width: '95%' }}>
             <TrainDisplay
+              locationData={getLocationByID(map.locations, location)}
+              routeTypes={routeTypes}
               localTime={localTime}
               elapsedSeconds={elapsedSeconds}
               departureTime={departureTime}
             />
           </View>
         </Row>
-
         <Row size={8}>
           <TrackDisplay
             annotatedMap={annotatedMap}
@@ -265,10 +276,12 @@ const mapStateToProps = (state) => {
       matchUps,
       timerDuration,
     },
+    trainSchedule: { routeTypes },
     navigation: { departureTime, map, location, elapsedSeconds },
   } = state;
 
   return {
+    routeTypes,
     map,
     departureTime,
     elapsedSeconds,

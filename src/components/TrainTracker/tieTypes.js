@@ -26,6 +26,11 @@ export const getTieDimensions = (type) => {
   }
 };
 
+export const getTotalTieHeight = (type) => {
+  const dim = getTieDimensions(type);
+  return dim.height + dim.marginTop + dim.marginBottom;
+}
+
 const tieStyling = {
   borderWidth: 1,
   borderColor: 'grey',

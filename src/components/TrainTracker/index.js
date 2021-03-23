@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import _ from 'lodash';
 import { Text, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/Entypo';
 import { View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { EMPTY_MAP } from '../../models/Location';
 import { Grid, Col } from 'react-native-easy-grid';
-import { LocationTie, TimeTie, NavTie, TIE_TYPES } from './tieTypes';
+import { TIE_TYPES, renderTie, getTotalTieHeight } from './tieTypes';
 ////////////////////////////
 // constants
 
@@ -55,10 +56,11 @@ function TrackDisplaySwitch(props) {
 }
 
 function cleanEnforcedPosition(position, locations) {
-  if (locations.length < 1) {
+  const index = _.findIndex(locations, { id: position });
+  if (index === -1) {
     return undefined;
   }
-  return position;
+  return index;
 }
 
 //////////////////////////////
@@ -95,68 +97,19 @@ function TrainTracker(props) {
     return id === selectedID;
   };
 
-  const renderItem = ({ item }) => {
-    switch (trackDisplay) {
-      case TIE_TYPES.TIME:
-        const tracks = [];
-        for (let i = 0; i < item.runTime; i += 300) {
-          tracks.push(
-            <TimeTie
-              key={`${item.id}_${i}`}
-              isSelected={checkIfSelected(item.id)}
-              id={item.id}
-              name={item.name}
-              color={item.color}
-            />,
-          );
-        }
-        return <View>{tracks}</View>;
-      case TIE_TYPES.LOCATION:
-        return (
-          <LocationTie
-            key={`${item.id}`}
-            localTime={localTime}
-            isSelected={checkIfSelected(item.id)}
-            id={item.id}
-            name={item.name}
-            color={item.color}
-            runTime={item.runTime}
-          />
-        );
-      case TIE_TYPES.NAV:
-        return (
-          <NavTie
-            name={item.name}
-            floorState={item.floorState}
-            phase={item.phase}
-            phaseColor={item.phaseColor}
-            id={item.id}
-            color={item.color}
-            isSelected={checkIfSelected(item.id)}
-          />
-        );
-
-      //default is location
-      default:
-        return (
-          <LocationTie
-            key={`${item.id}`}
-            localTime={localTime}
-            isSelected={checkIfSelected(item.id)}
-            id={item.id}
-            name={item.name}
-            color={item.color}
-            runTime={item.runTime}
-          />
-        );
-    }
-  };
-
+  // sets enforced position from props
   useEffect(() => {
     setEnforcedPosition(
       cleanEnforcedPosition(props.enforcedPosition, map.locations),
     );
   }, [props.enforcedPosition, map]);
+  // set enforcedPosition based on location changes
+  useEffect(() => {
+    setSelectedID(location);
+    setEnforcedPosition(cleanEnforcedPosition(location, map.locations));
+  }, [location, map]);
+
+  // scroll flatlist to enforced position
   useEffect(() => {
     if (refContainer && refContainer.current && !isNaN(enforcedPosition)) {
       refContainer.current.scrollToIndex({
@@ -166,9 +119,6 @@ function TrainTracker(props) {
       });
     }
   }, [enforcedPosition]);
-  useEffect(() => {
-    setSelectedID(location);
-  }, [location]);
 
   return (
     <SafeAreaView style={{ height: '100%', width: '100%' }}>
@@ -191,7 +141,16 @@ function TrainTracker(props) {
         initialScrollIndex={enforcedPosition}
         ref={refContainer}
         data={map.locations}
-        renderItem={renderItem}
+        renderItem={({ item }) =>
+          renderTie({ item, trackDisplay, localTime, checkIfSelected })
+        }
+        getItemLayout={(data, index) => {
+          return {
+            length: getTotalTieHeight(trackDisplay),
+            offset: getTotalTieHeight(trackDisplay) * index,
+            index,
+          };
+        }}
         keyExtractor={(i) => `${i.id}`}
         contentContainerStyle={listStyles.container}
         extraData={{ selectedID, localTime, trackDisplay }}

@@ -166,7 +166,6 @@ function TrackDisplay(props) {
   const { annotatedMap, location } = props;
   return (
     <TrainTracker
-      enforcedPosition={0}
       map={annotatedMap}
       defaultTieType={TIE_TYPES.NAV}
       location={location}

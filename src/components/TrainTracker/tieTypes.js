@@ -29,7 +29,7 @@ export const getTieDimensions = (type) => {
 export const getTotalTieHeight = (type) => {
   const dim = getTieDimensions(type);
   return dim.height + dim.marginTop + dim.marginBottom;
-}
+};
 
 const tieStyling = {
   borderWidth: 1,
@@ -72,13 +72,14 @@ export function TimeTie(props) {
 export function NavTie(props) {
   const { id, color, isSelected, name, phase, floorState, phaseColor } = props;
 
+  const bgColor = isSelected ? 'yellow' : color || phaseColor;
   return (
     <View
       style={{
         ...tieStyling,
         width: 340,
         ...getTieDimensions(TIE_TYPES.NAV),
-        backgroundColor: color || phaseColor,
+        backgroundColor: bgColor,
       }}>
       <Grid>
         <Col style={{ backgroundColor: phaseColor }}>

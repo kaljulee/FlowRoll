@@ -168,6 +168,7 @@ function MainDisplay(props) {
 
   // !! danger !!
   // current round count starts at 1, schedule starts at 0
+  // todo this is probably broken by cycleMatchUpID changes.  should be fine, since this component is defunct anyway
   const currentMatchUp = findMatchUpByID(matchUps, cycle[currentRound - 1]);
   const nextMatchUp =
     currentRound + 1 === roundCount

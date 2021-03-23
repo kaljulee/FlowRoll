@@ -1,5 +1,6 @@
 import moment from 'moment';
 import _ from 'lodash';
+// todo logic should maybe not rely on these?
 import { createSegment } from '../models/Segment';
 import { PHASE_COLORS, PHASES } from '../models/Gears';
 import { createLocation, NOWHERE } from '../models/Location';
@@ -36,11 +37,11 @@ export const ZERO_ENGINE = {
   runEngine: (route, id) => ZERO_PROCESS(route, id),
 };
 
-function segmentsFromEngineCycle(engineCycle, id) {
-  const { floorStates, work, warmUp, coolDown } = engineCycle;
+function segmentsFromEngineCycle(engineCycle, route, id) {
+  const { cycleMatchUpIDs, work, warmUp, coolDown } = engineCycle;
   const { WARMUP, COOLDOWN, WORK } = PHASES;
   let nextID = id;
-  const segments = floorStates.reduce((acc, s) => {
+  const segments = cycleMatchUpIDs.reduce((acc, s) => {
     const phaseColors = PHASE_COLORS();
     if (warmUp > 0) {
       acc.push(
@@ -48,10 +49,11 @@ function segmentsFromEngineCycle(engineCycle, id) {
           label: 'warmup',
           name: 'warmup',
           phase: WARMUP,
-          color: phaseColors[WARMUP],
+          phaseColor: phaseColors[WARMUP],
           runTime: warmUp,
           id: nextID,
-          floorState: s,
+          matchUpIDs: s,
+          routeType: route.id,
         }),
       );
       nextID += 1;
@@ -62,9 +64,10 @@ function segmentsFromEngineCycle(engineCycle, id) {
         label: 'round',
         name: 'round',
         runTime: work,
-        color: phaseColors[WORK],
+        phaseColor: phaseColors[WORK],
         id: nextID,
-        floorState: s,
+        matchUpIDs: s,
+        routeType: route.id,
       }),
     );
     nextID += 1;
@@ -72,12 +75,13 @@ function segmentsFromEngineCycle(engineCycle, id) {
       acc.push(
         createSegment({
           phase: COOLDOWN,
-          color: phaseColors[COOLDOWN],
+          phaseColor: phaseColors[COOLDOWN],
           name: 'cool down',
           label: 'cooldown',
           runTime: coolDown,
           id: nextID,
-          floorState: s,
+          matchUpIDs: s,
+          routeType: route.id,
         }),
       );
       nextID += 1;
@@ -92,7 +96,7 @@ const _runEngine = (engineCycle, route, id) => {
     case Gears.NEUTRAL:
       return ZERO_PROCESS(route, id);
     case Gears.FULL_CYCLE:
-      const cycleSegments = segmentsFromEngineCycle(engineCycle, id);
+      const cycleSegments = segmentsFromEngineCycle(engineCycle, route, id);
       return cycleSegments;
     case Gears.TRUNCATE:
       //todo logic to fill out segements based on matchups up until time is called
@@ -108,7 +112,7 @@ const _runEngine = (engineCycle, route, id) => {
 };
 
 export const createEngine = (settings) => {
-  const { floorStates, warmUp, coolDown, work, name } = settings;
+  const { matchUpIDs, warmUp, coolDown, work, name } = settings;
 
   // const { engineCycle } = settings;
   // console.log(engineCycle);
@@ -244,7 +248,7 @@ export function createSecondSliderConversion() {
 }
 
 export function createEngineCycle({
-  floorStates,
+  cycleMatchUpIDs,
   work,
   warmUp,
   coolDown,
@@ -252,7 +256,7 @@ export function createEngineCycle({
 }) {
   return {
     roundCount,
-    floorStates,
+    cycleMatchUpIDs,
     work,
     warmUp: cleanPhaseTime(warmUp),
     coolDown: cleanPhaseTime(coolDown),

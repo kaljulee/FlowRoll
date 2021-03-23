@@ -1,29 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import _ from 'lodash';
 import { Text, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/Entypo';
 import { View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { EMPTY_MAP } from '../../models/Location';
 import { Grid, Col } from 'react-native-easy-grid';
-import { formatSecondsToDisplay } from '../../helpers/time';
-
+import { TIE_TYPES, renderTie, getTotalTieHeight } from './tieTypes';
 ////////////////////////////
 // constants
-const DISPLAY_TYPES = {
-  TIME: 'TIME',
-  LOCATION: 'LOCATION',
-  ROUTE: 'ROUTE',
-};
-const tieStyling = {
-  borderWidth: 1,
-  borderColor: 'grey',
-  width: 70,
-  height: 8,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginTop: 2,
-  marginBottom: 2,
-};
 
 ///////////////////////////
 // supporting components
@@ -36,7 +20,7 @@ function SpacerCol(props) {
   return <Col size={3 + adjust} />;
 }
 
-function TrainRails() {
+export function TrainRails() {
   return (
     <Grid style={{ flexGrow: 1 }}>
       <SpacerCol />
@@ -57,10 +41,10 @@ function TrackDisplaySwitch(props) {
   };
   const timeStyle = { ...iconStyle };
   const locationStyle = { ...iconStyle };
-  if (trackDisplay === DISPLAY_TYPES.TIME) {
+  if (trackDisplay === TIE_TYPES.TIME) {
     timeStyle.color = 'white';
   }
-  if (trackDisplay === DISPLAY_TYPES.LOCATION) {
+  if (trackDisplay === TIE_TYPES.LOCATION) {
     locationStyle.color = 'white';
   }
   return (
@@ -71,46 +55,32 @@ function TrackDisplaySwitch(props) {
   );
 }
 
-function LocationTie(props) {
-  const { id, name, color, localTime, isSelected, runTime } = props;
-  return (
-    <View
-      style={{
-        ...tieStyling,
-        backgroundColor: isSelected ? 'green' : color,
-        height: 28,
-        marginTop: 5,
-        marginBottom: 5,
-      }}>
-      <Text>{formatSecondsToDisplay(runTime)}</Text>
-    </View>
-  );
-}
-
-function TimeTie(props) {
-  const { id, color, isSelected } = props;
-  return (
-    <View
-      style={{
-        ...tieStyling,
-        backgroundColor: isSelected ? 'green' : color,
-      }}
-    />
-  );
+function cleanEnforcedPosition(position, locations) {
+  const index = _.findIndex(locations, { id: position });
+  if (index === -1) {
+    return undefined;
+  }
+  return index;
 }
 
 //////////////////////////////
 // export component
 function TrainTracker(props) {
-  const { map, location, localTime } = props;
+  const { map, location, localTime, defaultTieType } = props;
   const [selectedID, setSelectedID] = useState(0);
-  const [trackDisplay, setTrackDisplay] = useState(DISPLAY_TYPES.TIME);
+  const [enforcedPosition, setEnforcedPosition] = useState(
+    cleanEnforcedPosition(props.enforcedPosition, map.locations),
+  );
+  const [trackDisplay, setTrackDisplay] = useState(
+    defaultTieType || TIE_TYPES.TIME,
+  );
+  const refContainer = useRef(null);
 
   function toggleTrackDisplay() {
-    if (trackDisplay === DISPLAY_TYPES.TIME) {
-      setTrackDisplay(DISPLAY_TYPES.LOCATION);
+    if (trackDisplay === TIE_TYPES.TIME) {
+      setTrackDisplay(TIE_TYPES.LOCATION);
     } else {
-      setTrackDisplay(DISPLAY_TYPES.TIME);
+      setTrackDisplay(TIE_TYPES.TIME);
     }
   }
 
@@ -127,38 +97,28 @@ function TrainTracker(props) {
     return id === selectedID;
   };
 
-  const renderItem = ({ item }) => {
-    if (trackDisplay === DISPLAY_TYPES.TIME) {
-      const tracks = [];
-      for (let i = 0; i < item.runTime; i += 300) {
-        tracks.push(
-          <TimeTie
-            key={`${item.id}_${i}`}
-            isSelected={checkIfSelected(item.id)}
-            id={item.id}
-            name={item.name}
-            color={item.color}
-          />,
-        );
-      }
-      return <View>{tracks}</View>;
-    }
-    return (
-      <LocationTie
-        key={`${item.id}`}
-        localTime={localTime}
-        isSelected={checkIfSelected(item.id)}
-        id={item.id}
-        name={item.name}
-        color={item.color}
-        runTime={item.runTime}
-      />
+  // sets enforced position from props
+  useEffect(() => {
+    setEnforcedPosition(
+      cleanEnforcedPosition(props.enforcedPosition, map.locations),
     );
-  };
-
+  }, [props.enforcedPosition, map]);
+  // set enforcedPosition based on location changes
   useEffect(() => {
     setSelectedID(location);
-  }, [location]);
+    setEnforcedPosition(cleanEnforcedPosition(location, map.locations));
+  }, [location, map]);
+
+  // scroll flatlist to enforced position
+  useEffect(() => {
+    if (refContainer && refContainer.current && !isNaN(enforcedPosition)) {
+      refContainer.current.scrollToIndex({
+        animated: true,
+        index: enforcedPosition,
+        viewPosition: 0,
+      });
+    }
+  }, [enforcedPosition]);
 
   return (
     <SafeAreaView style={{ height: '100%', width: '100%' }}>
@@ -173,8 +133,24 @@ function TrainTracker(props) {
         <TrainRails />
       </View>
       <FlatList
+        onScrollToIndexFailed={(arg1, arg2) => {
+          console.log('scroll index faild');
+          console.log(arg1);
+          console.log(arg2);
+        }}
+        initialScrollIndex={enforcedPosition}
+        ref={refContainer}
         data={map.locations}
-        renderItem={renderItem}
+        renderItem={({ item }) =>
+          renderTie({ item, trackDisplay, localTime, checkIfSelected })
+        }
+        getItemLayout={(data, index) => {
+          return {
+            length: getTotalTieHeight(trackDisplay),
+            offset: getTotalTieHeight(trackDisplay) * index,
+            index,
+          };
+        }}
         keyExtractor={(i) => `${i.id}`}
         contentContainerStyle={listStyles.container}
         extraData={{ selectedID, localTime, trackDisplay }}

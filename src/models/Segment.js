@@ -1,9 +1,17 @@
-export function createSegment({ runTime, routeType, id, floorState, phase }) {
+export function createSegment({
+  runTime,
+  routeType,
+  id,
+  matchUpIDs,
+  phase,
+  phaseColor,
+}) {
   return {
     runTime,
     routeType,
     id,
     phase,
-    floorState,
+    matchUpIDs,
+    phaseColor,
   };
 }

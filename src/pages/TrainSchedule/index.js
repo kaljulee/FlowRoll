@@ -82,7 +82,7 @@ function TrainSchedule(props) {
 
   // creates a map for navigation
   const onUpdatePress = useCallback(() => {
-    createAndSetMap(routes);
+    createAndSetMap();
   }, [routes, createAndSetMap]);
 
   useEffect(() => {
@@ -91,6 +91,7 @@ function TrainSchedule(props) {
     setDisplayTotalTime(formatSecondsToDisplay(newSum));
   }, [routes, engine]);
 
+  // todo make this a hook
   // updates local time when relavant info changes
   useEffect(() => {
     setLocalTime(timeInLocation());

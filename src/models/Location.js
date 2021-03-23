@@ -6,6 +6,7 @@ export function createLocation(segment, offset) {
 export const NOWHERE = {
   runTime: 0,
   id: 0,
+  offset: 0,
 };
 
 export const EMPTY_MAP = {

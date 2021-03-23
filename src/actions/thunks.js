@@ -17,7 +17,7 @@ import {
   setElapsedSeconds,
   setEngine,
 } from '../actions';
-import { getRouteTypeByID } from '../helpers/utils';
+import { findMatchUpByID, getRouteTypeByID } from '../helpers/utils';
 import { getPhaseColor, PHASES } from '../models/Gears';
 
 // this will store interval id in state, call updates to position and current start time
@@ -60,7 +60,6 @@ export function startTrain() {
     dispatch(setScopeID({ id: scope }));
   };
 }
-
 
 function updatePosition(elapsedSeconds) {
   return function(dispatch, getState) {
@@ -111,11 +110,17 @@ export function createAnnotatedMap() {
     const {
       trainSchedule: { routeTypes },
       navigation: { map },
+      groundRobin: { matchUps },
     } = getState();
     return {
       ...map,
       locations: map.locations.map((m) => {
         const locationData = { ...getRouteTypeByID(routeTypes, m.routeType) };
+        if (m.matchUpIDs) {
+          locationData.floorState = m.matchUpIDs.map((id) =>
+            findMatchUpByID(matchUps, id),
+          );
+        }
         const phase = {
           color: getPhaseColor(m.phase),
           name: PHASES[m.phase],
@@ -128,12 +133,13 @@ export function createAnnotatedMap() {
         if (!locationData.name) {
           locationData.name = phase.name;
         }
-        const { color, name, label } = locationData;
+        const { color, name, label, floorState } = locationData;
         return {
           ...m,
           color,
           name,
           label,
+          floorState,
         };
       }),
     };
@@ -145,8 +151,9 @@ export function createAndSetEngine() {
     const {
       groundRobin: { warmUp, coolDown, completeRRCycle, work },
     } = getState();
+    // todo this should use an editable saved engine cycle from GR, not just the completeRRCycle
     const createdEngine = createEngine({
-      floorStates: completeRRCycle,
+      cycleMatchUpIDs: completeRRCycle,
       warmUp,
       coolDown,
       work,

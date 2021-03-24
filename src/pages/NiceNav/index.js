@@ -79,6 +79,23 @@ const styles = StyleSheet.create({
   },
 });
 
+// ///////////////////////////////////
+// sound setup
+// import sound module
+var Sound = require('react-native-sound');
+// enable playback ins slience mode
+Sound.setCategory('Playback');
+var changeOverSound = new Sound(
+  'changeoverbeep.mp3',
+  Sound.MAIN_BUNDLE,
+  (err) => {
+    if (err) {
+      console.log('failed to load sound', err);
+      return;
+    }
+  },
+);
+
 /////////////////////////////////////
 // train area
 //// abs position tracks
@@ -208,6 +225,7 @@ function NiceNav(props) {
     setDepartureTime,
     routeTypes,
   } = props;
+
   const [annotatedMap, setAnnotatedMap] = useState(createAnnotatedMap());
   const [localTime, setLocalTime] = useState(0);
 
@@ -220,6 +238,12 @@ function NiceNav(props) {
   useEffect(() => {
     setLocalTime(timeInLocation());
   }, [elapsedSeconds, localTime, location, timeInLocation]);
+
+  useEffect(() => {
+    if (!isNaN(location) && location > 0) {
+      changeOverSound.play();
+    }
+  }, [location]);
 
   const doStartTrain = () => {
     setDepartureTime(moment());
@@ -264,6 +288,7 @@ function NiceNav(props) {
 
 const mapStateToProps = (state) => {
   const {
+    basicReducer: { mute },
     groundRobin: {
       participants,
       warmUp,
@@ -285,6 +310,7 @@ const mapStateToProps = (state) => {
     departureTime,
     elapsedSeconds,
     location,
+    mute,
   };
 };
 

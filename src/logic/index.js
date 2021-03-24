@@ -53,7 +53,7 @@ function segmentsFromEngineCycle(engineCycle, route, id) {
           runTime: warmUp,
           id: nextID,
           matchUpIDs: s,
-          routeType: route.id,
+          routeType: route.routeType,
         }),
       );
       nextID += 1;
@@ -67,7 +67,7 @@ function segmentsFromEngineCycle(engineCycle, route, id) {
         phaseColor: phaseColors[WORK],
         id: nextID,
         matchUpIDs: s,
-        routeType: route.id,
+        routeType: route.routeType,
       }),
     );
     nextID += 1;
@@ -81,7 +81,7 @@ function segmentsFromEngineCycle(engineCycle, route, id) {
           runTime: coolDown,
           id: nextID,
           matchUpIDs: s,
-          routeType: route.id,
+          routeType: route.routeType,
         }),
       );
       nextID += 1;

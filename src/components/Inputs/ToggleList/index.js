@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Grid, Row } from 'react-native-easy-grid';
 import { StyleSheet, Text } from 'react-native';
-import SchedulingList from '../../SchedulingList';
+import SchedulingList from '../SchedulingList';
 
 const styles = StyleSheet.create({
   container: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import SchedulingList from '../../SchedulingList';
+import SchedulingList from '../../Inputs/SchedulingList';
 function RouteList(props) {
   const { routes } = props;
 

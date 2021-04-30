@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { StyleSheet } from 'react-native';
 import { Input, Label } from 'native-base';
-import { numberInputFontSize } from '../../constants/styleValues';
+import { numberInputFontSize } from '../../../constants/styleValues';
 
 function formatValueForInput(value) {
   const stringValue = value.toString();

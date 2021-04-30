@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Col, Grid, Row } from 'react-native-easy-grid';
 import { Text, View } from 'native-base';
-import SettingsButton from '../../SettingsButton';
+import SettingsButton from '../../Inputs/SettingsButton';
 import ManageParticipantsModal from '../../modals/ManageParticipantsModal';
 import AddParticipantModal from '../../modals/AddParticipantModal';
 import DeleteParticipantModal from '../../modals/DeleteParticipantModal';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Col, Row } from 'react-native-easy-grid';
-import { COLORS } from '../../constants/styleValues';
+import { COLORS } from '../../../constants/styleValues';
 
 function ColorPicker(props) {
   const { isVisible, onColorPress } = props;

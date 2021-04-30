@@ -6,7 +6,7 @@ import {
   deactivateParticipants,
   addParticipants,
 } from '../../../actions';
-import ToggleList from '../../ToggleList';
+import ToggleList from '../../Inputs/ToggleList';
 
 function ParticipantManager(props) {
   const {

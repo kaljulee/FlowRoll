@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, CardItem, Text, Item, Label, Picker } from 'native-base';
-import { NumberInputLabel } from '../NumberInput';
-import { numberInputFontSize } from '../../constants/styleValues';
+import { NumberInputLabel } from '../../NumberInput';
+import { numberInputFontSize } from '../../../constants/styleValues';
 
 function TimeInput(props) {
   const { label, value, reduxAction, onSelectedChange } = props;

@@ -16,8 +16,8 @@ import {
   formatSecondsToDisplay,
 } from '../../../helpers/time';
 import { connect } from 'react-redux';
-import SecondSlider from '../../SecondSlider';
-import ColorPicker from '../../ColorPicker';
+import SecondSlider from '../../Inputs/SecondSlider';
+import ColorPicker from '../../Inputs/ColorPicker';
 import { deleteRouteType, editRouteType } from '../../../actions';
 import GearSelector from '../../Mechanics/GearSelector';
 //todo find a way to combine editRoute and addRoute modals

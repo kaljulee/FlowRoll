@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Text, Button, Container, Card, CardItem, Footer } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
-import RouteManager from '../../components/RouteManager';
+import RouteManager from '../../components/Route/RouteManager';
 import moment from 'moment';
 import TrainTracker from '../../components/TrainTracker';
 import {

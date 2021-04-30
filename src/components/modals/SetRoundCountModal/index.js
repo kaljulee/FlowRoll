@@ -4,7 +4,7 @@ import { Card, Input, Item } from 'native-base';
 import { StyleSheet } from 'react-native';
 import CloseModalButton from '../../CloseModalButton';
 import { numberInputFontSize } from '../../../constants/styleValues';
-import { NumberInputLabel } from '../../NumberInput';
+import { NumberInputLabel } from '../../Inputs/NumberInput';
 import { setRoundCount } from '../../../actions';
 import { connect } from 'react-redux';
 

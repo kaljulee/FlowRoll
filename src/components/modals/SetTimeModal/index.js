@@ -1,5 +1,5 @@
 import Modal from 'react-native-modal';
-import TimeInput from '../../TimeInput';
+import TimeInput from '../../Inputs/TimeInput';
 import CloseModalButton from '../../CloseModalButton';
 import React from 'react';
 

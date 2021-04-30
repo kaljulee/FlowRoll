@@ -1,5 +1,5 @@
 import React from 'react';
-import ToggleList from '../ToggleList';
+import ToggleList from '../../Inputs/ToggleList';
 
 function RouteManager(props) {
   const {

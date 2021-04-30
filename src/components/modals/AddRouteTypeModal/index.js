@@ -13,15 +13,15 @@ import {
 import { ToastAndroid } from 'react-native';
 import { addRouteType } from '../../../actions';
 import { connect } from 'react-redux';
-import SecondSlider from '../../SecondSlider';
+import SecondSlider from '../../Inputs/SecondSlider';
 import {
   formatSecondsToDisplay,
   hourMinuteSecond,
   secondsToHMS,
 } from '../../../helpers/time';
-import ColorPicker from '../../ColorPicker';
+import ColorPicker from '../../Inputs/ColorPicker';
 import { COLORS } from '../../../constants/styleValues';
-import GearSelector from '../../GearSelector';
+import GearSelector from '../../Mechanics/GearSelector';
 import { Gears } from '../../../models/Gears';
 
 function AddRouteTypeModal(props) {

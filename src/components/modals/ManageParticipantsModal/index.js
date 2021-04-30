@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Button, Card, CardItem } from 'native-base';
 import Modal from 'react-native-modal';
 import CloseModalButton from '../../../components/CloseModalButton';
-import ParticipantManager from '../../../components/ParticipantManager';
+import ParticipantManager from '../../Participant/ParticipantManager';
 import Icon from 'react-native-vector-icons/Entypo';
 import AddParticipantButton from '../../../components/AddParticipantButton';
 import { Grid, Col } from 'react-native-easy-grid';

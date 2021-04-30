@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import SchedulingList from '../SchedulingList';
+import SchedulingList from '../../SchedulingList';
 
 const styles = StyleSheet.create({
   card: {

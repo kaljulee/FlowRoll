@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { participantsByActive } from '../../helpers/ordering';
+import { participantsByActive } from '../../../helpers/ordering';
 import {
   activateParticipants,
   deactivateParticipants,
   addParticipants,
-} from '../../actions';
-import ToggleList from '../ToggleList';
+} from '../../../actions';
+import ToggleList from '../../ToggleList';
 
 function ParticipantManager(props) {
   const {

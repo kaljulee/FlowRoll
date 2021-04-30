@@ -21,7 +21,7 @@ import {
 } from '../../../helpers/time';
 import ColorPicker from '../../ColorPicker';
 import { COLORS } from '../../../constants/styleValues';
-import GearSelector from '../../GearSelector';
+import GearSelector from '../../Mechanics/GearSelector';
 import { Gears } from '../../../models/Gears';
 
 function AddRouteTypeModal(props) {

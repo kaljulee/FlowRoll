@@ -3,10 +3,10 @@ import { Grid, Row, Col } from 'react-native-easy-grid';
 import { Text, Button } from 'native-base';
 import { TextInput, View } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import SecondSlider from '../SecondSlider';
-import { formatSecondsToDisplay } from '../../helpers/time';
-import { createPhaseValues, PHASES } from '../../models/Gears';
-import PhaseEditorModal from '../modals/PhaseEditorModal';
+import SecondSlider from '../../SecondSlider';
+import { formatSecondsToDisplay } from '../../../helpers/time';
+import { createPhaseValues, PHASES } from '../../../models/Gears';
+import PhaseEditorModal from '../../modals/PhaseEditorModal';
 
 function calculateGroundTime(w, r, c) {
   return w + r + c;

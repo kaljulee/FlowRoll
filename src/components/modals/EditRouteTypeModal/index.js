@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import SecondSlider from '../../SecondSlider';
 import ColorPicker from '../../ColorPicker';
 import { deleteRouteType, editRouteType } from '../../../actions';
-import GearSelector from '../../GearSelector';
+import GearSelector from '../../Mechanics/GearSelector';
 //todo find a way to combine editRoute and addRoute modals
 function EditRouteTypeModal(props) {
   const { closeModal, editRouteType, editRoute, deleteRouteType } = props;

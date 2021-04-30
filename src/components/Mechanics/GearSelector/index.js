@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import { Text, Radio } from 'native-base';
-import { Gears } from '../../models/Gears';
+import { Gears } from '../../../models/Gears';
 
 function GearSelector(props) {
   const { gear, setGear } = props;

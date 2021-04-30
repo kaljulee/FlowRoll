@@ -6,8 +6,8 @@ import { resetDB,
 } from '../../actions';
 import { createAndSetEngine } from '../../actions/thunks';
 import { Grid, Col, Row } from 'react-native-easy-grid';
-import EngineStateList from '../../components/EngineStateList';
-import EngineSettings from '../../components/EngineSettings';
+import EngineStateList from '../../components/Mechanics/EngineStateList';
+import EngineSettings from '../../components/Mechanics/EngineSettings';
 import EngineDetails from '../../EngineDetails';
 
 function GroundRobin(props) {

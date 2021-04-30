@@ -2,9 +2,9 @@ import React from 'react';
 import { Text, H3 } from 'native-base';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { resetDB, setBreakTime, setRoundTime } from '../../actions';
-import { createAndSetEngine } from '../../actions/thunks';
-import { findMatchUpByID } from '../../helpers/utils';
+import { resetDB, setBreakTime, setRoundTime } from '../../../actions';
+import { createAndSetEngine } from '../../../actions/thunks';
+import { findMatchUpByID } from '../../../helpers/utils';
 
 function RenderItem(props) {
   const { p1, p2 } = props;

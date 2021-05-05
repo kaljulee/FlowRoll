@@ -196,7 +196,7 @@ const mapDispatchToProps = {
   createAnnotatedMap,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TrainSchedule);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(TrainSchedule);

@@ -33,7 +33,7 @@ import {
   Tabs,
 } from 'native-base';
 import ActiveTimerWarningModal from './src/components/modals/ActiveTimerWarningModal';
-import TrainSchedule from './src/pages/TrainSchedule';
+import TrainScheduler from './src/pages/TrainScheduler';
 import NiceNav from './src/pages/NiceNav';
 const { store, persistor } = configureStore();
 
@@ -78,7 +78,7 @@ const App: () => React$Node = () => {
                   <NiceNav />
                 </Tab>
                 <Tab heading={'Train Schedule'}>
-                  <TrainSchedule />
+                  <TrainScheduler />
                 </Tab>
               </Tabs>
               <ActiveTimerWarningModal

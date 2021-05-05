@@ -53,6 +53,7 @@ function GroundTimeInput(props) {
   const [workValue, setWorkValue] = useState(work);
   const [phaseToEdit, setPhaseToEdit] = useState(undefined);
   const [showEditor, setShowEditor] = useState(false);
+  const [sliderLength, setSliderLength] = useState(100);
 
   //////////////////////////////////
   // updates total time to adjust for changes to phase times
@@ -201,7 +202,12 @@ function GroundTimeInput(props) {
     ],
   );
   return (
-    <View>
+    <View
+      onLayout={(event) => {
+        const { x, y, width, height } = event.nativeEvent.layout;
+        setSliderLength(width - 15);
+      }}
+      style={{ width: '100%' }}>
       <Grid>
         <Row size={1}>
           <PhaseColumn
@@ -224,6 +230,7 @@ function GroundTimeInput(props) {
           <MultiSlider
             values={[warmUpValue, Math.abs(totalTime - coolDownValue)]}
             enabledOne={true}
+            sliderLength={sliderLength}
             enabledTwo={true}
             min={0}
             max={totalTime}

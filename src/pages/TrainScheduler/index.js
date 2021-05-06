@@ -1,65 +1,18 @@
 import React from 'react';
-import { View } from 'react-native';
 import {
   Text,
   Button,
   Container,
-  Card,
-  CardItem,
-  Footer,
-  Radio,
 } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import { connect } from 'react-redux';
 import WeightedColumns from '../../components/WeightedColumns';
 import TimeSetup from './TimeSetup';
 import SpaceSetup from './SpaceSetup';
-
-function ActivityOption(props) {
-  const { label } = props;
-  return (
-    <View>
-      <Radio />
-      <Text>label</Text>
-    </View>
-  );
-}
-
-function ActivityLabel(props) {
-  const { label, color } = props;
-  return (
-    <Button>
-      <Text style={{ color }}>label</Text>
-    </Button>
-  );
-}
-
-function OptionsBlock(props) {
-  const optionData = [{ label: 'round robin' }, { label: 'rotate through' }];
-
-  const optionColumns = optionData.map((data, i) => {
-    return (
-      <Col key={i}>
-        <ActivityOption label={data.label} />
-      </Col>
-    );
-  });
-
-  return (
-    <Grid style={{ backgroundColor: 'purple' }}>
-      <Row>{optionColumns}</Row>
-      <Row>
-        <Text>Total time</Text>
-      </Row>
-    </Grid>
-  );
-}
+import ActivityLabel from './ActivityLabel';
 
 function ScheduleControls(props) {
   const { participants, activeParticipants } = props;
-  const onRadioPress = (viewType) => {
-    console.log('viewType changed to ' + viewType);
-  };
 
   return (
     <Grid>

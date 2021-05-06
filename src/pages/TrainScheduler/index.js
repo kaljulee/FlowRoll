@@ -65,10 +65,10 @@ function ScheduleControls(props) {
       <Row size={1} style={{ justifyContent: 'center' }}>
         <ActivityLabel label={'label'} color={'red'} />
       </Row>
-      <Row size={2}>
+      <Row size={4}>
         <SpaceSetup />
       </Row>
-      <Row size={2}>
+      <Row size={4}>
         <TimeSetup />
       </Row>
       <Row size={1}>

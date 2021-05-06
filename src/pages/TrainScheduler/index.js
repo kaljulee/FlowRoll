@@ -56,6 +56,7 @@ function OptionsBlock(props) {
 }
 
 function ScheduleControls(props) {
+  const { participants, activeParticipants } = props;
   const onRadioPress = (viewType) => {
     console.log('viewType changed to ' + viewType);
   };
@@ -66,7 +67,10 @@ function ScheduleControls(props) {
         <ActivityLabel label={'label'} color={'red'} />
       </Row>
       <Row size={4}>
-        <SpaceSetup />
+        <SpaceSetup
+          participants={participants}
+          activeParticipants={activeParticipants}
+        />
       </Row>
       <Row size={4}>
         <TimeSetup />
@@ -100,22 +104,33 @@ function ScheduleOverview(props) {
 }
 
 function TrainScheduler(props) {
-  const colOne = <ScheduleControls />;
-  const colTwo = <ScheduleOverview />;
+  const { activeParticipants, participants } = props;
+
   return (
     <Container>
-      <WeightedColumns colOne={colOne} colTwo={colTwo} />
+      <WeightedColumns>
+        <ScheduleControls
+          particiapnts={participants}
+          activeParticipants={activeParticipants}
+        />
+        <ScheduleOverview />
+      </WeightedColumns>
     </Container>
   );
 }
 
 const mapStateToProps = (state) => {
-  return {};
+  const { groundRobin } = state;
+  let activeParticipants = groundRobin.activeParticipants;
+  let participants = groundRobin.participants;
+  return { participants, activeParticipants };
 };
 
 TrainScheduler.defaultProps = {};
 
+const mapDispatchToProps = {};
+
 export default connect(
   mapStateToProps,
-  mapStateToProps,
+  mapDispatchToProps,
 )(TrainScheduler);

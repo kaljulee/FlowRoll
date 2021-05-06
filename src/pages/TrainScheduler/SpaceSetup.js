@@ -1,15 +1,53 @@
 import { Grid, Row } from 'react-native-easy-grid';
 import { Text } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
+import SettingsButton from '../../components/Inputs/SettingsButton';
+import ManageParticipantsModal from '../../components/modals/ManageParticipantsModal';
+import AddParticipantModal from '../../components/modals/AddParticipantModal';
+import DeleteParticipantModal from '../../components/modals/DeleteParticipantModal';
 
 function SpaceSetup(props) {
+  const { activeParticipants, participants } = props;
+
+  const [showParticipantInput, setShowParticipantInput] = useState(false);
+  const [showAddParticipant, setShowAddParticipant] = useState(false);
+  const [showDeleteParticipant, setShowDeleteParticipant] = useState(false);
+
   return (
     <Grid style={{ backgroundColor: 'cadetblue' }}>
       <Row>
-        <Text>spacesetup</Text>
+        <SettingsButton
+          label={'Set Players'}
+          info={activeParticipants.length}
+          onPress={() => setShowParticipantInput(true)}
+        />
       </Row>
+      <ManageParticipantsModal
+        onLongPressParticipant={setShowDeleteParticipant}
+        participants={participants}
+        isVisible={showParticipantInput}
+        onClosePress={() => setShowParticipantInput(false)}
+        onAddParticipantPress={() => {
+          console.log('partic? ' + !showAddParticipant);
+          setShowAddParticipant(true);
+        }}
+      />
+      <AddParticipantModal
+        isVisible={showAddParticipant}
+        closeModal={() => setShowAddParticipant(false)}
+      />
+      <DeleteParticipantModal
+        setShowDeleteParticipant={setShowDeleteParticipant}
+        deletableParticipant={showDeleteParticipant}
+        closeModal={() => setShowDeleteParticipant(null)}
+      />
     </Grid>
   );
 }
+
+SpaceSetup.defaultProps = {
+  participants: [],
+  activeParticipants: [],
+};
 
 export default SpaceSetup;

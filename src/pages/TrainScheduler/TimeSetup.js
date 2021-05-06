@@ -1,7 +1,22 @@
-import { Grid, Row } from 'react-native-easy-grid';
-import { Text, Picker } from 'native-base';
+import { Grid, Row, Col } from 'react-native-easy-grid';
+import { Text, Picker, CheckBox } from 'native-base';
 import React from 'react';
 import GroundTimeInput from '../../components/Mechanics/GroundTimeInput';
+import NumberInput from '../../components/Inputs/NumberInput';
+
+function IntegerInput(props) {
+  const { label, value, onValueChange } = props;
+  return (
+    <Grid style={{ width: '100%', height: '100%' }}>
+      <Col>
+        <NumberInput value={value} onValueChange={onValueChange} />
+      </Col>
+      <Col>
+        <Text>{label}</Text>
+      </Col>
+    </Grid>
+  );
+}
 
 function TimeSetup(props) {
   function setPhaseTimes(arg) {
@@ -23,6 +38,12 @@ function TimeSetup(props) {
     <Grid style={{ backgroundColor: 'coral' }}>
       <Row>
         <Picker mode="dropdown">{structureOptionsComponents}</Picker>
+      </Row>
+      <Row>
+        <IntegerInput value={1} label={'repeat all'} />
+      </Row>
+      <Row>
+        <IntegerInput value={1} label={'repeat individual'} />
       </Row>
       <Row>
         <GroundTimeInput

@@ -4,7 +4,7 @@ import { Grid, Col, Row } from 'react-native-easy-grid';
 import { connect } from 'react-redux';
 
 function WeightedColumns(props) {
-  const { colOne, colTwo, active, ratio } = props;
+  const { colOne, colTwo, active, ratio, children } = props;
   const [firstColWeight, setFirstColWeight] = useState(1);
   const [secondColWeight, setSecondColWeight] = useState(1);
 
@@ -24,8 +24,9 @@ function WeightedColumns(props) {
 
   return (
     <Grid>
-      <Col size={firstColWeight}>{colOne}</Col>
-      <Col size={secondColWeight}>{colTwo}</Col>
+      {children.map((c) => {
+        return <Col>{c}</Col>;
+      })}
     </Grid>
   );
 }

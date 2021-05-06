@@ -28,7 +28,11 @@ function PhaseColumn(props) {
 }
 
 function PhaseTitle(props) {
-  return <Text textAlign={'center'}>{props.title}</Text>;
+  return (
+    <Text style={{ fontSize: 10 }} textAlign={'center'}>
+      {props.title}
+    </Text>
+  );
 }
 
 function PhaseInput(props) {
@@ -36,7 +40,7 @@ function PhaseInput(props) {
   const value = formatSecondsToDisplay(props.value);
   return (
     <Button onPress={openEditor}>
-      <Text>{`${value}`}</Text>
+      <Text style={{ fontSize: 10 }}>{`${value}`}</Text>
     </Button>
   );
 }

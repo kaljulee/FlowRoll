@@ -24,8 +24,8 @@ function WeightedColumns(props) {
 
   return (
     <Grid>
-      {children.map((c) => {
-        return <Col>{c}</Col>;
+      {children.map((c, i) => {
+        return <Col key={i}>{c}</Col>;
       })}
     </Grid>
   );

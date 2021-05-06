@@ -1,10 +1,10 @@
 import { Grid, Row } from 'react-native-easy-grid';
-import { Text } from 'native-base';
 import React, { useState } from 'react';
 import SettingsButton from '../../components/Inputs/SettingsButton';
 import ManageParticipantsModal from '../../components/modals/ManageParticipantsModal';
 import AddParticipantModal from '../../components/modals/AddParticipantModal';
 import DeleteParticipantModal from '../../components/modals/DeleteParticipantModal';
+import IntegerInput from './IntegerInput';
 
 function SpaceSetup(props) {
   const { activeParticipants, participants } = props;
@@ -21,6 +21,12 @@ function SpaceSetup(props) {
           info={activeParticipants.length}
           onPress={() => setShowParticipantInput(true)}
         />
+      </Row>
+      <Row>
+        <IntegerInput value={1} label={'spaces'} />
+      </Row>
+      <Row>
+        <IntegerInput value={2} label={'peeps per space'} />
       </Row>
       <ManageParticipantsModal
         onLongPressParticipant={setShowDeleteParticipant}

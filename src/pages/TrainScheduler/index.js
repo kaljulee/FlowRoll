@@ -11,21 +11,27 @@ import EstTotalTime from './EstTotalTime';
 function ScheduleControls(props) {
   const { participants, activeParticipants } = props;
 
+  const rowStyle = {
+    justifyContent: 'center',
+    alignContent: 'center',
+    padding: 5,
+  };
+
   return (
-    <Grid>
-      <Row size={1} style={{ justifyContent: 'center' }}>
+    <Grid style={{ padding: 5 }}>
+      <Row size={1} style={rowStyle}>
         <ActivityLabel label={'label'} color={'red'} />
       </Row>
-      <Row size={4}>
+      <Row size={4} style={rowStyle}>
         <SpaceSetup
           participants={participants}
           activeParticipants={activeParticipants}
         />
       </Row>
-      <Row size={4}>
+      <Row size={4} style={rowStyle}>
         <TimeSetup />
       </Row>
-      <Row size={1}>
+      <Row size={1} style={rowStyle}>
         <Button
           style={{
             width: '100%',
@@ -40,9 +46,7 @@ function ScheduleControls(props) {
           </Text>
         </Button>
       </Row>
-      <Row
-        size={1}
-        style={{ justifyContent: 'center', alignContent: 'center' }}>
+      <Row size={1} style={rowStyle}>
         <EstTotalTime />
       </Row>
     </Grid>

@@ -6,6 +6,7 @@ import WeightedColumns from '../../components/WeightedColumns';
 import TimeSetup from './TimeSetup';
 import SpaceSetup from './SpaceSetup';
 import ActivityLabel from './ActivityLabel';
+import EstTotalTime from './EstTotalTime';
 
 function ScheduleControls(props) {
   const { participants, activeParticipants } = props;
@@ -24,7 +25,7 @@ function ScheduleControls(props) {
       <Row size={4}>
         <TimeSetup />
       </Row>
-      <Row size={1} >
+      <Row size={1}>
         <Button
           style={{
             width: '100%',
@@ -39,8 +40,10 @@ function ScheduleControls(props) {
           </Text>
         </Button>
       </Row>
-      <Row size={1}>
-        <Text>Estimated End Time</Text>
+      <Row
+        size={1}
+        style={{ justifyContent: 'center', alignContent: 'center' }}>
+        <EstTotalTime />
       </Row>
     </Grid>
   );

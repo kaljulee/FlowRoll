@@ -12,7 +12,7 @@ function IntegerInput(props) {
         <NumberInput value={value} onValueChange={onValueChange} />
       </Col>
       <Col style={{ justifyContent: 'center' }}>
-        <Text style={{ fontSize: 10, textAlign: 'center' }}>{label}</Text>
+        <Text style={{ fontSize: 15, textAlign: 'center' }}>{label}</Text>
       </Col>
     </Grid>
   );

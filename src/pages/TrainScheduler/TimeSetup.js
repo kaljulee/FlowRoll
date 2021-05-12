@@ -4,6 +4,21 @@ import React from 'react';
 import GroundTimeInput from '../../components/Mechanics/GroundTimeInput';
 import IntegerInput from './IntegerInput';
 
+// todo needs to be part of a unified system with spacesetup
+const rowStyle = {
+  justifyContent: 'center',
+  alignContent: 'center',
+};
+
+const inputTopBorder = {
+  borderTopWidth: 1,
+  borderTopColor: 'black',
+};
+const inputBottomBorder = {
+  borderBottomWidth: 1,
+  borderBottomColor: 'black',
+};
+
 function TimeSetup(props) {
   function setPhaseTimes(arg) {
     console.log('trying to set phase times from slider');
@@ -22,13 +37,15 @@ function TimeSetup(props) {
 
   return (
     <Grid style={{ backgroundColor: 'coral' }}>
-      <Row size={1}>
+      <Row size={1} style={rowStyle}>
         <Picker mode="dropdown">{structureOptionsComponents}</Picker>
       </Row>
-      <Row size={2}>
+      <Row size={2} style={{ ...rowStyle, ...inputTopBorder }}>
         <IntegerInput value={1} label={'repeat all'} />
       </Row>
-      <Row size={2}>
+      <Row
+        size={2}
+        style={{ ...rowStyle, ...inputTopBorder, ...inputBottomBorder }}>
         <IntegerInput value={1} label={'repeat individual'} />
       </Row>
       <Row size={3}>

@@ -18,8 +18,23 @@ function SpaceSetup(props) {
     alignContent: 'center',
   };
 
+  const inputTopBorder = {
+    borderTopWidth: 1,
+    borderTopColor: 'black',
+  };
+  const inputBottomBorder = {
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+  };
+
   return (
-    <Grid style={{ backgroundColor: 'cadetblue', padding: 5 }}>
+    <Grid
+      style={{
+        backgroundColor: 'cadetblue',
+        padding: 5,
+        paddingTop: 15,
+        paddingBottom: 15,
+      }}>
       <Row style={rowStyle}>
         <SettingsButton
           label={'Set Players'}
@@ -27,10 +42,10 @@ function SpaceSetup(props) {
           onPress={() => setShowParticipantInput(true)}
         />
       </Row>
-      <Row style={rowStyle}>
+      <Row style={{ ...rowStyle, ...inputTopBorder }}>
         <IntegerInput value={1} label={'spaces'} />
       </Row>
-      <Row style={rowStyle}>
+      <Row style={{ ...rowStyle, ...inputTopBorder, ...inputBottomBorder }}>
         <IntegerInput value={2} label={'peeps per space'} />
       </Row>
       <ManageParticipantsModal

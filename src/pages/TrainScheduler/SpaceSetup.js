@@ -13,19 +13,24 @@ function SpaceSetup(props) {
   const [showAddParticipant, setShowAddParticipant] = useState(false);
   const [showDeleteParticipant, setShowDeleteParticipant] = useState(false);
 
+  const rowStyle = {
+    justifyContent: 'center',
+    alignContent: 'center',
+  };
+
   return (
-    <Grid style={{ backgroundColor: 'cadetblue' }}>
-      <Row>
+    <Grid style={{ backgroundColor: 'cadetblue', padding: 5 }}>
+      <Row style={rowStyle}>
         <SettingsButton
           label={'Set Players'}
           info={activeParticipants.length}
           onPress={() => setShowParticipantInput(true)}
         />
       </Row>
-      <Row>
+      <Row style={rowStyle}>
         <IntegerInput value={1} label={'spaces'} />
       </Row>
-      <Row>
+      <Row style={rowStyle}>
         <IntegerInput value={2} label={'peeps per space'} />
       </Row>
       <ManageParticipantsModal

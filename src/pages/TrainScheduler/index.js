@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  Button,
-  Container,
-} from 'native-base';
+import { Text, Button, Container } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import { connect } from 'react-redux';
 import WeightedColumns from '../../components/WeightedColumns';
@@ -28,9 +24,19 @@ function ScheduleControls(props) {
       <Row size={4}>
         <TimeSetup />
       </Row>
-      <Row size={1}>
-        <Button>
-          <Text>Shrink / Fill</Text>
+      <Row size={1} >
+        <Button
+          style={{
+            width: '100%',
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+            }}>
+            Shrink / Fill
+          </Text>
         </Button>
       </Row>
       <Row size={1}>

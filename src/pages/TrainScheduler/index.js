@@ -15,6 +15,8 @@ function ScheduleControls(props) {
     justifyContent: 'center',
     alignContent: 'center',
     padding: 5,
+    paddingBottom: 2,
+    paddingTop: 2,
   };
 
   return (
@@ -22,13 +24,13 @@ function ScheduleControls(props) {
       <Row size={1} style={rowStyle}>
         <ActivityLabel label={'label'} color={'red'} />
       </Row>
-      <Row size={4} style={rowStyle}>
+      <Row size={3} style={rowStyle}>
         <SpaceSetup
           participants={participants}
           activeParticipants={activeParticipants}
         />
       </Row>
-      <Row size={4} style={rowStyle}>
+      <Row size={5} style={rowStyle}>
         <TimeSetup />
       </Row>
       <Row size={1} style={rowStyle}>

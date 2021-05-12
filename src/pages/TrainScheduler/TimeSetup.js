@@ -40,15 +40,15 @@ function TimeSetup(props) {
       <Row size={1} style={rowStyle}>
         <Picker mode="dropdown">{structureOptionsComponents}</Picker>
       </Row>
-      <Row size={2} style={{ ...rowStyle, ...inputTopBorder }}>
+      <Row size={1} style={{ ...rowStyle, ...inputTopBorder }}>
         <IntegerInput value={1} label={'repeat all'} />
       </Row>
       <Row
-        size={2}
+        size={1}
         style={{ ...rowStyle, ...inputTopBorder, ...inputBottomBorder }}>
         <IntegerInput value={1} label={'repeat individual'} />
       </Row>
-      <Row size={3}>
+      <Row size={2}>
         <GroundTimeInput
           setPhaseTimes={setPhaseTimes}
           work={30}

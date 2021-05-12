@@ -32,8 +32,6 @@ function SpaceSetup(props) {
       style={{
         backgroundColor: 'cadetblue',
         padding: 5,
-        paddingTop: 15,
-        paddingBottom: 15,
       }}>
       <Row style={rowStyle}>
         <SettingsButton
